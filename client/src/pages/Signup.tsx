@@ -1,17 +1,26 @@
+import { useState } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form";
+import { PhoneIcon, EmailIcon } from "@chakra-ui/icons";
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
   Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Button,
-  Box,
+  Box
 } from "@chakra-ui/react";
+
 
 interface IFormInputs {
   name: string;
+  birthday: string;
   email: string;
+  password: string;
   cpf: string;
+  phone: string;
 }
 
 export default function Signup() {
@@ -26,6 +35,9 @@ export default function Signup() {
       alert(JSON.stringify(data, null, 2));
     }, 1000);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const handleShowPassword = () => setShowPassword(!showPassword);
+
   return (
     <>
       <Box
@@ -35,18 +47,23 @@ export default function Signup() {
         className={"m-10"}
       >
         <form onSubmit={handleSubmit(onSubmit)} className={"p-10"}>
+
+          {/*Name Input*/}
           <FormControl isInvalid={!!errors.name}>
             <FormLabel htmlFor="name">Nome</FormLabel>
             <Input
               id="name"
               type="text"
-              placeholder="Digite seu nome"
+              placeholder="Type your name..."
               {...register("name", {
                 pattern: {
                   value: /^[A-Za-z ]*$/,
-                  message:
-                    "Nome não pode conter números ou caracteres especiais.",
+                  message: "The name don't have numbers or special characters!",
                 },
+                maxLength: {
+                  value: 70,
+                  message: "The name need at most 70 characters!"
+                }
               })}
             />
             <FormErrorMessage>
@@ -54,24 +71,79 @@ export default function Signup() {
             </FormErrorMessage>
           </FormControl>
 
+          {/*Birthday Input*/}
+          <FormControl isInvalid={!!errors.birthday}>
+            <FormLabel htmlFor="birthday">Your Birthday</FormLabel>
+            <Input
+              id="birthday"
+              type="date"
+              {...register("birthday")}
+            />
+            <FormErrorMessage>
+              {/*errors.birthday && errors.birthday.message*/}
+            </FormErrorMessage>
+          </FormControl>
+
+          {/*Email Input*/}
           <FormControl isInvalid={!!errors.email}>
             <FormLabel htmlFor="email">Email</FormLabel>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Digite seu email"
-              {...register("email", {
-                pattern: {
-                  value: /^\S+@{1}\S+[.]{1}\S+$/i,
-                  message: "Tá Errado",
-                },
-              })}
-            />
+            <InputGroup>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Type your email..."
+                {...register("email", {
+                  pattern: {
+                    value: /^\S+@{1}\S+[.]{1}\S+$/i,
+                    message: "The email pattern is invalid!"
+                  },
+                  maxLength: {
+                    value: 70,
+                    message: "The email need at most 70 characters!"
+                  }
+                })}
+              />
+              <InputRightElement pointerEvents='none'>
+                <EmailIcon color='gray.400' />
+              </InputRightElement>
+            </InputGroup>
             <FormErrorMessage>
               {errors.email && errors.email.message}
             </FormErrorMessage>
           </FormControl>
 
+          {/*Password Input*/}
+          <FormControl isInvalid={!!errors.password}>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup>
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Type your password..."
+                {...register("password", {
+                  minLength: {
+                    value: 8,
+                    message: "The password need at least 8 characters!"
+                  },
+                  maxLength: {
+                    value: 24,
+                    message: "The password need at most 24 characters!"
+                  }
+                })}
+              />
+              <InputRightElement>
+                <Button onClick={handleShowPassword}>
+                  {showPassword ? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
+            <FormErrorMessage>
+              {errors.password && errors.password.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          {/*CPF Input*/}
           <FormControl isInvalid={!!errors.cpf}>
             <FormLabel htmlFor="cpf">CPF</FormLabel>
             <Input
@@ -81,12 +153,31 @@ export default function Signup() {
               {...register("cpf", {
                 pattern: {
                   value: /^\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2}$/,
-                  message: "O formato utilizado está errado",
-                },
+                  message: "The pattern is invalid!"
+                }
               })}
             />
             <FormErrorMessage>
               {errors.cpf && errors.cpf.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          {/*Phone Input*/}
+          <FormControl isInvalid={!!errors.phone}>
+            <FormLabel htmlFor="phone">Phone</FormLabel>
+            <InputGroup>
+              <InputLeftElement pointerEvents='none'>
+                <PhoneIcon color='gray.400' />
+              </InputLeftElement>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="(+11) 99999-9999"
+                {...register("phone")}
+              />
+            </InputGroup>
+            <FormErrorMessage>
+              {/*errors.phone && errors.phone.message*/}
             </FormErrorMessage>
           </FormControl>
 
@@ -95,4 +186,4 @@ export default function Signup() {
       </Box>
     </>
   );
-}
+};
