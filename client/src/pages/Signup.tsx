@@ -9,6 +9,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Select,
   Button,
   Box
 } from "@chakra-ui/react";
@@ -21,7 +22,10 @@ interface IFormInputs {
   password: string;
   cpf: string;
   phone: string;
-}
+  shoesSize: string;
+  shirtSize: string;
+  pantsSize: string;
+};
 
 export default function Signup() {
   const {
@@ -66,6 +70,7 @@ export default function Signup() {
                 }
               })}
             />
+
             <FormErrorMessage>
               {errors.name && errors.name.message}
             </FormErrorMessage>
@@ -79,6 +84,7 @@ export default function Signup() {
               type="date"
               {...register("birthday")}
             />
+
             <FormErrorMessage>
               {/*errors.birthday && errors.birthday.message*/}
             </FormErrorMessage>
@@ -107,6 +113,7 @@ export default function Signup() {
                 <EmailIcon color='gray.400' />
               </InputRightElement>
             </InputGroup>
+
             <FormErrorMessage>
               {errors.email && errors.email.message}
             </FormErrorMessage>
@@ -157,6 +164,7 @@ export default function Signup() {
                 }
               })}
             />
+
             <FormErrorMessage>
               {errors.cpf && errors.cpf.message}
             </FormErrorMessage>
@@ -172,12 +180,48 @@ export default function Signup() {
               <Input
                 id="phone"
                 type="tel"
-                placeholder="(+11) 99999-9999"
-                {...register("phone")}
+                placeholder="(11) 99999-9999"
+                {...register("phone", {
+                  pattern: {
+                    value: /^[(]?\d{2}[)]?[ ]?\d{5}[-]?\d{4}$/,
+                    message: "The pattern is invalid!"
+                  }
+                })}
               />
             </InputGroup>
+
             <FormErrorMessage>
-              {/*errors.phone && errors.phone.message*/}
+              {errors.phone && errors.phone.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          {/*Shirt Size Select*/}
+          <FormControl isInvalid={!!errors.shirtSize}>
+            <FormLabel htmlFor="shirtSize">Shirt Size</FormLabel>
+            <Select id="shirtSize" {...register("shirtSize")} >
+              <option value='PP'>PP</option>
+              <option value='P'>P</option>
+              <option value='M' selected={true}>M</option>
+              <option value='G'>G</option>
+              <option value='GG'>GG</option>
+            </Select>
+          </FormControl>
+
+          {/*Pants Size Select*/}
+          <FormControl isInvalid={!!errors.pantsSize}>
+            <FormLabel htmlFor="pantsSize">Vou ver ainda</FormLabel>
+
+            <FormErrorMessage>
+              {/*errors.pantsSize && errors.pantsSize.messages*/}
+            </FormErrorMessage>
+          </FormControl>
+
+          {/*Shoes Size Select*/}
+          <FormControl isInvalid={!!errors.shoesSize}>
+            <FormLabel htmlFor="shoesSize">Vou ver ainda</FormLabel>
+
+            <FormErrorMessage>
+              {/*errors.shoesSize && errors.shoesSize.messages*/}
             </FormErrorMessage>
           </FormControl>
 
