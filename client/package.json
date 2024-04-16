@@ -14,12 +14,12 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@tanstack/react-query": "^5.29.2",
     "framer-motion": "^11.0.28",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
-    "react-router-dom": "^6.22.3",
-    "swr": "^2.2.5"
+    "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

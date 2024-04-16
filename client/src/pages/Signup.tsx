@@ -19,6 +19,7 @@ import {
   NumberInputStepper,
   Select,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 
 interface IFormInputs {
   name: string;
@@ -31,13 +32,27 @@ interface IFormInputs {
   shirtSize: string;
   pantsSize: string;
   postalCode: string;
-  address: string;
-  district: string;
-  city: string;
   state: string;
+  city: string;
+  district: string;
+  address: string;
 }
 
 const pantsSizes = [34, 36, 38, 40, 42, 44, 46, 48, 50];
+
+/*
+const CreateTodo = () => {
+  const mutation = useMutation(formData => {
+    return fetch('/api', formData)
+  })
+  const onSubmit = event => {
+    event.preventDefault()
+    mutation.mutate(new FormData(event.target))
+  }
+
+  return <form onSubmit={onSubmit}>...</form>
+}
+*/
 
 export default function Signup() {
   const {
@@ -46,23 +61,39 @@ export default function Signup() {
     formState: { errors },
   } = useForm<IFormInputs>({ mode: "onBlur" });
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) =>
+  const onSubmit: SubmitHandler<IFormInputs> = async (formData) => {
+    const finalFormData: IFormInputs = Object.assign(formData,
+      { "state": data.uf }, { "city": data.localidade },
+      { "district": data.bairro }, { "address": data.logradouro });
     setTimeout(() => {
-      alert(JSON.stringify(data, null, 2));
+      alert(JSON.stringify(finalFormData, null, 2));
     }, 1000);
+  }
+
 
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
+
+  const [postalCode, setPostalCode] = useState("");
+  const { data, refetch } = useQuery({
+    queryKey: ['cepData'],
+    queryFn: () => {
+      return fetch("https://viacep.com.br/ws/" + postalCode + "/json").then((res) => {
+        return res.json()
+      }
+      )
+    },
+    enabled: false
+  });
+
   const postalCodeBlurHandler: React.FocusEventHandler<
     HTMLInputElement
   > = async (e) => {
-    const postalCode = e.target.value;
+    setPostalCode(e.target.value);
     if (postalCode.length !== 8) return;
-    const req = await fetch("https://viacep.com.br/ws/" + postalCode + "/json");
-
-    const res = await req.json();
-    console.log(res);
+    await refetch();
+    console.log(data);
   };
 
   return (
@@ -278,14 +309,14 @@ export default function Signup() {
 
           <Grid>
             <FormControl isRequired isInvalid={!!errors.postalCode}>
-              <FormLabel htmlFor="cep">CEP:</FormLabel>
+              <FormLabel htmlFor="postalCode">Postal Code:</FormLabel>
               <Input
-                id="cep"
+                id="postalCode"
                 type="text"
-                placeholder="00000-000"
+                placeholder="00000000"
                 {...register("postalCode", {
                   pattern: {
-                    value: /^\d{5}[-]?\d{3}$/,
+                    value: /^\d{8}$/,
                     message: "The pattern is invalid!",
                   },
                   onBlur: postalCodeBlurHandler,
@@ -295,40 +326,48 @@ export default function Signup() {
                 {errors.postalCode && errors.postalCode.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.state}>
-              <FormLabel htmlFor="estado">Estado:</FormLabel>
+            <FormControl isRequired>
+              <FormLabel htmlFor="state">State:</FormLabel>
               <Input
-                id="estado"
+                disabled
+                value={data !== undefined ? data.uf : ""}
+                variant="filled"
+                id="state"
                 type="text"
                 placeholder="SP"
-                {...register("state")}
               />
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.city}>
-              <FormLabel htmlFor="cidade">Cidade:</FormLabel>
+            <FormControl isRequired>
+              <FormLabel htmlFor="city">City:</FormLabel>
               <Input
-                id="cidade"
+                disabled
+                value={data !== undefined ? data.localidade : ""}
+                variant="filled"
+                id="city"
                 type="text"
                 placeholder="São Paulo"
-                {...register("city")}
               />
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.district}>
-              <FormLabel htmlFor="bairro">Bairro:</FormLabel>
+            <FormControl isRequired>
+              <FormLabel htmlFor="district">District:</FormLabel>
               <Input
-                id="bairro"
+                disabled
+                value={data !== undefined ? data.bairro : ""}
+                variant="filled"
+                id="district"
                 type="text"
                 placeholder="Canindé"
-                {...register("district")}
               />
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.address}>
-              <FormLabel htmlFor="logradouro">Logradouro:</FormLabel>
+            <FormControl isRequired>
+              <FormLabel htmlFor="address">Address:</FormLabel>
               <Input
-                id="logradouro"
+                disabled
+                value={data !== undefined ? data.logradouro : ""}
+                variant="filled"
+                id="address"
                 type="text"
                 placeholder="Rua Pedro Vicente"
-                {...register("address")}
               />
             </FormControl>
           </Grid>
