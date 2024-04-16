@@ -1,8 +1,11 @@
 import Signup from "./pages/Signup.tsx";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Link as ReactRouterLink,
+  RouterProvider,
+} from "react-router-dom";
 import Layout from "./pages/Layout.tsx";
 import { Link } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
