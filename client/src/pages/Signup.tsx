@@ -1,17 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { PhoneIcon, EmailIcon } from "@chakra-ui/icons";
 import {
+  Box,
+  Button,
   FormControl,
-  FormLabel,
   FormErrorMessage,
+  FormLabel,
+  Grid,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  Select,
-  Button,
-  Box
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Select
 } from "@chakra-ui/react";
 
 
@@ -22,9 +28,14 @@ interface IFormInputs {
   password: string;
   cpf: string;
   phone: string;
-  shoesSize: string;
+  shoeSize: string;
   shirtSize: string;
   pantsSize: string;
+  cep: string;
+  logradouro: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
 };
 
 export default function Signup() {
@@ -39,8 +50,21 @@ export default function Signup() {
       alert(JSON.stringify(data, null, 2));
     }, 1000);
 
+  const pantsSizes = [34, 36, 38, 40, 42, 44, 46, 48, 50];
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword(!showPassword);
+
+  const cepInput = document.getElementById("cep") as HTMLInputElement;
+  useEffect(() => {
+    cepInput.addEventListener('blur', async (e) => {
+      const cepSearch = e.target;
+      if (cepSearch) {
+        let req = await fetch("viacep.com.br/ws/" + cepSearch + "/json");
+        let res = await req.json();
+        console.log(res);
+      }
+    });
+  }, [])
 
   return (
     <>
@@ -48,13 +72,13 @@ export default function Signup() {
         maxW={"xl"}
         borderWidth={"1px"}
         borderRadius={"lg"}
-        className={"m-10"}
+        m={"5rem auto 5rem auto"}
       >
         <form onSubmit={handleSubmit(onSubmit)} className={"p-10"}>
 
           {/*Name Input*/}
-          <FormControl isInvalid={!!errors.name}>
-            <FormLabel htmlFor="name">Nome</FormLabel>
+          <FormControl isRequired isInvalid={!!errors.name}>
+            <FormLabel htmlFor="name">Name</FormLabel>
             <Input
               id="name"
               type="text"
@@ -77,7 +101,7 @@ export default function Signup() {
           </FormControl>
 
           {/*Birthday Input*/}
-          <FormControl isInvalid={!!errors.birthday}>
+          <FormControl isRequired isInvalid={!!errors.birthday}>
             <FormLabel htmlFor="birthday">Your Birthday</FormLabel>
             <Input
               id="birthday"
@@ -91,7 +115,7 @@ export default function Signup() {
           </FormControl>
 
           {/*Email Input*/}
-          <FormControl isInvalid={!!errors.email}>
+          <FormControl isRequired isInvalid={!!errors.email}>
             <FormLabel htmlFor="email">Email</FormLabel>
             <InputGroup>
               <Input
@@ -120,7 +144,7 @@ export default function Signup() {
           </FormControl>
 
           {/*Password Input*/}
-          <FormControl isInvalid={!!errors.password}>
+          <FormControl isRequired isInvalid={!!errors.password}>
             <FormLabel htmlFor="password">Password</FormLabel>
             <InputGroup>
               <Input
@@ -151,7 +175,7 @@ export default function Signup() {
           </FormControl>
 
           {/*CPF Input*/}
-          <FormControl isInvalid={!!errors.cpf}>
+          <FormControl isRequired isInvalid={!!errors.cpf}>
             <FormLabel htmlFor="cpf">CPF</FormLabel>
             <Input
               id="cpf"
@@ -171,7 +195,7 @@ export default function Signup() {
           </FormControl>
 
           {/*Phone Input*/}
-          <FormControl isInvalid={!!errors.phone}>
+          <FormControl isRequired isInvalid={!!errors.phone}>
             <FormLabel htmlFor="phone">Phone</FormLabel>
             <InputGroup>
               <InputLeftElement pointerEvents='none'>
@@ -195,35 +219,72 @@ export default function Signup() {
             </FormErrorMessage>
           </FormControl>
 
-          {/*Shirt Size Select*/}
-          <FormControl isInvalid={!!errors.shirtSize}>
-            <FormLabel htmlFor="shirtSize">Shirt Size</FormLabel>
-            <Select id="shirtSize" {...register("shirtSize")} >
-              <option value='PP'>PP</option>
-              <option value='P'>P</option>
-              <option value='M' selected={true}>M</option>
-              <option value='G'>G</option>
-              <option value='GG'>GG</option>
-            </Select>
-          </FormControl>
+          <Grid templateColumns='repeat(2, 1fr)'>
+            {/*Shirt Size Select*/}
+            <FormControl isRequired isInvalid={!!errors.shirtSize}>
+              <FormLabel htmlFor="shirtSize">Shirt Size: </FormLabel>  {/*Não sei como colocar esses texto em inglês*/}
+              <Select id="shirtSize" {...register("shirtSize")} >
+                <option key={"Shirt_PP"} value='PP'>PP</option>
+                <option key={"Shirt_P"} value='P'>P</option>
+                <option key={"Shirt_M"} value='M'>M</option>
+                <option key={"Shirt_G"} value='G'>G</option>
+                <option key={"Shirt_GG"} value='GG'>GG</option>
+                <option key={"Shirt_GGX"} value='GGX'>GGX</option>
+                <option key={"Shirt_GGXE"} value='GGXE'>GGXE</option>
+              </Select>
+            </FormControl>
 
-          {/*Pants Size Select*/}
-          <FormControl isInvalid={!!errors.pantsSize}>
-            <FormLabel htmlFor="pantsSize">Vou ver ainda</FormLabel>
+            {/*Pants Size Select*/}
+            <FormControl isRequired isInvalid={!!errors.pantsSize}>
+              <FormLabel htmlFor="pantsSize">Pants Size: </FormLabel>
+              <Select id="pantsSize" {...register("pantsSize")} >
+                {pantsSizes.map(size => (<option key={"Pants_" + size} value={size}>{size}</option>))}
+              </Select>
+            </FormControl>
 
-            <FormErrorMessage>
-              {/*errors.pantsSize && errors.pantsSize.messages*/}
-            </FormErrorMessage>
-          </FormControl>
+            {/*Shoe Size Select*/}
+            <FormControl isRequired isInvalid={!!errors.shoeSize}>
+              <FormLabel htmlFor="shoeSize">Shoe Size: </FormLabel>
+              <NumberInput defaultValue={36} min={30} max={48} clampValueOnBlur={true} {...register("shoeSize")}>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+          </Grid>
 
-          {/*Shoes Size Select*/}
-          <FormControl isInvalid={!!errors.shoesSize}>
-            <FormLabel htmlFor="shoesSize">Vou ver ainda</FormLabel>
-
-            <FormErrorMessage>
-              {/*errors.shoesSize && errors.shoesSize.messages*/}
-            </FormErrorMessage>
-          </FormControl>
+          <Grid >
+            <FormControl isRequired isInvalid={!!errors.cep}>
+              <FormLabel htmlFor="cep">CEP:</FormLabel>
+              <Input id="cep" type="text" placeholder="00000-000" {...register("cep", {
+                pattern: {
+                  value: /^\d{5}[-]?\d{3}$/,
+                  message: "The pattern is invalid!"
+                }
+              })} />
+              <FormErrorMessage>
+                {errors.cep && errors.cep.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.estado}>
+              <FormLabel htmlFor="estado">Estado:</FormLabel>
+              <Input id="estado" type="text" placeholder="SP" {...register("estado")} />
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.cidade}>
+              <FormLabel htmlFor="cidade">Cidade:</FormLabel>
+              <Input id="cidade" type="text" placeholder="São Paulo" {...register("cidade")} />
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.bairro}>
+              <FormLabel htmlFor="bairro">Bairro:</FormLabel>
+              <Input id="bairro" type="text" placeholder="Canindé" {...register("bairro")} />
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.logradouro}>
+              <FormLabel htmlFor="logradouro">Logradouro:</FormLabel>
+              <Input id="logradouro" type="text" placeholder="Rua Pedro Vicente" {...register("logradouro")} />
+            </FormControl>
+          </Grid>
 
           <Button type="submit">Submit</Button>
         </form>
@@ -231,3 +292,16 @@ export default function Signup() {
     </>
   );
 };
+
+/* {
+      "cep": "01001-000",
+      "logradouro": "Praça da Sé",
+      "complemento": "lado ímpar",
+      "bairro": "Sé",
+      "localidade": "São Paulo",
+      "uf": "SP",
+      "ibge": "3550308",
+      "gia": "1004",
+      "ddd": "11",
+      "siafi": "7107"
+    } */
