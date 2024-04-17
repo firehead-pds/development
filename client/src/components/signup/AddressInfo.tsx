@@ -1,4 +1,9 @@
-import { FieldErrors, UseFormRegister, UseFormSetError } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetError,
+  UseFormSetValue,
+} from "react-hook-form";
 import {
   FormControl,
   FormErrorMessage,
@@ -14,14 +19,7 @@ interface AddressInfoProps {
   register: UseFormRegister<IFormInputs>;
   errors: FieldErrors<IFormInputs>;
   setError: UseFormSetError<IFormInputs>;
-}
-
-interface Address {
-  postalCode?: string;
-  address?: string;
-  district?: string;
-  city?: string;
-  state?: string;
+  setValue: UseFormSetValue<IFormInputs>;
 }
 
 interface ViacepApiResponse {
@@ -42,17 +40,9 @@ export default function AddressInfo({
   register,
   errors,
   setError,
+  setValue,
 }: AddressInfoProps) {
-  const addressInitialState: Address = {
-    postalCode: "",
-    address: "",
-    district: "",
-    city: "",
-    state: "",
-  };
-
   const [postalCode, setPostalCode] = useState("");
-  const [address, setAddress] = useState(addressInitialState);
 
   const { refetch } = useQuery({
     queryKey: ["postalCode", postalCode],
@@ -72,12 +62,16 @@ export default function AddressInfo({
       const res = (await req.json()) as ViacepApiResponse;
 
       if (res.erro) {
-        setError("postalCode", { type: "custom", message: "CEP Inválido" });
+        setError("address.postalCode", {
+          type: "custom",
+          message: "CEP Inválido",
+        });
         return null;
       }
-      setAddress({
-        postalCode: res.cep,
-        address: res.logradouro,
+
+      setValue("address", {
+        postalCode: res.cep.replace("-", ""),
+        addressLine: res.logradouro,
         district: res.bairro,
         city: res.localidade,
         state: res.uf,
@@ -89,32 +83,41 @@ export default function AddressInfo({
   });
 
   useEffect(() => {
-    if (postalCode.length >= 8 && postalCode.length <= 9) {
+    if (postalCode.length === 8) {
       refetch().then();
+      console.log(postalCode);
     }
-  }, [postalCode, refetch]);
+  }, [refetch, postalCode]);
 
   const postalCodeBlurHandler: React.FocusEventHandler<
     HTMLInputElement
   > = async (e) => {
-    setAddress(addressInitialState);
-    const postalCode = e.target.value;
+    setValue("address", {
+      addressLine: "",
+      district: "",
+      city: "",
+      state: "",
+    });
 
-    if (postalCode.length < 8 || postalCode.length > 9) return;
+    const postalCode = e.target.value.replace("-", "");
 
-    console.log(postalCode);
+    if (postalCode.length !== 8 || !/^\d+$/.test(postalCode)) {
+      setError("address.postalCode", { message: "CEP Inválido" });
+      return;
+    }
+
     setPostalCode(postalCode);
   };
 
   return (
     <Grid>
-      <FormControl isRequired isInvalid={!!errors.postalCode}>
+      <FormControl isRequired isInvalid={!!errors.address?.postalCode}>
         <FormLabel htmlFor="cep">CEP:</FormLabel>
         <Input
           id="cep"
           type="text"
           placeholder="00000-000"
-          {...register("postalCode", {
+          {...register("address.postalCode", {
             pattern: {
               value: /^\d{5}[-]?\d{3}$/,
               message: "CEP não existe",
@@ -123,13 +126,20 @@ export default function AddressInfo({
           })}
         />
         <FormErrorMessage>
-          {errors.postalCode && errors.postalCode.message}
+          {errors.address?.postalCode && errors.address.postalCode.message}
         </FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isDisabled>
         <FormLabel htmlFor="state">Estado:</FormLabel>
-        <Input id="state" type="text" placeholder="SP" value={address.state} />
+        <Input
+          id="state"
+          type="text"
+          placeholder="SP"
+          {...register("address.state", {
+            required: true,
+          })}
+        />
       </FormControl>
 
       <FormControl isRequired isDisabled>
@@ -138,7 +148,7 @@ export default function AddressInfo({
           id="city"
           type="text"
           placeholder="São Paulo"
-          value={address.city}
+          {...register("address.city")}
         />
       </FormControl>
 
@@ -148,7 +158,7 @@ export default function AddressInfo({
           id="district"
           type="text"
           placeholder="Canindé"
-          value={address.district}
+          {...register("address.district")}
         />
       </FormControl>
 
@@ -158,7 +168,7 @@ export default function AddressInfo({
           id="address"
           type="text"
           placeholder="Rua Pedro Vicente"
-          value={address.address}
+          {...register("address.addressLine")}
         />
       </FormControl>
     </Grid>

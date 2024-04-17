@@ -23,22 +23,29 @@ import { useMutation } from "@tanstack/react-query";
 import AddressInfo from "../components/signup/AddressInfo.tsx";
 import { cpf } from "cpf-cnpj-validator";
 
-export interface IFormInputs {
+interface Address {
+  postalCode?: string;
+  addressLine?: string;
+  district?: string;
+  city?: string;
+  state?: string;
+}
+
+export interface SignUpPostData {
   name: string;
   birthday: string;
   email: string;
   password: string;
-  confirmPassword: string;
   cpf: string;
   phone: string;
   shoeSize: string;
   shirtSize: string;
   pantsSize: number;
-  postalCode: string;
-  address: string;
-  district: string;
-  city: string;
-  state: string;
+  address: Address;
+}
+
+export interface IFormInputs extends SignUpPostData {
+  confirmPassword?: string;
 }
 
 const pantsSizes = [34, 36, 38, 40, 42, 44, 46, 48, 50];
@@ -50,6 +57,7 @@ export default function Signup() {
     formState: { errors },
     setError,
     getValues,
+    setValue,
   } = useForm<IFormInputs>({ mode: "onBlur" });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -64,8 +72,8 @@ export default function Signup() {
 
   const { mutate } = useMutation({
     mutationKey: ["sendSignupData"],
-    mutationFn: async (formData: IFormInputs) => {
-      const res = await fetch(`${process.env.BASE_API_URL!}/users`, {
+    mutationFn: async (formData: SignUpPostData) => {
+      const res = await fetch(`${import.meta.env.VITE_BASE_API_URL!}/users`, {
         method: "POST",
         body: JSON.stringify(formData),
       });
@@ -78,10 +86,14 @@ export default function Signup() {
 
       return res.json();
     },
+    onError: (error) => {
+      console.error("Error submitting form:", error);
+    },
   });
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    // Just need to gather all the data. Implementation will change after the address autocomplete is done.
+    delete data.confirmPassword;
+    console.log(data);
     mutate(data);
   };
 
@@ -308,7 +320,7 @@ export default function Signup() {
                 clampValueOnBlur={true}
                 {...shoeSize}
                 min={30}
-                max={38}
+                max={48}
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -323,6 +335,7 @@ export default function Signup() {
             register={register}
             errors={errors}
             setError={setError}
+            setValue={setValue}
           />
           <Button type="submit">Submit</Button>
         </form>
