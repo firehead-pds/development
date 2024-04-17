@@ -28,6 +28,7 @@ export interface IFormInputs {
   birthday: string;
   email: string;
   password: string;
+  confirmPassword: string;
   cpf: string;
   phone: string;
   shoeSize: string;
@@ -48,6 +49,7 @@ export default function Signup() {
     handleSubmit,
     formState: { errors },
     setError,
+    getValues,
   } = useForm<IFormInputs>({ mode: "onBlur" });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -183,6 +185,31 @@ export default function Signup() {
 
             <FormErrorMessage>
               {errors.password && errors.password.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          {/*Confirm password*/}
+          <FormControl isRequired isInvalid={!!errors.confirmPassword}>
+            <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
+            <InputGroup>
+              <Input
+                id="confirmPassword"
+                type={showPassword ? "text" : "password"}
+                placeholder="Type your password..."
+                {...register("confirmPassword", {
+                  validate: (v) =>
+                    v === getValues("password") || "Passwords do not match",
+                })}
+              />
+              <InputRightElement>
+                <Button onClick={handleShowPassword}>
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
+            <FormErrorMessage>
+              {errors.confirmPassword && errors.confirmPassword.message}
             </FormErrorMessage>
           </FormControl>
 
