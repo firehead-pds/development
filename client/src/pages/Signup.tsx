@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import {
@@ -19,8 +19,10 @@ import {
   NumberInputStepper,
   Select,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import AddressInfo from "../components/signup/AddressInfo.tsx";
 
-interface IFormInputs {
+export interface IFormInputs {
   name: string;
   birthday: string;
   email: string;
@@ -29,7 +31,7 @@ interface IFormInputs {
   phone: string;
   shoeSize: string;
   shirtSize: string;
-  pantsSize: string;
+  pantsSize: number;
   postalCode: string;
   address: string;
   district: string;
@@ -46,23 +48,37 @@ export default function Signup() {
     formState: { errors },
   } = useForm<IFormInputs>({ mode: "onBlur" });
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) =>
-    setTimeout(() => {
-      alert(JSON.stringify(data, null, 2));
-    }, 1000);
-
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
-  const postalCodeBlurHandler: React.FocusEventHandler<
-    HTMLInputElement
-  > = async (e) => {
-    const postalCode = e.target.value;
-    if (postalCode.length !== 8) return;
-    const req = await fetch("https://viacep.com.br/ws/" + postalCode + "/json");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { onChange, ...shoeSize } = register("shoeSize", {
+    min: Number(30),
+    max: Number(48),
+    valueAsNumber: true,
+  });
 
-    const res = await req.json();
-    console.log(res);
+  const { mutate } = useMutation({
+    mutationKey: ["sendSignupData"],
+    mutationFn: async (formData: IFormInputs) => {
+      const res = await fetch(`${process.env.BASE_API_URL!}/users`, {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error(
+          `Fetch request failed: ${res.status} ${res.statusText}`,
+        );
+      }
+
+      return res.json();
+    },
+  });
+
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    // Just need to gather all the data. Implementation will change after the address autocomplete is done.
+    mutate(data);
   };
 
   return (
@@ -246,7 +262,10 @@ export default function Signup() {
             {/*Pants Size Select*/}
             <FormControl isRequired isInvalid={!!errors.pantsSize}>
               <FormLabel htmlFor="pantsSize">Pants Size: </FormLabel>
-              <Select id="pantsSize" {...register("pantsSize")}>
+              <Select
+                id="pantsSize"
+                {...register("pantsSize", { valueAsNumber: true })}
+              >
                 {pantsSizes.map((size) => (
                   <option key={"Pants_" + size} value={size}>
                     {size}
@@ -261,11 +280,9 @@ export default function Signup() {
               <NumberInput
                 defaultValue={36}
                 clampValueOnBlur={true}
-                {...(register("shoeSize"),
-                {
-                  min: 30,
-                  max: 48,
-                })}
+                {...shoeSize}
+                min={30}
+                max={38}
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -276,63 +293,7 @@ export default function Signup() {
             </FormControl>
           </Grid>
 
-          <Grid>
-            <FormControl isRequired isInvalid={!!errors.postalCode}>
-              <FormLabel htmlFor="cep">CEP:</FormLabel>
-              <Input
-                id="cep"
-                type="text"
-                placeholder="00000-000"
-                {...register("postalCode", {
-                  pattern: {
-                    value: /^\d{5}[-]?\d{3}$/,
-                    message: "The pattern is invalid!",
-                  },
-                  onBlur: postalCodeBlurHandler,
-                })}
-              />
-              <FormErrorMessage>
-                {errors.postalCode && errors.postalCode.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl isRequired isInvalid={!!errors.state}>
-              <FormLabel htmlFor="estado">Estado:</FormLabel>
-              <Input
-                id="estado"
-                type="text"
-                placeholder="SP"
-                {...register("state")}
-              />
-            </FormControl>
-            <FormControl isRequired isInvalid={!!errors.city}>
-              <FormLabel htmlFor="cidade">Cidade:</FormLabel>
-              <Input
-                id="cidade"
-                type="text"
-                placeholder="São Paulo"
-                {...register("city")}
-              />
-            </FormControl>
-            <FormControl isRequired isInvalid={!!errors.district}>
-              <FormLabel htmlFor="bairro">Bairro:</FormLabel>
-              <Input
-                id="bairro"
-                type="text"
-                placeholder="Canindé"
-                {...register("district")}
-              />
-            </FormControl>
-            <FormControl isRequired isInvalid={!!errors.address}>
-              <FormLabel htmlFor="logradouro">Logradouro:</FormLabel>
-              <Input
-                id="logradouro"
-                type="text"
-                placeholder="Rua Pedro Vicente"
-                {...register("address")}
-              />
-            </FormControl>
-          </Grid>
-
+          <AddressInfo register={register} errors={errors} />
           <Button type="submit">Submit</Button>
         </form>
       </Box>
