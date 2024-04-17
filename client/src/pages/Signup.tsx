@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import AddressInfo from "../components/signup/AddressInfo.tsx";
+import { cpf } from "cpf-cnpj-validator";
 
 export interface IFormInputs {
   name: string;
@@ -193,10 +194,7 @@ export default function Signup() {
               type="text"
               placeholder="000.000.000-00"
               {...register("cpf", {
-                pattern: {
-                  value: /^\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2}$/,
-                  message: "The pattern is invalid!",
-                },
+                validate: (v) => cpf.isValid(v) || "CPF Inválido",
               })}
             />
 
