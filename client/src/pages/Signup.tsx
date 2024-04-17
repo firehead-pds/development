@@ -46,6 +46,7 @@ export default function Signup() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<IFormInputs>({ mode: "onBlur" });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -293,7 +294,11 @@ export default function Signup() {
             </FormControl>
           </Grid>
 
-          <AddressInfo register={register} errors={errors} />
+          <AddressInfo
+            register={register}
+            errors={errors}
+            setError={setError}
+          />
           <Button type="submit">Submit</Button>
         </form>
       </Box>

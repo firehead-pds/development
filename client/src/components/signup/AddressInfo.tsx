@@ -1,4 +1,4 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister, UseFormSetError } from "react-hook-form";
 import {
   FormControl,
   FormErrorMessage,
@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 interface AddressInfoProps {
   register: UseFormRegister<IFormInputs>;
   errors: FieldErrors<IFormInputs>;
+  setError: UseFormSetError<IFormInputs>;
 }
 
 interface Address {
@@ -24,6 +25,7 @@ interface Address {
 }
 
 interface ViacepApiResponse {
+  erro?: boolean;
   cep: string;
   logradouro: string;
   complemento: string;
@@ -36,7 +38,11 @@ interface ViacepApiResponse {
   siafi: string;
 }
 
-export default function AddressInfo({ register, errors }: AddressInfoProps) {
+export default function AddressInfo({
+  register,
+  errors,
+  setError,
+}: AddressInfoProps) {
   const addressInitialState: Address = {
     postalCode: "",
     address: "",
@@ -63,6 +69,10 @@ export default function AddressInfo({ register, errors }: AddressInfoProps) {
 
       const res = (await req.json()) as ViacepApiResponse;
 
+      if (res.erro) {
+        setError("postalCode", { type: "custom", message: "CEP Inválido" });
+        return;
+      }
       setAddress({
         postalCode: res.cep,
         address: res.logradouro,
@@ -79,9 +89,10 @@ export default function AddressInfo({ register, errors }: AddressInfoProps) {
   const postalCodeBlurHandler: React.FocusEventHandler<
     HTMLInputElement
   > = async (e) => {
-    if (errors.postalCode) return;
-
     const postalCode = e.target.value;
+
+    if (postalCode.length < 8 || postalCode.length > 9) return;
+
     console.log(postalCode);
     setPostalCode(postalCode);
     await refetch();
