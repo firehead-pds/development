@@ -6,7 +6,7 @@ import {
   Grid,
   Input,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IFormInputs } from "../../pages/Signup.tsx";
 import { useQuery } from "@tanstack/react-query";
 
@@ -55,10 +55,12 @@ export default function AddressInfo({
   const [address, setAddress] = useState(addressInitialState);
 
   const { refetch } = useQuery({
-    queryKey: ["postalCode"],
-    queryFn: async () => {
+    queryKey: ["postalCode", postalCode],
+    queryFn: async ({ queryKey }) => {
+      const currentPostalCode = queryKey[1];
+
       const req = await fetch(
-        "https://viacep.com.br/ws/" + postalCode + "/json",
+        "https://viacep.com.br/ws/" + currentPostalCode + "/json",
       );
 
       if (!req.ok) {
@@ -71,7 +73,7 @@ export default function AddressInfo({
 
       if (res.erro) {
         setError("postalCode", { type: "custom", message: "CEP Inválido" });
-        return;
+        return null;
       }
       setAddress({
         postalCode: res.cep,
@@ -86,16 +88,22 @@ export default function AddressInfo({
     enabled: false,
   });
 
+  useEffect(() => {
+    if (postalCode.length >= 8 && postalCode.length <= 9) {
+      refetch().then();
+    }
+  }, [postalCode, refetch]);
+
   const postalCodeBlurHandler: React.FocusEventHandler<
     HTMLInputElement
   > = async (e) => {
+    setAddress(addressInitialState);
     const postalCode = e.target.value;
 
     if (postalCode.length < 8 || postalCode.length > 9) return;
 
     console.log(postalCode);
     setPostalCode(postalCode);
-    await refetch();
   };
 
   return (
@@ -109,7 +117,7 @@ export default function AddressInfo({
           {...register("postalCode", {
             pattern: {
               value: /^\d{5}[-]?\d{3}$/,
-              message: "CEP Inválido",
+              message: "CEP não existe",
             },
             onBlur: postalCodeBlurHandler,
           })}
