@@ -1,5 +1,4 @@
 import Signup from "./pages/Signup.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   createBrowserRouter,
   Link as ReactRouterLink,
@@ -7,8 +6,6 @@ import {
 } from "react-router-dom";
 import Layout from "./pages/Layout.tsx";
 import { Link } from "@chakra-ui/react";
-
-const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -34,9 +31,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <RouterProvider router={router} />
     </>
   );
 }
