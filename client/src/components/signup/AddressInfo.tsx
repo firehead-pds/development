@@ -154,6 +154,24 @@ export default function AddressInfo({
           {...register("address.addressLine")}
         />
       </FormControl>
+
+      <FormControl isRequired isInvalid={!!errors.address?.houseNumber}>
+        <FormLabel htmlFor="houseNumber">Número:</FormLabel>
+        <Input
+          id="houseNumber"
+          type="text"
+          placeholder="Ex: 182"
+          {...register("address.houseNumber", {
+            pattern: {
+              value: /^[0-9]+$/,
+              message: "Just Numbers!"
+            }
+          })}
+        />
+        <FormErrorMessage>
+          {errors.address?.houseNumber && errors.address.houseNumber.message}
+        </FormErrorMessage>
+      </FormControl>
     </Grid>
   );
 }

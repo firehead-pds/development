@@ -12,10 +12,11 @@ interface Address {
   district?: string;
   city?: string;
   state?: string;
+  houseNumber?: string;
 }
 
 export interface SignUpPostData {
-  name: string;
+  name: {firstName: string, lastName: string};
   birthdate: string;
   email: string;
   password: string;

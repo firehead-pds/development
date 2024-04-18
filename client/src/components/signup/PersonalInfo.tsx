@@ -29,13 +29,13 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
 
   return (
     <>
-      <FormControl isRequired isInvalid={!!errors.name}>
-        <FormLabel htmlFor="name">{t("fields.name")}</FormLabel>
+      <FormControl isRequired isInvalid={!!errors.name?.firstName}>
+        <FormLabel htmlFor="fistName">First Name:</FormLabel>
         <Input
-          id="name"
+          id="fistName"
           type="text"
-          placeholder="Type your name..."
-          {...register("name", {
+          placeholder="Type your first name..."
+          {...register("name.firstName", {
             pattern: {
               value: /^[A-Za-z ]*$/,
               message: "The name don't have numbers or special characters!",
@@ -47,7 +47,29 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
           })}
         />
         <FormErrorMessage>
-          {errors.name && errors.name.message}
+          {errors.name?.firstName && errors.name.firstName.message}
+        </FormErrorMessage>
+      </FormControl>
+
+      <FormControl isRequired isInvalid={!!errors.name?.lastName}>
+        <FormLabel htmlFor="lastName">Last Name:</FormLabel>
+        <Input
+          id="lastName"
+          type="text"
+          placeholder="Type your last name..."
+          {...register("name.lastName", {
+            pattern: {
+              value: /^[A-Za-z ]*$/,
+              message: "The name don't have numbers or special characters!",
+            },
+            maxLength: {
+              value: 70,
+              message: "The name need at most 70 characters!",
+            },
+          })}
+        />
+        <FormErrorMessage>
+          {errors.name?.lastName && errors.name.lastName.message}
         </FormErrorMessage>
       </FormControl>
 
