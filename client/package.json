@@ -17,9 +17,13 @@
     "@tanstack/react-query": "^5.29.2",
     "cpf-cnpj-validator": "^1.0.3",
     "framer-motion": "^11.0.28",
+    "i18next": "^23.11.2",
+    "i18next-browser-languagedetector": "^7.2.1",
+    "i18next-http-backend": "^2.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
+    "react-i18next": "^14.1.0",
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {

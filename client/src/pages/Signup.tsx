@@ -22,6 +22,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import AddressInfo from "../components/signup/AddressInfo.tsx";
 import { cpf } from "cpf-cnpj-validator";
+import { useTranslation } from "react-i18next";
 
 interface Address {
   postalCode?: string;
@@ -51,6 +52,8 @@ export interface IFormInputs extends SignUpPostData {
 const pantsSizes = [34, 36, 38, 40, 42, 44, 46, 48, 50];
 
 export default function Signup() {
+  const { t } = useTranslation("signup");
+
   const {
     register,
     handleSubmit,
@@ -108,7 +111,7 @@ export default function Signup() {
         <form onSubmit={handleSubmit(onSubmit)} className={"p-10"}>
           {/*Name Input*/}
           <FormControl isRequired isInvalid={!!errors.name}>
-            <FormLabel htmlFor="name">Name</FormLabel>
+            <FormLabel htmlFor="name">{t("fields.name")}</FormLabel>
             <Input
               id="name"
               type="text"
