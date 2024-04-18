@@ -11,9 +11,8 @@ import {
   Grid,
   Input,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
 import { IFormInputs } from "../../pages/Signup.tsx";
-import { useQuery } from "@tanstack/react-query";
+import { ChangeEventHandler } from "react";
 
 interface AddressInfoProps {
   register: UseFormRegister<IFormInputs>;
@@ -42,56 +41,17 @@ export default function AddressInfo({
   setError,
   setValue,
 }: AddressInfoProps) {
-  const [postalCode, setPostalCode] = useState("");
+  let controller: AbortController | null = null;
 
-  const { refetch } = useQuery({
-    queryKey: ["postalCode", postalCode],
-    queryFn: async ({ queryKey }) => {
-      const currentPostalCode = queryKey[1];
-
-      const req = await fetch(
-        "https://viacep.com.br/ws/" + currentPostalCode + "/json",
-      );
-
-      if (!req.ok) {
-        throw new Error(
-          `Fetch request failed: ${req.status} ${req.statusText}`,
-        );
-      }
-
-      const res = (await req.json()) as ViacepApiResponse;
-
-      if (res.erro) {
-        setError("address.postalCode", {
-          type: "custom",
-          message: "CEP Inválido",
-        });
-        return null;
-      }
-
-      setValue("address", {
-        postalCode: res.cep.replace("-", ""),
-        addressLine: res.logradouro,
-        district: res.bairro,
-        city: res.localidade,
-        state: res.uf,
-      });
-
-      return res;
-    },
-    enabled: false,
-  });
-
-  useEffect(() => {
-    if (postalCode.length === 8) {
-      refetch().then();
-      console.log(postalCode);
+  const postalCodeChangeHandler: ChangeEventHandler<HTMLInputElement> = async (
+    e,
+  ) => {
+    if (controller) {
+      controller.abort();
     }
-  }, [refetch, postalCode]);
 
-  const postalCodeBlurHandler: React.FocusEventHandler<
-    HTMLInputElement
-  > = async (e) => {
+    controller = new AbortController();
+
     setValue("address", {
       addressLine: "",
       district: "",
@@ -105,7 +65,32 @@ export default function AddressInfo({
       return;
     }
 
-    setPostalCode(currentPostalCode);
+    const req = await fetch(
+      "https://viacep.com.br/ws/" + currentPostalCode + "/json",
+      { signal: controller.signal },
+    );
+
+    if (!req.ok) {
+      throw new Error(`Fetch request failed: ${req.status} ${req.statusText}`);
+    }
+
+    const res = (await req.json()) as ViacepApiResponse;
+
+    if (res.erro) {
+      setError("address.postalCode", {
+        type: "custom",
+        message: "CEP Inválido",
+      });
+      return null;
+    }
+
+    setValue("address", {
+      postalCode: res.cep.replace("-", ""),
+      addressLine: res.logradouro,
+      district: res.bairro,
+      city: res.localidade,
+      state: res.uf,
+    });
   };
   return (
     <Grid>
@@ -118,10 +103,10 @@ export default function AddressInfo({
           {...register("address.postalCode", {
             pattern: {
               value: /^\d{5}[-]?\d{3}$/,
-              message: "CEP não existe",
+              message: "CEP Inválido",
             },
           })}
-          onBlur={postalCodeBlurHandler}
+          onChange={postalCodeChangeHandler}
         />
         <FormErrorMessage>
           {errors.address?.postalCode && errors.address.postalCode.message}

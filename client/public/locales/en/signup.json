@@ -1,5 +1,18 @@
 {
   "fields": {
-    "name": "Name"
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter your name"
+    }
+  },
+  "validation-errors": {
+    "invalid-general": "Invalid {{field}}",
+    "already-in-use": "{{field}} already in use",
+    "non-existent": "This {{field}} does not exist",
+    "minLength": "{{field}} must have at least {{characters}} characters",
+    "maxLength": "{{field}} cannot have more than {{characters}} characters",
+    "uppercase": "{{field}} must have at least one uppercase letter",
+    "lowercase": "{{field}} must have at least one lowercase letter",
+    "contain-number": "{{field}} must have at least one number"
   }
 }
