@@ -316,6 +316,7 @@ export default function Signup() {
             <FormControl isRequired isInvalid={!!errors.shoeSize}>
               <FormLabel htmlFor="shoeSize">Shoe Size: </FormLabel>
               <NumberInput
+                id="shoeSize"
                 defaultValue={36}
                 clampValueOnBlur={true}
                 {...shoeSize}

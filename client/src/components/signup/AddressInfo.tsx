@@ -99,16 +99,14 @@ export default function AddressInfo({
       state: "",
     });
 
-    const postalCode = e.target.value.replace("-", "");
+    const currentPostalCode = e.target.value.replace("-", "");
 
-    if (postalCode.length !== 8 || !/^\d+$/.test(postalCode)) {
-      setError("address.postalCode", { message: "CEP Inválido" });
+    if (currentPostalCode.length !== 8 || !/^\d+$/.test(currentPostalCode)) {
       return;
     }
 
-    setPostalCode(postalCode);
+    setPostalCode(currentPostalCode);
   };
-
   return (
     <Grid>
       <FormControl isRequired isInvalid={!!errors.address?.postalCode}>
@@ -122,8 +120,8 @@ export default function AddressInfo({
               value: /^\d{5}[-]?\d{3}$/,
               message: "CEP não existe",
             },
-            onBlur: postalCodeBlurHandler,
           })}
+          onBlur={postalCodeBlurHandler}
         />
         <FormErrorMessage>
           {errors.address?.postalCode && errors.address.postalCode.message}
