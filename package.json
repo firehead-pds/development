@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@fastify/cors": "^9.0.1",
-    "@nestjs/platform-fastify": "^10.3.7",
-    "fastify": "^4.26.2",
-    "nodemon": "^3.1.0"
-  }
-}
