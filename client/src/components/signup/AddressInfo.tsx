@@ -107,6 +107,7 @@ export default function AddressInfo({
             },
           })}
           onChange={postalCodeChangeHandler}
+          inputMode={"numeric"}
         />
         <FormErrorMessage>
           {errors.address?.postalCode && errors.address.postalCode.message}
@@ -155,21 +156,23 @@ export default function AddressInfo({
         />
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.address?.houseNumber}>
+      <FormControl isRequired isInvalid={!!errors.address?.addressNumber}>
         <FormLabel htmlFor="houseNumber">Número:</FormLabel>
         <Input
           id="houseNumber"
           type="text"
           placeholder="Ex: 182"
-          {...register("address.houseNumber", {
+          {...register("address.addressNumber", {
             pattern: {
               value: /^[0-9]+$/,
-              message: "Just Numbers!"
-            }
+              message: "Just Numbers!",
+            },
           })}
+          inputMode={"numeric"}
         />
         <FormErrorMessage>
-          {errors.address?.houseNumber && errors.address.houseNumber.message}
+          {errors.address?.addressNumber &&
+            errors.address.addressNumber.message}
         </FormErrorMessage>
       </FormControl>
     </Grid>

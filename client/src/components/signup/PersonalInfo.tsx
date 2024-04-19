@@ -13,7 +13,6 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import { IFormInputs } from "../../pages/Signup.tsx";
-import { useTranslation } from "react-i18next";
 import { cpf } from "cpf-cnpj-validator";
 import { PhoneIcon } from "@chakra-ui/icons";
 
@@ -25,17 +24,16 @@ interface PersonalInfoProps {
 }
 
 export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
-  const { t } = useTranslation("signup");
-
   return (
     <>
-      <FormControl isRequired isInvalid={!!errors.name?.firstName}>
-        <FormLabel htmlFor="fistName">First Name:</FormLabel>
+      <FormControl isRequired isInvalid={!!errors.firstName}>
+        <FormLabel htmlFor="firstName">First Name:</FormLabel>
         <Input
-          id="fistName"
+          id="firstName"
           type="text"
           placeholder="Type your first name..."
-          {...register("name.firstName", {
+          {...register("firstName", {
+            required: true,
             pattern: {
               value: /^[A-Za-z ]*$/,
               message: "The name don't have numbers or special characters!",
@@ -47,17 +45,18 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
           })}
         />
         <FormErrorMessage>
-          {errors.name?.firstName && errors.name.firstName.message}
+          {errors.firstName && errors.firstName.message}
         </FormErrorMessage>
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.name?.lastName}>
+      <FormControl isRequired isInvalid={!!errors.lastName}>
         <FormLabel htmlFor="lastName">Last Name:</FormLabel>
         <Input
           id="lastName"
           type="text"
           placeholder="Type your last name..."
-          {...register("name.lastName", {
+          {...register("lastName", {
+            required: true,
             pattern: {
               value: /^[A-Za-z ]*$/,
               message: "The name don't have numbers or special characters!",
@@ -69,13 +68,17 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
           })}
         />
         <FormErrorMessage>
-          {errors.name?.lastName && errors.name.lastName.message}
+          {errors.lastName && errors.lastName.message}
         </FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.birthdate}>
         <FormLabel htmlFor="birthday">Your Birthday</FormLabel>
-        <Input id="birthday" type="date" {...register("birthdate")} />
+        <Input
+          id="birthday"
+          type="date"
+          {...register("birthdate", { required: true })}
+        />
 
         <FormErrorMessage>
           errors.birthdate && errors.birthdate.message
@@ -90,8 +93,10 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
           type="text"
           placeholder="000.000.000-00"
           {...register("cpf", {
+            required: true,
             validate: (v) => cpf.isValid(v) || "CPF Inválido",
           })}
+          inputMode={"numeric"}
         />
 
         <FormErrorMessage>{errors.cpf && errors.cpf.message}</FormErrorMessage>
@@ -109,6 +114,7 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
             type="tel"
             placeholder="(11) 99999-9999"
             {...register("phone", {
+              required: true,
               pattern: {
                 value: /^[(]?\d{2}[)]?[ ]?\d{5}[-]?\d{4}$/,
                 message: "The pattern is invalid!",

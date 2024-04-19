@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Box, Button } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import AddressInfo from "../components/signup/AddressInfo.tsx";
 import MeasurementsInfo from "../components/signup/MeasurementsInfo.tsx";
@@ -12,11 +12,13 @@ interface Address {
   district?: string;
   city?: string;
   state?: string;
-  houseNumber?: string;
+  addressNumber?: string;
+  complement?: string;
 }
 
 export interface SignUpPostData {
-  name: {firstName: string, lastName: string};
+  firstName: string;
+  lastName: string;
   birthdate: string;
   email: string;
   password: string;
@@ -25,6 +27,7 @@ export interface SignUpPostData {
   shoeSize: string;
   shirtSize: string;
   pantsSize: number;
+  height: number;
   address: Address;
 }
 
@@ -36,7 +39,7 @@ export default function Signup() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError,
     setValue,
     getValues,
@@ -63,26 +66,42 @@ export default function Signup() {
     },
   });
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
+    console.log(data);
     delete data.confirmPassword;
     mutate(data);
   };
 
   return (
     <>
-      <Box
-        maxW={"xl"}
-        borderWidth={"1px"}
-        borderRadius={"lg"}
-        m={"5rem auto 5rem auto"}
+      <Flex
+        alignItems={"center"}
+        justifyContent={"center"}
+        className={"w-screen my-6"}
       >
-        <form onSubmit={handleSubmit(onSubmit)} className={"p-10"}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={"p-4 border rounded-lg mx-2"}
+        >
+          <Box position="relative" padding="10">
+            <Divider />
+            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
+              Credenciais de Acesso
+            </AbsoluteCenter>
+          </Box>
           <PersonalInfo
             register={register}
             errors={errors}
             setError={setError}
             setValue={setValue}
           />
+
+          <Box position="relative" padding="10">
+            <Divider />
+            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
+              Credenciais de Acesso
+            </AbsoluteCenter>
+          </Box>
 
           <EmailPasswordInfo
             register={register}
@@ -92,6 +111,13 @@ export default function Signup() {
             getValues={getValues}
           />
 
+          <Box position="relative" padding="10">
+            <Divider />
+            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
+              Credenciais de Acesso
+            </AbsoluteCenter>
+          </Box>
+
           <MeasurementsInfo
             register={register}
             errors={errors}
@@ -99,15 +125,24 @@ export default function Signup() {
             setValue={setValue}
           />
 
+          <Box position="relative" padding="10">
+            <Divider />
+            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
+              Credenciais de Acesso
+            </AbsoluteCenter>
+          </Box>
+
           <AddressInfo
             register={register}
             errors={errors}
             setError={setError}
             setValue={setValue}
           />
-          <Button type="submit">Submit</Button>
+          <Button isLoading={isSubmitting} type="submit">
+            Submit
+          </Button>
         </form>
-      </Box>
+      </Flex>
     </>
   );
 }
