@@ -4,7 +4,7 @@ import fastifyCors from '@fastify/cors';
 const fastifyAdapter = new FastifyAdapter();
 
 fastifyAdapter.register(fastifyCors, {
-  origin: ``,
+  origin: `http://localhost:8080`,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
