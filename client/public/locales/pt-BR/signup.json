@@ -1,5 +1,119 @@
 {
   "fields": {
-    "name": "Nome"
+    "personalInfo": {
+      "firstName": {
+        "name": "primeiro nome",
+        "label": "Primeiro nome:",
+        "placeholder": "Digite seu primeiro nome..."
+      },
+      "lastName": {
+        "label": "Sobrenome:",
+        "placeholder": "Digite seu sobrenome..."
+      },
+      "birthdate": {
+        "label": "Data de nascimento:"
+      },
+      "cpf": {
+        "name": "CPF",
+        "label": "CPF:"
+      },
+      "phoneNumber": {
+        "name": "Telefone",
+        "label": "Telefone:"
+      }
+    },
+    "accessCredentials": {
+      "email": {
+        "name": "Email",
+        "label": "Email:",
+        "placeholder": "Digite seu email..."
+      },
+      "password": {
+        "name": "Senha",
+        "label": "Senha:",
+        "placeholder": "Crie uma senha...",
+        "requirements": {
+          "minLength": "Pelo menos {{limit}} caracteres",
+          "maxLength": "Até {{limit}} caracteres",
+          "uppercase": "Pelo menos uma letra maiúscula",
+          "lowercase": "Pelo menos uma letra minúscula",
+          "number": "Pelo menos um número"
+        },
+        "toggle": {
+          "show": "Mostrar",
+          "hide": "Esconder"
+        }
+      },
+      "confirmPassword": {
+        "name": "Confirmar senha",
+        "label": "Confirmar senha:",
+        "placeholder": "Confirme sua senha...",
+        "requirements": {
+          "match": "As senhas não coincidem"
+        }
+      }
+    },
+    "measurements": {
+      "shirtSize": "Tamanho da camisa:",
+      "pantsSize": "Tamanho da calça:",
+      "shoeSize": "Tamanho do sapato:",
+      "height": {
+        "name": "Altura",
+        "label": "Altura (cm):",
+        "placeholder": "Ex: 170"
+      }
+    },
+    "addressInfo": {
+      "postalCode": {
+        "name": "CEP",
+        "label": "CEP:"
+      },
+      "state": {
+        "name": "Estado",
+        "label": "Estado:",
+        "placeholder": "Seu estado..."
+      },
+      "city": {
+        "name": "Cidade",
+        "label": "Cidade:",
+        "placeholder": "Sua cidade..."
+      },
+      "district": {
+        "name": "Bairro",
+        "label": "Bairro:",
+        "placeholder": "Seu bairro..."
+      },
+      "addressLine": {
+        "name": "Endereço",
+        "label": "Endereço:",
+        "placeholder": "Seu endereço..."
+      },
+      "addressNumber": {
+        "name": "Número",
+        "label": "Número:",
+        "placeholder": "Ex: 1976"
+      },
+      "additionalInfo": {
+        "name": "Complemento",
+        "label": "Complemento:",
+        "placeholder": "Ex: Apt. 3"
+      }
+    }
+  },
+  "submit": "Enviar",
+  "dividers": {
+    "personalInfo": "Informações pessoais",
+    "accessCredentials": "Credenciais de acesso",
+    "measurements": "Medidas",
+    "address": "Endereço"
+  },
+  "validationErrors": {
+    "required": "Obrigatório",
+    "invalid": "{{field}} inválido",
+    "alreadyInUse": "{{field}} já em uso",
+    "nonExistent": "{{field}} não existe",
+    "minLength": "Deve ter pelo menos {{limit}} caracteres",
+    "maxLength": "Não deve ter mais de {{limit}} caracteres",
+    "onlyLetters": "Apenas letras permitidas"
   }
 }

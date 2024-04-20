@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ChangeEventHandler } from "react";
 import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
+import { useTranslation } from "react-i18next";
 
 interface AddressInfoProps {
   register: UseFormRegister<SignupFormFields>;
@@ -41,6 +42,13 @@ export default function AddressInfo({
   setError,
   setValue,
 }: AddressInfoProps) {
+  const { t } = useTranslation("signup", {
+    keyPrefix: "fields.addressInfo",
+  });
+  const { t: tErrors } = useTranslation("signup", {
+    keyPrefix: "validationErrors",
+  });
+
   let controller: AbortController | null = null;
 
   const postalCodeChangeHandler: ChangeEventHandler<HTMLInputElement> = async (
@@ -79,7 +87,7 @@ export default function AddressInfo({
     if (res.erro) {
       setError("address.postalCode", {
         type: "custom",
-        message: "CEP Inválido",
+        message: tErrors("nonExistent", { field: t("postalCode.name") }),
       });
       return null;
     }
@@ -92,18 +100,19 @@ export default function AddressInfo({
       state: res.uf,
     });
   };
+
   return (
     <Grid>
       <FormControl isRequired isInvalid={!!errors.address?.postalCode}>
-        <FormLabel htmlFor="cep">CEP:</FormLabel>
+        <FormLabel htmlFor="cep">{t("postalCode.label")}</FormLabel>
         <Input
           id="cep"
           type="text"
           placeholder="00000-000"
           {...register("address.postalCode", {
             pattern: {
-              value: /^\d{5}[-]?\d{3}$/,
-              message: "CEP Inválido",
+              value: /^\d{5}-?\d{3}$/,
+              message: tErrors("invalid", { field: t("postalCode.name") }),
             },
           })}
           onChange={postalCodeChangeHandler}
@@ -115,43 +124,43 @@ export default function AddressInfo({
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="state">Estado:</FormLabel>
+        <FormLabel htmlFor="state">{t("state.label")}</FormLabel>
         <Input
           id="state"
           type="text"
-          placeholder="SP"
+          placeholder={t("state.placeholder")}
           {...register("address.state", {
-            required: true,
+            required: tErrors("required"),
           })}
         />
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="city">Cidade:</FormLabel>
+        <FormLabel htmlFor="city">{t("city.label")}</FormLabel>
         <Input
           id="city"
           type="text"
-          placeholder="São Paulo"
+          placeholder={t("city.placeholder")}
           {...register("address.city")}
         />
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="district">Bairro:</FormLabel>
+        <FormLabel htmlFor="district">{t("district.label")}</FormLabel>
         <Input
           id="district"
           type="text"
-          placeholder="Canindé"
+          placeholder={t("district.placeholder")}
           {...register("address.district")}
         />
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="address">Logradouro:</FormLabel>
+        <FormLabel htmlFor="address">{t("addressLine.label")}</FormLabel>
         <Input
           id="address"
           type="text"
-          placeholder="Rua Pedro Vicente"
+          placeholder={t("addressLine.placeholder")}
           {...register("address.addressLine")}
         />
       </FormControl>
@@ -177,12 +186,17 @@ export default function AddressInfo({
       </FormControl>
 
       <FormControl isInvalid={!!errors.address?.complement}>
-        <FormLabel htmlFor="houseNumber">Complemento:</FormLabel>
+        <FormLabel htmlFor="complement">{t("additionalInfo.label")}</FormLabel>
         <Input
           id="complement"
           type="text"
-          placeholder="Apt. 12"
-          {...register("address.complement", {})}
+          placeholder={t("additionalInfo.placeholder")}
+          {...register("address.complement", {
+            maxLength: {
+              value: 50,
+              message: tErrors("maxLength", { limit: "50" }),
+            },
+          })}
         />
         <FormErrorMessage>
           {errors.address?.complement && errors.address.complement.message}

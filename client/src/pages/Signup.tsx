@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import AddressInfo from "../components/signup/AddressInfo.tsx";
 import MeasurementsInfo from "../components/signup/MeasurementsInfo.tsx";
 import PersonalInfo from "../components/signup/PersonalInfo.tsx";
-import EmailPasswordInfo from "../components/signup/EmailPasswordInfo.tsx";
+import AccessCredentials from "../components/signup/AccessCredentials.tsx";
 import SignupFormFields from "../interfaces/signup/SignupFormFields.ts";
 import PostUsers from "../interfaces/backend-fetches/requests/users/PostUsers.ts";
 import ErrorResponse from "../interfaces/backend-fetches/responses/ErrorResponse.ts";
@@ -21,7 +21,6 @@ export default function Signup() {
     setValue,
     getValues,
   } = useForm<SignupFormFields>({ mode: "onBlur" });
-  console.log(errors);
 
   const { mutate } = useMutation({
     mutationKey: ["sendSignupData"],
@@ -98,7 +97,7 @@ export default function Signup() {
             </AbsoluteCenter>
           </Box>
 
-          <EmailPasswordInfo
+          <AccessCredentials
             register={register}
             errors={errors}
             setError={setError}
@@ -134,7 +133,7 @@ export default function Signup() {
             setValue={setValue}
           />
           <Button isLoading={isSubmitting} type="submit" form={"signupForm"}>
-            Submit
+            {t("submit")}
           </Button>
         </form>
       </Flex>

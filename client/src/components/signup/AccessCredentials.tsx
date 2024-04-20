@@ -18,8 +18,9 @@ import {
 } from "react-hook-form";
 import { useState } from "react";
 import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
+import { useTranslation } from "react-i18next";
 
-interface EmailPasswordInfoProps {
+interface AccessCredentialsProps {
   register: UseFormRegister<SignupFormFields>;
   errors: FieldErrors<SignupFormFields>;
   setError: UseFormSetError<SignupFormFields>;
@@ -27,33 +28,39 @@ interface EmailPasswordInfoProps {
   getValues: UseFormGetValues<SignupFormFields>;
 }
 
-export default function EmailPasswordInfo({
+export default function AccessCredentials({
   register,
   errors,
   getValues,
-}: EmailPasswordInfoProps) {
+}: AccessCredentialsProps) {
+  const { t } = useTranslation("signup", {
+    keyPrefix: "fields.accessCredentials",
+  });
+  const { t: tErrors } = useTranslation("signup", {
+    keyPrefix: "validationErrors",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
   return (
     <>
       <FormControl isRequired isInvalid={!!errors.email}>
-        <FormLabel htmlFor="email">Email</FormLabel>
+        <FormLabel htmlFor="email">{t("email.label")}</FormLabel>
         <InputGroup>
           <Input
             id="email"
             type="email"
-            placeholder="Type your email..."
+            placeholder={t("email.placeholder")}
             {...register("email", {
-              required: "required",
-
+              required: tErrors("required"),
               pattern: {
                 value: /^\S+@{1}\S+[.]{1}\S+$/i,
-                message: "The email pattern is invalid!",
+                message: tErrors("invalid", { field: t("email.name") }),
               },
               maxLength: {
-                value: 70,
-                message: "The email need at most 70 characters!",
+                value: 50,
+                message: tErrors("maxLength", { limit: "50" }),
               },
             })}
           />
@@ -68,28 +75,25 @@ export default function EmailPasswordInfo({
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.password}>
-        <FormLabel htmlFor="password">Password</FormLabel>
+        <FormLabel htmlFor="password">{t("password.label")}</FormLabel>
         <InputGroup size="md">
           <Input
             id={"password"}
             pr="4.5rem"
             type={showPassword ? "text" : "password"}
-            placeholder="Type your password..."
+            placeholder={t("password.placeholder")}
             {...register("password", {
-              required: "required",
-              minLength: {
-                value: 8,
-                message: "The password need at least 8 characters!",
-              },
-              maxLength: {
-                value: 24,
-                message: "The password need at most 24 characters!",
-              },
+              required: tErrors("required"),
+              minLength: 8,
+              maxLength: 24,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
             })}
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleShowPassword}>
-              {showPassword ? "Hide" : "Show"}
+              {showPassword
+                ? t("password.toggle.hide")
+                : t("password.toggle.show")}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -100,23 +104,25 @@ export default function EmailPasswordInfo({
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.confirmPassword}>
-        <FormLabel htmlFor="password">Confirm Password</FormLabel>
+        <FormLabel htmlFor="password">{t("confirmPassword.label")}</FormLabel>
         <InputGroup size="md">
           <Input
             id={"confirmPassword"}
             pr="4.5rem"
             type={showPassword ? "text" : "password"}
-            placeholder="Re-enter your password..."
+            placeholder={t("confirmPassword.placeholder")}
             {...register("confirmPassword", {
-              required: "required",
-
+              required: tErrors("required"),
               validate: (v) =>
-                v === getValues("password") || "Passwords do not match",
+                v === getValues("password") ||
+                t("confirmPassword.requirements.match"),
             })}
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleShowPassword}>
-              {showPassword ? "Hide" : "Show"}
+              {showPassword
+                ? t("password.toggle.hide")
+                : t("password.toggle.show")}
             </Button>
           </InputRightElement>
         </InputGroup>

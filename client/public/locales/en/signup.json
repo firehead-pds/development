@@ -4,11 +4,11 @@
       "firstName": {
         "name": "first name",
         "label": "First name:",
-        "placeholder": "Enter your first name"
+        "placeholder": "Enter your first name..."
       },
       "lastName": {
         "label": "Last name:",
-        "placeholder": "Enter your last name"
+        "placeholder": "Enter your last name..."
       },
       "birthdate": {
         "label": "Birthdate:"
@@ -21,8 +21,86 @@
         "name": "phone number",
         "label": "Phone number:"
       }
+    },
+    "accessCredentials": {
+      "email": {
+        "name": "email",
+        "label": "Email:",
+        "placeholder": "Enter your email..."
+      },
+      "password": {
+        "name": "password",
+        "label": "Password:",
+        "placeholder": "Create a password...",
+        "requirements": {
+          "minLength": "At least {{limit}} characters",
+          "maxLength": "Up to {{limit}} characters",
+          "uppercase": "At least one uppercase letter",
+          "lowercase": "At least one lowercase letter",
+          "number": "At least one number"
+        },
+        "toggle": {
+          "show": "Show",
+          "hide": "Hide"
+        }
+      },
+      "confirmPassword": {
+        "name": "confirm password",
+        "label": "Confirm password:",
+        "placeholder": "Confirm your password...",
+        "requirements": {
+          "match": "The passwords do not match"
+        }
+      }
+    },
+    "measurements": {
+      "shirtSize": "Shirt size:",
+      "pantsSize": "Pants size:",
+      "shoeSize": "Shoe size:",
+      "height": {
+        "name": "height",
+        "label": "Height (cm):",
+        "placeholder": "Ex: 170"
+      }
+    },
+    "addressInfo": {
+      "postalCode": {
+        "name": "postal code",
+        "label": "Postal code:"
+      },
+      "state": {
+        "name": "state",
+        "label": "State:",
+        "placeholder": "Your state..."
+      },
+      "city": {
+        "name": "city",
+        "label": "City:",
+        "placeholder": "Your city..."
+      },
+      "district": {
+        "name": "district",
+        "label": "District:",
+        "placeholder": "Your district..."
+      },
+      "addressLine": {
+        "name": "address line",
+        "label": "Address Line:",
+        "placeholder": "Your address..."
+      },
+      "addressNumber": {
+        "name": "address number",
+        "label": "Address number:",
+        "placeholder": "Ex: 1976"
+      },
+      "additionalInfo": {
+        "name": "additional info",
+        "label": "Additional Info:",
+        "placeholder": "Ex: Apt. 3"
+      }
     }
   },
+  "submit": "Submit",
   "dividers": {
     "personalInfo": "Personal Info",
     "accessCredentials": "Access Credentials",
@@ -36,9 +114,6 @@
     "nonExistent": "This {{field}} does not exist",
     "minLength": "Should have at least {{limit}} characters",
     "maxLength": "Should not have more than {{limit}} characters",
-    "onlyLetters": "Only letters allowed",
-    "uppercase": "{{field}} must have at least one uppercase letter",
-    "lowercase": "{{field}} must have at least one lowercase letter",
-    "containNumber": "{{field}} must have at least one number"
+    "onlyLetters": "Only letters allowed"
   }
 }

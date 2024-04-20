@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   NumberDecrementStepper,
@@ -16,6 +17,7 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
+import { useTranslation } from "react-i18next";
 
 interface MeasurementsInfoProps {
   register: UseFormRegister<SignupFormFields>;
@@ -31,23 +33,30 @@ export default function MeasurementsInfo({
   register,
   errors,
 }: MeasurementsInfoProps) {
+  const { t } = useTranslation("signup", {
+    keyPrefix: "fields.measurements",
+  });
+  const { t: tErrors } = useTranslation("signup", {
+    keyPrefix: "validationErrors",
+  });
+
   // Can't add onChange prop to numeric input for some reason
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { onChange, ...shoeSize } = register("measurements.shoeSize", {
     min: Number(30),
     max: Number(48),
-    required: "required",
+    required: tErrors("required"),
   });
 
   return (
     <>
       {/*Shirt Size Select*/}
       <FormControl isRequired isInvalid={!!errors.measurements?.shirtSize}>
-        <FormLabel htmlFor="shirtSize">Shirt Size: </FormLabel>{" "}
+        <FormLabel htmlFor="shirtSize">{t("shirtSize")}</FormLabel>{" "}
         <Select
           id="shirtSize"
           {...register("measurements.shirtSize", {
-            required: "required",
+            required: tErrors("required"),
           })}
         >
           {shirtSizes.map((size) => (
@@ -60,10 +69,12 @@ export default function MeasurementsInfo({
 
       {/*Pants Size Select*/}
       <FormControl isRequired isInvalid={!!errors.measurements?.pantsSize}>
-        <FormLabel htmlFor="pantsSize">Pants Size: </FormLabel>
+        <FormLabel htmlFor="pantsSize">{t("pantsSize")}</FormLabel>
         <Select
           id="pantsSize"
-          {...register("measurements.pantsSize", { required: "required" })}
+          {...register("measurements.pantsSize", {
+            required: tErrors("required"),
+          })}
         >
           {pantsSizes.map((size) => (
             <option key={size} value={size}>
@@ -75,7 +86,7 @@ export default function MeasurementsInfo({
 
       {/*Shoe Size Select*/}
       <FormControl isRequired isInvalid={!!errors.measurements?.shoeSize}>
-        <FormLabel htmlFor="shoeSize">Shoe Size: </FormLabel>
+        <FormLabel htmlFor="shoeSize">{t("shoeSize")}</FormLabel>
         <NumberInput
           id="shoeSize"
           defaultValue={36}
@@ -93,13 +104,22 @@ export default function MeasurementsInfo({
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.measurements?.height}>
-        <FormLabel htmlFor={"height"}>Height (cm):</FormLabel>
+        <FormLabel htmlFor={"height"}>{t("height.label")}</FormLabel>
         <Input
           id={"height"}
           type={"number"}
           inputMode={"numeric"}
-          {...register("measurements.height", { required: true })}
+          placeholder={t("height.placeholder")}
+          {...register("measurements.height", {
+            required: tErrors("required"),
+            validate: (v) =>
+              (v >= 100 && v <= 260) ||
+              tErrors("invalid", { field: t("height.name") }),
+          })}
         />
+        <FormErrorMessage>
+          {errors.measurements?.height && errors.measurements.height.message}
+        </FormErrorMessage>
       </FormControl>
     </>
   );
