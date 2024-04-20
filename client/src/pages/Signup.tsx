@@ -8,8 +8,11 @@ import EmailPasswordInfo from "../components/signup/EmailPasswordInfo.tsx";
 import SignupFormFields from "../interfaces/signup/SignupFormFields.ts";
 import PostUsers from "../interfaces/backend-fetches/requests/users/PostUsers.ts";
 import ErrorResponse from "../interfaces/backend-fetches/responses/ErrorResponse.ts";
+import { useTranslation } from "react-i18next";
 
 export default function Signup() {
+  const { t } = useTranslation("signup");
+
   const {
     register,
     handleSubmit,
@@ -78,7 +81,7 @@ export default function Signup() {
           <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              Credenciais de Acesso
+              {t("dividers.personalInfo")}
             </AbsoluteCenter>
           </Box>
           <PersonalInfo
@@ -91,7 +94,7 @@ export default function Signup() {
           <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              Credenciais de Acesso
+              {t("dividers.accessCredentials")}
             </AbsoluteCenter>
           </Box>
 
@@ -106,7 +109,7 @@ export default function Signup() {
           <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              Credenciais de Acesso
+              {t("dividers.measurements")}
             </AbsoluteCenter>
           </Box>
 
@@ -120,7 +123,7 @@ export default function Signup() {
           <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              Credenciais de Acesso
+              {t("dividers.address")}
             </AbsoluteCenter>
           </Box>
 

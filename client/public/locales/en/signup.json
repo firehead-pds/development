@@ -1,18 +1,44 @@
 {
   "fields": {
-    "name": {
-      "label": "Name",
-      "placeholder": "Enter your name"
+    "personalInfo": {
+      "firstName": {
+        "name": "first name",
+        "label": "First name:",
+        "placeholder": "Enter your first name"
+      },
+      "lastName": {
+        "label": "Last name:",
+        "placeholder": "Enter your last name"
+      },
+      "birthdate": {
+        "label": "Birthdate:"
+      },
+      "cpf": {
+        "name": "CPF",
+        "label": "CPF:"
+      },
+      "phoneNumber": {
+        "name": "phone number",
+        "label": "Phone number:"
+      }
     }
   },
-  "validation-errors": {
-    "invalid-general": "Invalid {{field}}",
-    "already-in-use": "{{field}} already in use",
-    "non-existent": "This {{field}} does not exist",
-    "minLength": "{{field}} must have at least {{characters}} characters",
-    "maxLength": "{{field}} cannot have more than {{characters}} characters",
+  "dividers": {
+    "personalInfo": "Personal Info",
+    "accessCredentials": "Access Credentials",
+    "measurements": "Measurements",
+    "address": "Address"
+  },
+  "validationErrors": {
+    "required": "Required",
+    "invalid": "Invalid {{field}}",
+    "alreadyInUse": "{{field}} already in use",
+    "nonExistent": "This {{field}} does not exist",
+    "minLength": "Should have at least {{limit}} characters",
+    "maxLength": "Should not have more than {{limit}} characters",
+    "onlyLetters": "Only letters allowed",
     "uppercase": "{{field}} must have at least one uppercase letter",
     "lowercase": "{{field}} must have at least one lowercase letter",
-    "contain-number": "{{field}} must have at least one number"
+    "containNumber": "{{field}} must have at least one number"
   }
 }
