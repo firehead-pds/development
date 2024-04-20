@@ -12,15 +12,15 @@ import {
   UseFormSetError,
   UseFormSetValue,
 } from "react-hook-form";
-import { IFormInputs } from "../../pages/Signup.tsx";
 import { cpf } from "cpf-cnpj-validator";
 import { PhoneIcon } from "@chakra-ui/icons";
+import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
 
 interface PersonalInfoProps {
-  register: UseFormRegister<IFormInputs>;
-  errors: FieldErrors<IFormInputs>;
-  setError: UseFormSetError<IFormInputs>;
-  setValue: UseFormSetValue<IFormInputs>;
+  register: UseFormRegister<SignupFormFields>;
+  errors: FieldErrors<SignupFormFields>;
+  setError: UseFormSetError<SignupFormFields>;
+  setValue: UseFormSetValue<SignupFormFields>;
 }
 
 export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
@@ -33,9 +33,9 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
           type="text"
           placeholder="Type your first name..."
           {...register("firstName", {
-            required: true,
+            required: "required",
             pattern: {
-              value: /^[A-Za-z ]*$/,
+              value: /^[A-Za-z]*$/,
               message: "The name don't have numbers or special characters!",
             },
             maxLength: {
@@ -56,7 +56,7 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
           type="text"
           placeholder="Type your last name..."
           {...register("lastName", {
-            required: true,
+            required: "Please enter your last name",
             pattern: {
               value: /^[A-Za-z ]*$/,
               message: "The name don't have numbers or special characters!",
@@ -77,11 +77,11 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
         <Input
           id="birthday"
           type="date"
-          {...register("birthdate", { required: true })}
+          {...register("birthdate", { required: "required" })}
         />
 
         <FormErrorMessage>
-          errors.birthdate && errors.birthdate.message
+          {errors.birthdate && errors.birthdate.message}
         </FormErrorMessage>
       </FormControl>
 
@@ -93,7 +93,7 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
           type="text"
           placeholder="000.000.000-00"
           {...register("cpf", {
-            required: true,
+            required: "required",
             validate: (v) => cpf.isValid(v) || "CPF Inválido",
           })}
           inputMode={"numeric"}
@@ -114,9 +114,10 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
             type="tel"
             placeholder="(11) 99999-9999"
             {...register("phone", {
-              required: true,
+              required: "required",
+
               pattern: {
-                value: /^[(]?\d{2}[)]?[ ]?\d{5}[-]?\d{4}$/,
+                value: /^[(]?\d{2}[)]? ?\d{5}-?\d{4}$/,
                 message: "The pattern is invalid!",
               },
             })}

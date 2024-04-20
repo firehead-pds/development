@@ -11,14 +11,14 @@ import {
   Grid,
   Input,
 } from "@chakra-ui/react";
-import { IFormInputs } from "../../pages/Signup.tsx";
 import { ChangeEventHandler } from "react";
+import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
 
 interface AddressInfoProps {
-  register: UseFormRegister<IFormInputs>;
-  errors: FieldErrors<IFormInputs>;
-  setError: UseFormSetError<IFormInputs>;
-  setValue: UseFormSetValue<IFormInputs>;
+  register: UseFormRegister<SignupFormFields>;
+  errors: FieldErrors<SignupFormFields>;
+  setError: UseFormSetError<SignupFormFields>;
+  setValue: UseFormSetValue<SignupFormFields>;
 }
 
 interface ViacepApiResponse {
@@ -173,6 +173,19 @@ export default function AddressInfo({
         <FormErrorMessage>
           {errors.address?.addressNumber &&
             errors.address.addressNumber.message}
+        </FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={!!errors.address?.complement}>
+        <FormLabel htmlFor="houseNumber">Complemento:</FormLabel>
+        <Input
+          id="complement"
+          type="text"
+          placeholder="Apt. 12"
+          {...register("address.complement", {})}
+        />
+        <FormErrorMessage>
+          {errors.address?.complement && errors.address.complement.message}
         </FormErrorMessage>
       </FormControl>
     </Grid>

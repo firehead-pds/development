@@ -5,35 +5,9 @@ import AddressInfo from "../components/signup/AddressInfo.tsx";
 import MeasurementsInfo from "../components/signup/MeasurementsInfo.tsx";
 import PersonalInfo from "../components/signup/PersonalInfo.tsx";
 import EmailPasswordInfo from "../components/signup/EmailPasswordInfo.tsx";
-
-interface Address {
-  postalCode?: string;
-  addressLine?: string;
-  district?: string;
-  city?: string;
-  state?: string;
-  addressNumber?: string;
-  complement?: string;
-}
-
-export interface SignUpPostData {
-  firstName: string;
-  lastName: string;
-  birthdate: string;
-  email: string;
-  password: string;
-  cpf: string;
-  phone: string;
-  shoeSize: string;
-  shirtSize: string;
-  pantsSize: number;
-  height: number;
-  address: Address;
-}
-
-export interface IFormInputs extends SignUpPostData {
-  confirmPassword?: string;
-}
+import SignupFormFields from "../interfaces/signup/SignupFormFields.ts";
+import PostUsers from "../interfaces/backend-fetches/requests/users/PostUsers.ts";
+import ErrorResponse from "../interfaces/backend-fetches/responses/ErrorResponse.ts";
 
 export default function Signup() {
   const {
@@ -43,11 +17,12 @@ export default function Signup() {
     setError,
     setValue,
     getValues,
-  } = useForm<IFormInputs>({ mode: "onBlur" });
+  } = useForm<SignupFormFields>({ mode: "onBlur" });
+  console.log(errors);
 
   const { mutate } = useMutation({
     mutationKey: ["sendSignupData"],
-    mutationFn: async (formData: SignUpPostData) => {
+    mutationFn: async (formData: PostUsers) => {
       const res = await fetch(`${import.meta.env.VITE_BASE_API_URL!}/users`, {
         method: "POST",
         body: JSON.stringify(formData),
@@ -59,17 +34,33 @@ export default function Signup() {
         );
       }
 
-      return res.json();
+      if (res.status === 409) {
+        const data = (await res.json()) as ErrorResponse;
+
+        if (data.message === "CPF is already registered.") {
+          setError("cpf", {
+            type: "custom",
+            message: "This CPF is already associated to an existing account",
+          });
+        }
+
+        if (data.message === "Email is already registered.") {
+          setError("email", {
+            type: "custom",
+            message: "This email is already associated to an existing account",
+          });
+        }
+      }
     },
     onError: (error) => {
       console.error("Error submitting form:", error);
     },
   });
 
-  const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
-    console.log(data);
-    delete data.confirmPassword;
-    mutate(data);
+  const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword: _, ...postData } = data;
+    mutate(postData);
   };
 
   return (
@@ -80,10 +71,11 @@ export default function Signup() {
         className={"w-screen my-6"}
       >
         <form
-          onSubmit={handleSubmit(onSubmit)}
-          className={"p-4 border rounded-lg mx-2"}
+          id={"signupForm"}
+          onSubmit={handleSubmit(onSubmit, () => console.log("aa", errors))}
+          className={"p-4 border rounded-lg mx-2 w-[500px]"}
         >
-          <Box position="relative" padding="10">
+          <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
               Credenciais de Acesso
@@ -96,7 +88,7 @@ export default function Signup() {
             setValue={setValue}
           />
 
-          <Box position="relative" padding="10">
+          <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
               Credenciais de Acesso
@@ -111,7 +103,7 @@ export default function Signup() {
             getValues={getValues}
           />
 
-          <Box position="relative" padding="10">
+          <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
               Credenciais de Acesso
@@ -125,7 +117,7 @@ export default function Signup() {
             setValue={setValue}
           />
 
-          <Box position="relative" padding="10">
+          <Box position="relative" paddingY="10">
             <Divider />
             <AbsoluteCenter bg="white" px="4" className={"text-center"}>
               Credenciais de Acesso
@@ -138,7 +130,7 @@ export default function Signup() {
             setError={setError}
             setValue={setValue}
           />
-          <Button isLoading={isSubmitting} type="submit">
+          <Button isLoading={isSubmitting} type="submit" form={"signupForm"}>
             Submit
           </Button>
         </form>

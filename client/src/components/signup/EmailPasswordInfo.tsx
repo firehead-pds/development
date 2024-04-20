@@ -16,15 +16,15 @@ import {
   UseFormSetError,
   UseFormSetValue,
 } from "react-hook-form";
-import { IFormInputs } from "../../pages/Signup.tsx";
 import { useState } from "react";
+import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
 
 interface EmailPasswordInfoProps {
-  register: UseFormRegister<IFormInputs>;
-  errors: FieldErrors<IFormInputs>;
-  setError: UseFormSetError<IFormInputs>;
-  setValue: UseFormSetValue<IFormInputs>;
-  getValues: UseFormGetValues<IFormInputs>;
+  register: UseFormRegister<SignupFormFields>;
+  errors: FieldErrors<SignupFormFields>;
+  setError: UseFormSetError<SignupFormFields>;
+  setValue: UseFormSetValue<SignupFormFields>;
+  getValues: UseFormGetValues<SignupFormFields>;
 }
 
 export default function EmailPasswordInfo({
@@ -45,6 +45,8 @@ export default function EmailPasswordInfo({
             type="email"
             placeholder="Type your email..."
             {...register("email", {
+              required: "required",
+
               pattern: {
                 value: /^\S+@{1}\S+[.]{1}\S+$/i,
                 message: "The email pattern is invalid!",
@@ -74,6 +76,7 @@ export default function EmailPasswordInfo({
             type={showPassword ? "text" : "password"}
             placeholder="Type your password..."
             {...register("password", {
+              required: "required",
               minLength: {
                 value: 8,
                 message: "The password need at least 8 characters!",
@@ -105,6 +108,8 @@ export default function EmailPasswordInfo({
             type={showPassword ? "text" : "password"}
             placeholder="Re-enter your password..."
             {...register("confirmPassword", {
+              required: "required",
+
               validate: (v) =>
                 v === getValues("password") || "Passwords do not match",
             })}

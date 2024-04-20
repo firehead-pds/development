@@ -1,7 +1,7 @@
 import {
   FormControl,
   FormLabel,
-  Grid,
+  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -15,13 +15,13 @@ import {
   UseFormSetError,
   UseFormSetValue,
 } from "react-hook-form";
-import { IFormInputs } from "../../pages/Signup.tsx";
+import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
 
 interface MeasurementsInfoProps {
-  register: UseFormRegister<IFormInputs>;
-  errors: FieldErrors<IFormInputs>;
-  setError: UseFormSetError<IFormInputs>;
-  setValue: UseFormSetValue<IFormInputs>;
+  register: UseFormRegister<SignupFormFields>;
+  errors: FieldErrors<SignupFormFields>;
+  setError: UseFormSetError<SignupFormFields>;
+  setValue: UseFormSetValue<SignupFormFields>;
 }
 
 const shirtSizes = ["PP", "P", "M", "G", "GG", "GGX", "GGXE"];
@@ -31,62 +31,76 @@ export default function MeasurementsInfo({
   register,
   errors,
 }: MeasurementsInfoProps) {
+  // Can't add onChange prop to numeric input for some reason
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { onChange, ...shoeSize } = register("shoeSize", {
+  const { onChange, ...shoeSize } = register("measurements.shoeSize", {
     min: Number(30),
     max: Number(48),
-    valueAsNumber: true,
+    required: "required",
   });
 
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)">
-        {/*Shirt Size Select*/}
-        <FormControl isRequired isInvalid={!!errors.shirtSize}>
-          <FormLabel htmlFor="shirtSize">Shirt Size: </FormLabel>{" "}
-          <Select id="shirtSize" {...register("shirtSize")}>
-            {shirtSizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
+      {/*Shirt Size Select*/}
+      <FormControl isRequired isInvalid={!!errors.measurements?.shirtSize}>
+        <FormLabel htmlFor="shirtSize">Shirt Size: </FormLabel>{" "}
+        <Select
+          id="shirtSize"
+          {...register("measurements.shirtSize", {
+            required: "required",
+          })}
+        >
+          {shirtSizes.map((size) => (
+            <option key={size} value={size}>
+              {size}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
 
-        {/*Pants Size Select*/}
-        <FormControl isRequired isInvalid={!!errors.pantsSize}>
-          <FormLabel htmlFor="pantsSize">Pants Size: </FormLabel>
-          <Select
-            id="pantsSize"
-            {...register("pantsSize", { valueAsNumber: true })}
-          >
-            {pantsSizes.map((size) => (
-              <option key={"Pants_" + size} value={size}>
-                {size}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
+      {/*Pants Size Select*/}
+      <FormControl isRequired isInvalid={!!errors.measurements?.pantsSize}>
+        <FormLabel htmlFor="pantsSize">Pants Size: </FormLabel>
+        <Select
+          id="pantsSize"
+          {...register("measurements.pantsSize", { required: "required" })}
+        >
+          {pantsSizes.map((size) => (
+            <option key={size} value={size}>
+              {size}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
 
-        {/*Shoe Size Select*/}
-        <FormControl isRequired isInvalid={!!errors.shoeSize}>
-          <FormLabel htmlFor="shoeSize">Shoe Size: </FormLabel>
-          <NumberInput
-            id="shoeSize"
-            defaultValue={36}
-            clampValueOnBlur={true}
-            {...shoeSize}
-            min={30}
-            max={48}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </FormControl>
-      </Grid>
+      {/*Shoe Size Select*/}
+      <FormControl isRequired isInvalid={!!errors.measurements?.shoeSize}>
+        <FormLabel htmlFor="shoeSize">Shoe Size: </FormLabel>
+        <NumberInput
+          id="shoeSize"
+          defaultValue={36}
+          clampValueOnBlur={true}
+          {...shoeSize}
+          min={30}
+          max={48}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </FormControl>
+
+      <FormControl isRequired isInvalid={!!errors.measurements?.height}>
+        <FormLabel htmlFor={"height"}>Height (cm):</FormLabel>
+        <Input
+          id={"height"}
+          type={"number"}
+          inputMode={"numeric"}
+          {...register("measurements.height", { required: true })}
+        />
+      </FormControl>
     </>
   );
 }
