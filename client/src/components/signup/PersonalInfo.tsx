@@ -60,7 +60,7 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
         <Input
           id="lastName"
           type="text"
-          placeholder="Type your last name..."
+          placeholder={t("lastName.placeholder")}
           {...register("lastName", {
             required: tErrors("required"),
             pattern: {
