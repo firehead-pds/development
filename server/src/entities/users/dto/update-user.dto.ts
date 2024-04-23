@@ -1,4 +1,13 @@
-import { IsOptional, IsString, IsEmail, Length, Matches, IsInt, IsDate, Min } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsEmail,
+  Length,
+  Matches,
+  IsInt,
+  IsDate,
+  Min,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UpdateUserDto {

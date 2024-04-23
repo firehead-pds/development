@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Users } from '../users/user.entity';
 import { ShirtSize, PantsSize } from './enums/measurements.enum';
 
@@ -21,5 +27,5 @@ export class Measurements {
 
   @OneToOne(() => Users)
   @JoinColumn({ name: 'userId' })
-  user: Users;
+  userU: Users;
 }

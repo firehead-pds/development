@@ -20,25 +20,25 @@ import { UsersService } from './users.service';
 
 @Controller('/users')
 export class UsersController {
-  constructor(@InjectRepository(Users) private repository: Repository<Users>, private readonly validator: UsersValidator, private readonly service: UsersService) {}
+  constructor(
+    @InjectRepository(Users) private repository: Repository<Users>,
+    private readonly validator: UsersValidator,
+    private readonly service: UsersService,
+  ) {}
 
   @Post()
-  public async create(@Body() body: CreateUserDTO): Promise<Users> {
-
-    return this.service.create(body);
+  public async create(@Body() body: CreateUserDTO) {
+    const { address, measurements, ...user } = body;
+    return this.service.create(user, address, measurements);
   }
 
   @Get()
   public async findAll(): Promise<Users[]> {
-
     return this.service.findAll();
   }
 
   @Get(':id')
-  public async findOne(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<Users> {
-
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Users> {
     return this.service.findOne(id);
   }
 
@@ -47,13 +47,11 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateUserDto,
   ): Promise<Users> {
-
     return this.service.update(id, body);
   }
 
   @Delete(':id')
   public async delete(@Param('id', ParseIntPipe) id: number): Promise<string> {
-
     return this.service.delete(id);
   }
 }

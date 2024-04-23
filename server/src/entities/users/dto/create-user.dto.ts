@@ -1,5 +1,15 @@
-import { IsEmail, IsString, IsInt, Length, Matches, IsDate } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsInt,
+  Length,
+  Matches,
+  IsDate,
+  IsObject,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import { Address } from '../../address/address.entity';
+import { Measurements } from '../../measurements/measurements.entity';
 
 export class CreateUserDTO {
   @IsString()
@@ -33,4 +43,10 @@ export class CreateUserDTO {
   @Length(11, 11)
   @Matches(/^\d+$/)
   cpf: string;
+
+  @IsObject()
+  measurements: Measurements;
+
+  @IsObject()
+  address: Address;
 }

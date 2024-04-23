@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Users } from '../users/user.entity';
 
 @Entity({ name: 'address' })
@@ -12,10 +18,15 @@ export class Address {
   @Column({ name: 'addressLine', type: 'varchar', nullable: false, length: 70 })
   addressLine: string;
 
-  @Column({ name: 'addressNumber', type: 'varchar', nullable: false, length: 4 })
+  @Column({
+    name: 'addressNumber',
+    type: 'varchar',
+    nullable: false,
+    length: 4,
+  })
   addressNumber: string;
 
-  @Column({ name: 'complement', type: 'varchar', nullable: false, length: 20 })
+  @Column({ name: 'complement', type: 'varchar', nullable: true, length: 20 })
   complement: string;
 
   @Column({ name: 'district', type: 'varchar', nullable: false, length: 30 })
@@ -28,6 +39,6 @@ export class Address {
   state: string;
 
   @OneToOne(() => Users)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user: Users;
 }

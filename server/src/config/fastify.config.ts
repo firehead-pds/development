@@ -1,4 +1,4 @@
-import { FastifyAdapter} from '@nestjs/platform-fastify';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 import fastifyCors from '@fastify/cors';
 
 const fastifyAdapter = new FastifyAdapter();

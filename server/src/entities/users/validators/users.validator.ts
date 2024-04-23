@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from '../user.entity';
 import { Repository } from 'typeorm';
@@ -8,7 +12,11 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 export class UsersValidator {
   constructor(@InjectRepository(Users) private repository: Repository<Users>) {}
 
-  public async checkForDuplicateCpfOrEmail(cpf: string, email: string, id?: number): Promise<void> {
+  public async checkForDuplicateCpfOrEmail(
+    cpf: string,
+    email: string,
+    id?: number,
+  ): Promise<void> {
     const queryBuilder = this.repository.createQueryBuilder('user');
 
     if (id) {
@@ -34,23 +42,22 @@ export class UsersValidator {
   public async validateUserUpdate(
     userId: number,
     body: UpdateUserDto,
-    currentUser: Users
+    currentUser: Users,
   ): Promise<void> {
-
     if (body.cpf && body.cpf !== currentUser.cpf) {
       throw new ConflictException('CPF cannot be changed.');
     }
 
     if (body.email && body.email !== currentUser.email) {
       const existingUserWithEmail = await this.repository.findOne({
-        where: { email: body.email }
+        where: { email: body.email },
       });
 
       if (existingUserWithEmail) {
-        throw new ConflictException('This email is already registered with another user.');
+        throw new ConflictException(
+          'This email is already registered with another user.',
+        );
       }
     }
   }
-
-
 }

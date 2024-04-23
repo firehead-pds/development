@@ -17,7 +17,13 @@ export class Users {
   @Column({ name: 'age', type: 'smallint', nullable: false })
   age: number;
 
-  @Column({ name: 'email', type: 'varchar', nullable: false, length: 70, unique: true })
+  @Column({
+    name: 'email',
+    type: 'varchar',
+    nullable: false,
+    length: 70,
+    unique: true,
+  })
   email: string;
 
   @Column({ name: 'password', type: 'varchar', nullable: false, length: 24 })
