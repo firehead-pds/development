@@ -8,7 +8,7 @@ export default interface PostUsers {
   email: string;
   password: string;
   cpf: string;
-  phone: string;
+  phoneNumber: string;
   measurements: Measurements;
   address: Address;
 }

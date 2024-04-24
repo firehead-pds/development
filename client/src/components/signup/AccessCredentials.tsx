@@ -86,7 +86,7 @@ export default function AccessCredentials({
               required: tErrors("required"),
               minLength: 8,
               maxLength: 24,
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,}$/,
             })}
           />
           <InputRightElement width="4.5rem">

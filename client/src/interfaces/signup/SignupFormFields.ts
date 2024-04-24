@@ -7,7 +7,7 @@ export default interface SignupFormFields {
   birthdate: string;
   email: string;
   cpf: string;
-  phone: string;
+  phoneNumber: string;
   address: Address;
   measurements: Measurements;
   password: string;

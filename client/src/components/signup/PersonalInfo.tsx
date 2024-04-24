@@ -110,17 +110,17 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
       </FormControl>
 
       {/*Phone Input*/}
-      <FormControl isRequired isInvalid={!!errors.phone}>
+      <FormControl isRequired isInvalid={!!errors.phoneNumber}>
         <FormLabel htmlFor="phone">{t("phoneNumber.label")}</FormLabel>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <PhoneIcon color="gray.400" />
           </InputLeftElement>
           <Input
-            id="phone"
+            id="phoneNumber"
             type="tel"
             placeholder="(11) 99999-9999"
-            {...register("phone", {
+            {...register("phoneNumber", {
               required: tErrors("required"),
               pattern: {
                 value: /^[(]?\d{2}[)]? ?\d{5}-?\d{4}$/,
@@ -131,7 +131,7 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
         </InputGroup>
 
         <FormErrorMessage>
-          {errors.phone && errors.phone.message}
+          {errors.phoneNumber && errors.phoneNumber.message}
         </FormErrorMessage>
       </FormControl>
     </>

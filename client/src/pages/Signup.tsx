@@ -12,6 +12,9 @@ import { useTranslation } from "react-i18next";
 
 export default function Signup() {
   const { t } = useTranslation("signup");
+  const { t: tError } = useTranslation("signup", {
+    keyPrefix: "validationErrors",
+  });
 
   const {
     register,
@@ -25,10 +28,17 @@ export default function Signup() {
   const { mutate } = useMutation({
     mutationKey: ["sendSignupData"],
     mutationFn: async (formData: PostUsers) => {
+      console.log(JSON.stringify(formData));
       const res = await fetch(`${import.meta.env.VITE_BASE_API_URL!}/users`, {
         method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
+
+      console.log(await res.json());
 
       if (!res.ok) {
         throw new Error(
@@ -39,17 +49,21 @@ export default function Signup() {
       if (res.status === 409) {
         const data = (await res.json()) as ErrorResponse;
 
-        if (data.message === "CPF is already registered.") {
+        if (data.message === "cpf already in use") {
           setError("cpf", {
             type: "custom",
-            message: "This CPF is already associated to an existing account",
+            message: tError("alreadyInUse", {
+              field: t("fields.accessCredentials.email.name"),
+            }),
           });
         }
 
-        if (data.message === "Email is already registered.") {
+        if (data.message === "email already in use") {
           setError("email", {
             type: "custom",
-            message: "This email is already associated to an existing account",
+            message: tError("alreadyInUse", {
+              field: t("fields.personalInfo.cpf.name"),
+            }),
           });
         }
       }
