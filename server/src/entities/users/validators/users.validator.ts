@@ -1,39 +1,31 @@
 import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Users } from "../user.entity";
+import { User } from "../user.entity";
 import { Repository } from "typeorm";
 import { UpdateUserDto } from "../dto/update-user.dto";
 
 @Injectable()
 export class UsersValidator {
-  constructor(@InjectRepository(Users) private repository: Repository<Users>) {
+  constructor(@InjectRepository(User) private repo: Repository<User>) {
   }
 
   private async checkExistingEmail(email: string) {
-    const queryBuilder = this.repository.createQueryBuilder("user");
-    const exists = await queryBuilder
-      .where("user.email = :email", { email })
-      .getOne();
-
+    const exists = await this.repo.findOneBy({email});
     return !!exists;
   }
 
   private async checkExistingCpf(cpf: string) {
-    const queryBuilder = this.repository.createQueryBuilder("user");
-    const exists = await queryBuilder
-      .where("user.cpf = :cpf", { cpf })
-      .getOne();
-
+    const exists = await this.repo.findOneBy({cpf});
     return !!exists;
   }
 
-  public async validateCreateUser(email: string, cpf: string) {
-    const existsWithEmail = await this.checkExistingEmail(email);
+  public async validateCreateUser(newUser: Partial<User>) {
+    const existsWithEmail = await this.checkExistingEmail(newUser.email);
     if (existsWithEmail) {
       throw new ConflictException(`email already in use`);
     }
 
-    const existsWithCpf = await this.checkExistingCpf(cpf);
+    const existsWithCpf = await this.checkExistingCpf(newUser.email);
     if (existsWithCpf) {
       throw new ConflictException(`cpf already in use`);
     }
@@ -42,14 +34,14 @@ export class UsersValidator {
   public async validateUserUpdate(
     userId: number,
     body: UpdateUserDto,
-    currentUser: Users
+    currentUser: User
   ): Promise<void> {
     if (body.cpf && body.cpf !== currentUser.cpf) {
       throw new ConflictException("CPF cannot be changed.");
     }
 
     if (body.email && body.email !== currentUser.email) {
-      const existingUserWithEmail = await this.repository.findOne({
+      const existingUserWithEmail = await this.repo.findOne({
         where: { email: body.email }
       });
 

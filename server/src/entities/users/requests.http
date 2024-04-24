@@ -8,10 +8,10 @@ Content-Type: application/json
   "firstName": "Gabriel",
   "lastName": "Tavares",
   "birthdate": "2005-04-19",
-  "email": "gabrieafsdsddd@gmail.com",
+  "email": "davissa@gmail.com",
   "password": "12345",
   "phoneNumber": "11989797961",
-  "cpf": "12345632178",
+  "cpf": "12046228590",
   "address": {
     "postalCode": "12345678",
     "addressLine": "123 Main Street",

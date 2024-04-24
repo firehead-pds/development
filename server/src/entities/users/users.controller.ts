@@ -8,7 +8,7 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { Users } from './user.entity';
+import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
@@ -24,19 +24,18 @@ export class UsersController {
   @ApiConflictResponse({
     description: 'Conflict! This could be due to existing cpf or email conflict.',
   })
-
   @Post()
   public async create(@Body() body: CreateUserDto) {
     return this.service.create(body);
   }
 
   @Get()
-  public async findAll(): Promise<Users[]> {
+  public async findAll(): Promise<User[]> {
     return this.service.findAll();
   }
 
   @Get(':id')
-  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Users> {
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.service.findOne(id);
   }
 
@@ -44,7 +43,7 @@ export class UsersController {
   public async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateUserDto,
-  ): Promise<Users> {
+  ): Promise<User> {
     return this.service.update(id, body);
   }
 

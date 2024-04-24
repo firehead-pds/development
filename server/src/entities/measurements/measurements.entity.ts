@@ -5,7 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { Users } from '../users/user.entity';
+import { User } from '../users/user.entity';
 import { ShirtSize, PantsSize } from './enums/measurements.enum';
 
 @Entity({ name: 'measurements' })
@@ -25,7 +25,7 @@ export class Measurements {
   @Column({ name: 'height', type: 'char', nullable: false, length: 3 })
   height: string;
 
-  @OneToOne(() => Users)
-  @JoinColumn({ name: 'userId' })
-  user: Users;
+  @OneToOne(() => User, user => user.measurements)
+  @JoinColumn()
+  user: User;
 }

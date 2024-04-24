@@ -5,7 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { Users } from '../users/user.entity';
+import { User } from '../users/user.entity';
 
 @Entity({ name: 'address' })
 export class Address {
@@ -38,7 +38,7 @@ export class Address {
   @Column({ name: 'state', type: 'varchar', nullable: false, length: 30 })
   state: string;
 
-  @OneToOne(() => Users)
-  @JoinColumn({ name: 'userId' })
-  user: Users;
+  @OneToOne(() => User, user => user.address)
+  @JoinColumn()
+  user: User;
 }
