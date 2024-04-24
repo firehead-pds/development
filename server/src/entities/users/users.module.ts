@@ -8,7 +8,7 @@ import { MeasurementsModule } from "../measurements/measurements.module";
 import { AddressModule } from "../address/address.module";
 import { Address } from "../address/address.entity";
 import { Measurements } from "../measurements/measurements.entity";
-import { HashingModule } from "../../hashing/hashing.module";
+import { HashingModule } from "../../common/hashing/hashing.module";
 
 @Module({
   imports: [
