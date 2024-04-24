@@ -1,17 +1,21 @@
 export enum ShirtSize {
-  XS = 'XS',
-  S = 'S',
+  PP = 'PP',
+  P = 'P',
   M = 'M',
-  L = 'L',
-  XL = 'XL',
-  XXL = 'XXL',
+  G = 'G',
+  GG = 'GG',
+  GGX = 'GGX',
+  GGXE = 'GGXE',
 }
 
 export enum PantsSize {
-  XS = 'XS',
-  S = 'S',
-  M = 'M',
-  L = 'L',
-  XL = 'XL',
-  XXL = 'XXL',
+  S34 = "34",
+  S36 = "36",
+  S38 = "38",
+  S40 = "40",
+  S42 = "42",
+  S44 = "44",
+  S46 = "46",
+  S48 = "48",
+  S50 = "50",
 }
