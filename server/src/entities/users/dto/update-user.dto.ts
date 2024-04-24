@@ -24,7 +24,7 @@ export class UpdateUserDto {
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  birthDate?: Date;
+  birthdate?: Date;
 
   @IsOptional()
   @IsInt()

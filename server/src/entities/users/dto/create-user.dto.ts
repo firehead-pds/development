@@ -23,7 +23,7 @@ export class CreateUserDTO {
 
   @IsDate()
   @Type(() => Date)
-  birthDate: Date;
+  birthdate: Date;
 
   @IsEmail()
   email: string;

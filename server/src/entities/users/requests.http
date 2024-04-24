@@ -7,11 +7,11 @@ Content-Type: application/json
 {
   "firstName": "Gabriel",
   "lastName": "Tavares",
-  "birthDate": "2005-04-19",
+  "birthdate": "2005-04-19",
   "email": "gabrieafsdsddd@gmail.com",
   "password": "12345",
   "phoneNumber": "11989797961",
-  "cpf": "12345637178",
+  "cpf": "12345632178",
   "address": {
     "postalCode": "12345678",
     "addressLine": "123 Main Street",

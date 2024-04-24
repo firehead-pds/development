@@ -1,7 +1,7 @@
 export default interface IUser {
   firstName?: string;
   lastName?: string;
-  birthDate?: Date;
+  birthdate?: Date;
   age?: number;
   email?: string;
   password?: string;
