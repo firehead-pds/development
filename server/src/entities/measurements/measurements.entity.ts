@@ -27,5 +27,5 @@ export class Measurements {
 
   @OneToOne(() => Users)
   @JoinColumn({ name: 'userId' })
-  userU: Users;
+  user: Users;
 }
