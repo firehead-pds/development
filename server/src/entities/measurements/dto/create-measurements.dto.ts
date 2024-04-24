@@ -1,4 +1,4 @@
-import { IsEnum, IsString, Length, Matches, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsString, Length, Matches } from 'class-validator';
 import { ShirtSize, PantsSize } from '../enums/measurements.enum';
 
 export class CreateMeasurementsDto {
@@ -17,7 +17,4 @@ export class CreateMeasurementsDto {
   @Length(3, 3)
   @Matches(/^\d+$/, { message: 'Height must contain only numbers' })
   height: string;
-
-  @IsNotEmpty()
-  userId: number;
 }

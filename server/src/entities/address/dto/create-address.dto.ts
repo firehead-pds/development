@@ -35,7 +35,4 @@ export class CreateAddressDto {
   @IsString()
   @Length(1, 30)
   state: string;
-
-  @IsNotEmpty()
-  userId: number;
 }

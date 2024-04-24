@@ -14,9 +14,6 @@ export class Users {
   @Column({ name: 'birthDate', type: 'date', nullable: false })
   birthDate: Date;
 
-  @Column({ name: 'age', type: 'smallint', nullable: false })
-  age: number;
-
   @Column({
     name: 'email',
     type: 'varchar',

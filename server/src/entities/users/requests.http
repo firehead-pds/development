@@ -1,4 +1,4 @@
-@BASE_URL="http://localhost:3001/users"
+@BASE_URL=http://localhost:3000/users
 
 
 POST {{BASE_URL}}
@@ -8,8 +8,7 @@ Content-Type: application/json
   "firstName": "Gabriel",
   "lastName": "Tavares",
   "birthDate": "2005-04-19",
-  "age": 19,
-  "email": "gabrieasd@gmail.com",
+  "email": "gabrieafsdsddd@gmail.com",
   "password": "12345",
   "phoneNumber": "11989797961",
   "cpf": "12345637178",
@@ -31,4 +30,4 @@ Content-Type: application/json
 }
 
 ###GET para algo
-##GET
+GET {{BASE_URL}}

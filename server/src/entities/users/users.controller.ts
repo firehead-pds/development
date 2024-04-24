@@ -7,13 +7,8 @@ import {
   Put,
   Delete,
   ParseIntPipe,
-  NotFoundException,
-  ConflictException,
 } from '@nestjs/common';
 import { Users } from './user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UsersValidator } from './validators/users.validator';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
@@ -21,15 +16,12 @@ import { UsersService } from './users.service';
 @Controller('/users')
 export class UsersController {
   constructor(
-    @InjectRepository(Users) private repository: Repository<Users>,
-    private readonly validator: UsersValidator,
     private readonly service: UsersService,
   ) {}
 
   @Post()
   public async create(@Body() body: CreateUserDTO) {
-    const { address, measurements, ...user } = body;
-    return this.service.create(user, address, measurements);
+    return this.service.create(body);
   }
 
   @Get()

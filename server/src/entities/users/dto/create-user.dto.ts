@@ -1,15 +1,16 @@
 import {
   IsEmail,
   IsString,
-  IsInt,
   Length,
   Matches,
   IsDate,
-  IsObject,
-} from 'class-validator';
+  IsObject, ValidateNested
+} from "class-validator";
 import { Type } from 'class-transformer';
 import { Address } from '../../address/address.entity';
 import { Measurements } from '../../measurements/measurements.entity';
+import { CreateMeasurementsDto } from "../../measurements/dto/create-measurements.dto";
+import { CreateAddressDto } from "../../address/dto/create-address.dto";
 
 export class CreateUserDTO {
   @IsString()
@@ -23,9 +24,6 @@ export class CreateUserDTO {
   @IsDate()
   @Type(() => Date)
   birthDate: Date;
-
-  @IsInt()
-  age: number;
 
   @IsEmail()
   email: string;
@@ -45,8 +43,12 @@ export class CreateUserDTO {
   cpf: string;
 
   @IsObject()
+  @ValidateNested()
+  @Type(() => CreateMeasurementsDto)
   measurements: Measurements;
 
   @IsObject()
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
   address: Address;
 }

@@ -1,41 +1,36 @@
-import {
-  Body,
-  ConflictException,
-  Injectable,
-  NotFoundException,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
-import { Users } from './user.entity';
-import { UsersValidator } from './validators/users.validator';
-import { InjectRepository } from '@nestjs/typeorm';
-import { MeasurementsService } from '../measurements/measurements.service';
-import { AddressService } from '../address/address.service';
-import IUser from './interfaces/IUser';
-import IAddress from '../address/interfaces/IAddress';
-import IMeasurements from '../measurements/interfaces/IMeasurements';
-import { Measurements } from '../measurements/measurements.entity';
-import { Address } from '../address/address.entity';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { DataSource, Repository } from "typeorm";
+import { Users } from "./user.entity";
+import { UsersValidator } from "./validators/users.validator";
+import { InjectRepository } from "@nestjs/typeorm";
+import IUser from "./interfaces/IUser";
+import { Measurements } from "../measurements/measurements.entity";
+import { Address } from "../address/address.entity";
+import ICreateUserData from "./interfaces/ICreateUserData";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Users) private readonly repoUsers: Repository<Users>,
-    @InjectRepository(Address) readonly repoAddress: Repository<Address>,
+    @InjectRepository(Address) private readonly repoAddress: Repository<Address>,
     @InjectRepository(Measurements)
-    readonly repoMeasurements: Repository<Measurements>,
+    private readonly repoMeasurements: Repository<Measurements>,
     private readonly validator: UsersValidator,
-    private addressService: AddressService,
-    private measurementsService: MeasurementsService,
-    private dataSource: DataSource,
-  ) {}
+    private dataSource: DataSource
+  ) {
+  }
 
   public async create(
-    userData: IUser,
-    addressData: IAddress,
-    measurementsData: IMeasurements,
+    data: ICreateUserData
   ) {
+    const {
+      address: addressData,
+      measurements: measurementsData,
+      ...userData
+    } = data;
+
+    await this.validator.validateCreateUser(userData.email, userData.cpf);
+
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -43,11 +38,7 @@ export class UsersService {
 
     try {
       const user = this.repoUsers.create(userData);
-
       const savedUser = await queryRunner.manager.save(user);
-
-      const userId = savedUser.id;
-      console.log(userId);
 
       addressData.user = savedUser;
       measurementsData.user = savedUser;
@@ -105,6 +96,6 @@ export class UsersService {
 
     await this.repoUsers.delete(id);
 
-    return 'User successfully deleted';
+    return "User successfully deleted";
   }
 }

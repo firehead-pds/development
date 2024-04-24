@@ -12,4 +12,5 @@ export const dbConfig: TypeOrmModuleOptions = {
   synchronize: true,
   autoLoadEntities: true,
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
+  ssl: true
 };
