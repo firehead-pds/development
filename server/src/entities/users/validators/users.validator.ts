@@ -15,7 +15,7 @@ export class UsersValidator {
       throw new ConflictException(`email already in use`);
     }
 
-    const existsWithCpf = await this.checkExistingCpf(newUser.email);
+    const existsWithCpf = await this.checkExistingCpf(newUser.cpf);
     if (existsWithCpf) {
       throw new ConflictException(`cpf already in use`);
     }
