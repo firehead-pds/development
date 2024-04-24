@@ -27,7 +27,7 @@ export class Address {
   addressNumber: string;
 
   @Column({ name: 'complement', type: 'varchar', nullable: true, length: 20 })
-  complement: string;
+  complement?: string;
 
   @Column({ name: 'district', type: 'varchar', nullable: false, length: 30 })
   district: string;

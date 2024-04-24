@@ -16,9 +16,8 @@ export class CreateAddressDto {
   @Length(1, 4)
   addressNumber: string;
 
-  @IsNotEmpty()
   @IsString()
-  @Length(1, 20)
+  @Length( 0, 20)
   complement: string;
 
   @IsNotEmpty()
