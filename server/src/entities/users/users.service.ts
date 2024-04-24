@@ -56,7 +56,7 @@ export class UsersService {
     } finally {
       await queryRunner.release();
     }
-    return { ...userData, addressData, measurementsData };
+    return "user created successfully";
   }
 
   public async findAll(): Promise<Users[]> {
