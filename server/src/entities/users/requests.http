@@ -23,8 +23,8 @@ Content-Type: application/json
   },
   "measurements": {
     "shoeSize": "42",
-    "shirtSize": "XL",
-    "pantsSize": "L",
+    "shirtSize": "PP",
+    "pantsSize": "36",
     "height": "170"
   }
 }
