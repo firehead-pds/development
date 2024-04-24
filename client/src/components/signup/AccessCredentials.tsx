@@ -50,7 +50,6 @@ export default function AccessCredentials({
         <InputGroup>
           <Input
             id="email"
-            type="email"
             placeholder={t("email.placeholder")}
             {...register("email", {
               required: tErrors("required"),

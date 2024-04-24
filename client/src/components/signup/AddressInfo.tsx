@@ -110,6 +110,7 @@ export default function AddressInfo({
           type="text"
           placeholder="00000-000"
           {...register("address.postalCode", {
+            required: tErrors("required"),
             pattern: {
               value: /^\d{5}-?\d{3}$/,
               message: tErrors("invalid", { field: t("postalCode.name") }),
@@ -172,6 +173,7 @@ export default function AddressInfo({
           type="text"
           placeholder="Ex: 182"
           {...register("address.addressNumber", {
+            required: tErrors("required"),
             pattern: {
               value: /^[0-9]+$/,
               message: "Just Numbers!",

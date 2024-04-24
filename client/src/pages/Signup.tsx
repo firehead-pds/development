@@ -25,10 +25,9 @@ export default function Signup() {
     getValues,
   } = useForm<SignupFormFields>({ mode: "onBlur" });
 
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationKey: ["sendSignupData"],
     mutationFn: async (formData: PostUsers) => {
-      console.log(JSON.stringify(formData));
       const res = await fetch(`${import.meta.env.VITE_BASE_API_URL!}/users`, {
         method: "POST",
         mode: "cors",
@@ -38,34 +37,42 @@ export default function Signup() {
         body: JSON.stringify(formData),
       });
 
-      console.log(await res.json());
-
       if (!res.ok) {
+        if (res.status === 409) {
+          const data = (await res.json()) as ErrorResponse;
+
+          if (data.message === "cpf already in use") {
+            setError(
+              "cpf",
+              {
+                type: "custom",
+                message: tError("alreadyInUse", {
+                  field: t("fields.personalInfo.cpf.name"),
+                }),
+              },
+              { shouldFocus: true },
+            );
+            return;
+          }
+
+          if (data.message === "email already in use") {
+            setError(
+              "email",
+              {
+                type: "custom",
+                message: tError("alreadyInUse", {
+                  field: t("fields.accessCredentials.email.name"),
+                }),
+              },
+              { shouldFocus: true },
+            );
+            return;
+          }
+        }
+
         throw new Error(
           `Fetch request failed: ${res.status} ${res.statusText}`,
         );
-      }
-
-      if (res.status === 409) {
-        const data = (await res.json()) as ErrorResponse;
-
-        if (data.message === "cpf already in use") {
-          setError("cpf", {
-            type: "custom",
-            message: tError("alreadyInUse", {
-              field: t("fields.accessCredentials.email.name"),
-            }),
-          });
-        }
-
-        if (data.message === "email already in use") {
-          setError("email", {
-            type: "custom",
-            message: tError("alreadyInUse", {
-              field: t("fields.personalInfo.cpf.name"),
-            }),
-          });
-        }
       }
     },
     onError: (error) => {
@@ -76,7 +83,7 @@ export default function Signup() {
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword: _, ...postData } = data;
-    mutate(postData);
+    await mutateAsync(postData);
   };
 
   return (
@@ -88,8 +95,9 @@ export default function Signup() {
       >
         <form
           id={"signupForm"}
-          onSubmit={handleSubmit(onSubmit, () => console.log("aa", errors))}
+          onSubmit={handleSubmit(onSubmit)}
           className={"p-4 border rounded-lg mx-2 w-[500px]"}
+          noValidate
         >
           <Box position="relative" paddingY="10">
             <Divider />
