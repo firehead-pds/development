@@ -11,27 +11,34 @@ import { Address } from '../../address/address.entity';
 import { Measurements } from '../../measurements/measurements.entity';
 import { CreateMeasurementsDto } from "../../measurements/dto/create-measurements.dto";
 import { CreateAddressDto } from "../../address/dto/create-address.dto";
+import { ApiProperty } from "@nestjs/swagger";
 
-export class CreateUserDTO {
+export class CreateUserDto {
+  @ApiProperty()
   @IsString()
   @Length(1, 25)
   firstName: string;
 
+  @ApiProperty()
   @IsString()
   @Length(1, 70)
   lastName: string;
 
+  @ApiProperty()
   @IsDate()
   @Type(() => Date)
   birthdate: Date;
 
+  @ApiProperty()
   @IsEmail()
   email: string;
 
+  @ApiProperty()
   @IsString()
   @Length(5, 24)
   password: string;
 
+  @ApiProperty()
   @IsString()
   @Length(10, 11)
   @Matches(/^\d+$/)
@@ -42,11 +49,13 @@ export class CreateUserDTO {
   @Matches(/^\d+$/)
   cpf: string;
 
+  @ApiProperty({type: CreateMeasurementsDto})
   @IsObject()
   @ValidateNested()
   @Type(() => CreateMeasurementsDto)
   measurements: Measurements;
 
+  @ApiProperty({type: CreateAddressDto})
   @IsObject()
   @ValidateNested()
   @Type(() => CreateAddressDto)
