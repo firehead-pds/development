@@ -1,16 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Address } from './address.entity';
-import { AddressValidator } from '../address/validators/address.validator';
-import { Repository } from 'typeorm';
-import IAddress from './interfaces/IAddress';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Address } from "./address.entity";
+import { Repository } from "typeorm";
+import IAddress from "./interfaces/IAddress";
 
 @Injectable()
 export class AddressService {
   constructor(
     @InjectRepository(Address) private readonly repository: Repository<Address>,
-    private readonly validator: AddressValidator,
-  ) {}
+  ) {
+  }
 
   public async create(body: IAddress): Promise<Address> {
     return this.repository.save(body);
@@ -51,6 +50,6 @@ export class AddressService {
 
     await this.repository.delete(id);
 
-    return 'Address successfully deleted';
+    return "Address successfully deleted";
   }
 }

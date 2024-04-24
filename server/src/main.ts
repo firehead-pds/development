@@ -15,11 +15,11 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
 
   const config = new DocumentBuilder()
-    .setTitle('FIREHEAD')
-    .setDescription('+Samba REST API')
+    .setTitle("FIREHEAD")
+    .setDescription("+Samba REST API")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup("api", app, document);
 
   await app.listen(3000);
 }

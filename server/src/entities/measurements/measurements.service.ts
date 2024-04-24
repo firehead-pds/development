@@ -1,22 +1,15 @@
-import {
-  Body,
-  Injectable,
-  NotFoundException,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Measurements } from '../measurements/measurements.entity';
-import { MeasurementsValidator } from '../measurements/validators/measurements.validator';
-import { Repository } from 'typeorm';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Measurements } from "./measurements.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class MeasurementsService {
   constructor(
     @InjectRepository(Measurements)
     private readonly repository: Repository<Measurements>,
-    private readonly validator: MeasurementsValidator,
-  ) {}
+  ) {
+  }
 
   public async create(body): Promise<Measurements> {
     return this.repository.save(body);
@@ -57,6 +50,6 @@ export class MeasurementsService {
 
     await this.repository.delete(id);
 
-    return 'Measurements successfully deleted';
+    return "Measurements successfully deleted";
   }
 }

@@ -1,28 +1,22 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
-import { User } from '../users/user.entity';
-import { ShirtSize, PantsSize } from './enums/measurements.enum';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../users/user.entity";
+import { PantsSize, ShirtSize } from "./enums/measurements.enum";
 
-@Entity({ name: 'measurements' })
+@Entity({ name: "measurements" })
 export class Measurements {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'shoeSize', type: 'char', nullable: false, length: 2 })
+  @Column({ type: "char", length: 2 })
   shoeSize: string;
 
-  @Column({ name: 'shirtSize', type: 'enum', enum: ShirtSize, nullable: false })
+  @Column({ type: "enum", enum: ShirtSize })
   shirtSize: ShirtSize;
 
-  @Column({ name: 'pantsSize', type: 'enum', enum: PantsSize, nullable: false })
+  @Column({ type: "enum", enum: PantsSize })
   pantsSize: PantsSize;
 
-  @Column({ name: 'height', type: 'char', nullable: false, length: 3 })
+  @Column({ type: "char", length: 3 })
   height: string;
 
   @OneToOne(() => User, user => user.measurements)

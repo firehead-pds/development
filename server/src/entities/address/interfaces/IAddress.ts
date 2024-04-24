@@ -1,4 +1,4 @@
-import IUser from '../../users/interfaces/IUser';
+import IUser from "../../users/interfaces/IUser";
 
 export default interface IAddress {
   postalCode?: string;

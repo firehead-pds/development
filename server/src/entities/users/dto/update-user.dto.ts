@@ -1,14 +1,5 @@
-import {
-  IsOptional,
-  IsString,
-  IsEmail,
-  Length,
-  Matches,
-  IsInt,
-  IsDate,
-  Min,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsDate, IsEmail, IsInt, IsOptional, IsString, Length, Matches, Min } from "class-validator";
+import { Type } from "class-transformer";
 
 export class UpdateUserDto {
   @IsOptional()
@@ -47,6 +38,6 @@ export class UpdateUserDto {
   phoneNumber?: string;
 
   @IsOptional()
-  @Matches(/^\d{11}$/, { message: 'CPF must be an 11-digit number' })
+  @Matches(/^\d{11}$/, { message: "CPF must be an 11-digit number" })
   cpf?: string;
 }

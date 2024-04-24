@@ -1,18 +1,11 @@
-import {
-  IsOptional,
-  IsEnum,
-  IsString,
-  Length,
-  Matches,
-  IsNotEmpty,
-} from 'class-validator';
-import { ShirtSize, PantsSize } from '../enums/measurements.enum';
+import { IsEnum, IsNotEmpty, IsOptional, IsString, Length, Matches } from "class-validator";
+import { PantsSize, ShirtSize } from "../enums/measurements.enum";
 
 export class UpdateMeasurementsDto {
   @IsOptional()
   @IsString()
   @Length(2, 2)
-  @Matches(/^\d+$/, { message: 'Shoe size must contain only numbers' })
+  @Matches(/^\d+$/, { message: "Shoe size must contain only numbers" })
   shoeSize?: string;
 
   @IsOptional()
@@ -26,7 +19,7 @@ export class UpdateMeasurementsDto {
   @IsOptional()
   @IsString()
   @Length(3, 3)
-  @Matches(/^\d+$/, { message: 'Height must contain only numbers' })
+  @Matches(/^\d+$/, { message: "Height must contain only numbers" })
   height?: string;
 
   @IsNotEmpty()

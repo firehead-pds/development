@@ -1,14 +1,7 @@
-import {
-  IsEmail,
-  IsString,
-  Length,
-  Matches,
-  IsDate,
-  IsObject, ValidateNested
-} from "class-validator";
-import { Type } from 'class-transformer';
-import { Address } from '../../address/address.entity';
-import { Measurements } from '../../measurements/measurements.entity';
+import { IsDate, IsEmail, IsObject, IsString, Length, Matches, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { Address } from "../../address/address.entity";
+import { Measurements } from "../../measurements/measurements.entity";
 import { CreateMeasurementsDto } from "../../measurements/dto/create-measurements.dto";
 import { CreateAddressDto } from "../../address/dto/create-address.dto";
 import { ApiProperty } from "@nestjs/swagger";
@@ -49,13 +42,13 @@ export class CreateUserDto {
   @Matches(/^\d+$/)
   cpf: string;
 
-  @ApiProperty({type: CreateMeasurementsDto})
+  @ApiProperty({ type: CreateMeasurementsDto })
   @IsObject()
   @ValidateNested()
   @Type(() => CreateMeasurementsDto)
   measurements: Measurements;
 
-  @ApiProperty({type: CreateAddressDto})
+  @ApiProperty({ type: CreateAddressDto })
   @IsObject()
   @ValidateNested()
   @Type(() => CreateAddressDto)

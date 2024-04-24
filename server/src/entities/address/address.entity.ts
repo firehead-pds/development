@@ -1,41 +1,30 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
-import { User } from '../users/user.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../users/user.entity";
 
-@Entity({ name: 'address' })
+@Entity({ name: "address" })
 export class Address {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'postalCode', type: 'varchar', nullable: false, length: 8 })
+  @Column({ name: "postalCode", type: "varchar", nullable: false, length: 8 })
   postalCode: string;
 
-  @Column({ name: 'addressLine', type: 'varchar', nullable: false, length: 70 })
+  @Column({ name: "addressLine", type: "varchar", nullable: false, length: 70 })
   addressLine: string;
 
-  @Column({
-    name: 'addressNumber',
-    type: 'varchar',
-    nullable: false,
-    length: 4,
-  })
+  @Column({ type: "varchar", length: 5 })
   addressNumber: string;
 
-  @Column({ name: 'complement', type: 'varchar', nullable: true, length: 20 })
+  @Column({ nullable: true })
   complement?: string;
 
-  @Column({ name: 'district', type: 'varchar', nullable: false, length: 30 })
+  @Column({ length: 30 })
   district: string;
 
-  @Column({ name: 'city', type: 'varchar', nullable: false, length: 30 })
+  @Column({ length: 30 })
   city: string;
 
-  @Column({ name: 'state', type: 'varchar', nullable: false, length: 30 })
+  @Column({ length: 30 })
   state: string;
 
   @OneToOne(() => User, user => user.address)

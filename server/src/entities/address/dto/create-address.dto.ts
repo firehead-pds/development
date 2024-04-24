@@ -21,7 +21,7 @@ export class CreateAddressDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  @Length( 0, 20)
+  @Length(0, 20)
   complement: string;
 
   @ApiProperty()

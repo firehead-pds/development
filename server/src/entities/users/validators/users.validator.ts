@@ -9,16 +9,6 @@ export class UsersValidator {
   constructor(@InjectRepository(User) private repo: Repository<User>) {
   }
 
-  private async checkExistingEmail(email: string) {
-    const exists = await this.repo.findOneBy({email});
-    return !!exists;
-  }
-
-  private async checkExistingCpf(cpf: string) {
-    const exists = await this.repo.findOneBy({cpf});
-    return !!exists;
-  }
-
   public async validateCreateUser(newUser: Partial<User>) {
     const existsWithEmail = await this.checkExistingEmail(newUser.email);
     if (existsWithEmail) {
@@ -51,5 +41,15 @@ export class UsersValidator {
         );
       }
     }
+  }
+
+  private async checkExistingEmail(email: string) {
+    const exists = await this.repo.findOneBy({ email });
+    return !!exists;
+  }
+
+  private async checkExistingCpf(cpf: string) {
+    const exists = await this.repo.findOneBy({ cpf });
+    return !!exists;
   }
 }
