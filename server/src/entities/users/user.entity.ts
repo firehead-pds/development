@@ -2,7 +2,7 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "../address/address.entity";
 import { Measurements } from "../measurements/measurements.entity";
 
-@Entity()
+@Entity({name: "users"})
 export class User {
   @PrimaryGeneratedColumn()
   id: number;

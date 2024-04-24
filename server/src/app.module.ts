@@ -3,7 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { dbConfig } from "./database/dbConfig";
+import { dbConfig } from "./config/dbConfig";
 import { UsersModule } from "./entities/users/users.module";
 import { MeasurementsModule } from "./entities/measurements/measurements.module";
 import { AddressModule } from "./entities/address/address.module";
