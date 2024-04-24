@@ -7,6 +7,7 @@ import IUser from "./interfaces/IUser";
 import { Measurements } from "../measurements/measurements.entity";
 import { Address } from "../address/address.entity";
 import ICreateUserData from "./interfaces/ICreateUserData";
+import { HashingService } from "../../hashing/hashing.service";
 
 @Injectable()
 export class UsersService {
@@ -16,7 +17,8 @@ export class UsersService {
     @InjectRepository(Measurements)
     private readonly repoMeasurements: Repository<Measurements>,
     private readonly validator: UsersValidator,
-    private dataSource: DataSource
+    private dataSource: DataSource,
+    private readonly hashingService: HashingService,
   ) {
   }
 
@@ -37,6 +39,8 @@ export class UsersService {
     await queryRunner.startTransaction();
 
     try {
+      userData.password = await this.hashingService.hashData(userData.password);
+
       const user = this.repoUsers.create(userData);
       const savedUser = await queryRunner.manager.save(user);
 
