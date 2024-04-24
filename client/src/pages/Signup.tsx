@@ -1,5 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AbsoluteCenter, Box, Button, Divider, Flex } from "@chakra-ui/react";
+import {
+  AbsoluteCenter,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  useToast,
+} from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import AddressInfo from "../components/signup/AddressInfo.tsx";
 import MeasurementsInfo from "../components/signup/MeasurementsInfo.tsx";
@@ -9,12 +16,16 @@ import SignupFormFields from "../interfaces/signup/SignupFormFields.ts";
 import PostUsers from "../interfaces/backend-fetches/requests/users/PostUsers.ts";
 import ErrorResponse from "../interfaces/backend-fetches/responses/ErrorResponse.ts";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const { t } = useTranslation("signup");
   const { t: tError } = useTranslation("signup", {
     keyPrefix: "validationErrors",
   });
+
+  const errorToast = useToast();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -75,14 +86,27 @@ export default function Signup() {
         );
       }
     },
-    onError: (error) => {
-      console.error("Error submitting form:", error);
+    onSuccess: () => {
+      if (Object.keys(errors).length === 0) {
+        navigate("/");
+      }
+    },
+    onError: () => {
+      errorToast({
+        title: "There was an error connecting to the server.",
+        description: "Try again later.",
+        status: "error",
+        variant: "left-accent",
+        duration: 8000,
+        isClosable: true,
+      });
     },
   });
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword: _, ...postData } = data;
+
     await mutateAsync(postData);
   };
 
