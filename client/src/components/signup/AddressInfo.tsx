@@ -1,8 +1,10 @@
 import {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetError,
   UseFormSetValue,
+  UseFormTrigger,
 } from "react-hook-form";
 import {
   FormControl,
@@ -20,6 +22,8 @@ interface AddressInfoProps {
   errors: FieldErrors<SignupFormFields>;
   setError: UseFormSetError<SignupFormFields>;
   setValue: UseFormSetValue<SignupFormFields>;
+  getValues: UseFormGetValues<SignupFormFields>;
+  trigger: UseFormTrigger<SignupFormFields>;
 }
 
 interface ViacepApiResponse {
@@ -41,6 +45,8 @@ export default function AddressInfo({
   errors,
   setError,
   setValue,
+  getValues,
+  trigger,
 }: AddressInfoProps) {
   const { t } = useTranslation("signup", {
     keyPrefix: "fields.addressInfo",
@@ -57,10 +63,13 @@ export default function AddressInfo({
     if (controller) {
       controller.abort();
     }
+    const currentValues = getValues("address");
+    console.log(currentValues);
 
     controller = new AbortController();
 
     setValue("address", {
+      addressNumber: currentValues.addressNumber,
       addressLine: "",
       district: "",
       city: "",
@@ -93,12 +102,15 @@ export default function AddressInfo({
     }
 
     setValue("address", {
+      addressNumber: currentValues.addressNumber,
       postalCode: res.cep.replace("-", ""),
       addressLine: res.logradouro,
       district: res.bairro,
       city: res.localidade,
       state: res.uf,
     });
+
+    await trigger("address.postalCode");
   };
 
   return (
