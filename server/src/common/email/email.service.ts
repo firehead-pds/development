@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
+import {Transporter, createTransport} from 'nodemailer';
 
 @Injectable()
 export class EmailService {
-  private readonly transporter;
+  private readonly transporter: Transporter;
 
   constructor() {
-    this.transporter = nodemailer.createTransport({
+    this.transporter = createTransport({
       host: process.env.EMAIL_HOST,
       port: 465,
       secure: true,

@@ -1,0 +1,11 @@
+### Test contact-us route
+
+### Send a message
+POST http://localhost:3000/contact-us
+Content-Type: application/json
+
+{
+  "userEmail": "{{email}}",
+  "title": "Test email.",
+  "message": "This is a test email. Hello World!"
+}

@@ -1,9 +1,9 @@
 // reune tudo
 
 import { Module } from '@nestjs/common';
-import { ContactUsService } from './contactUs.service';
-import { ContactUsController } from './contactUs.controller';
-import { EmailModule } from '../email/email.module';
+import { ContactUsService } from './contact-us.service';
+import { ContactUsController } from './contact-us.controller';
+import { EmailModule } from '../../common/email/email.module';
 
 @Module({
     imports: [EmailModule],
