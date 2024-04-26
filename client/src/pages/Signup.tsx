@@ -34,6 +34,7 @@ export default function Signup() {
     setError,
     setValue,
     getValues,
+    trigger,
   } = useForm<SignupFormFields>({ mode: "onBlur" });
 
   const { mutateAsync } = useMutation({
@@ -177,6 +178,8 @@ export default function Signup() {
             errors={errors}
             setError={setError}
             setValue={setValue}
+            getValues={getValues}
+            trigger={trigger}
           />
           <Button isLoading={isSubmitting} type="submit" form={"signupForm"}>
             {t("submit")}
