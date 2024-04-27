@@ -7,6 +7,7 @@ import {
   FormLabel,
   Input,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 
@@ -21,9 +22,12 @@ export default function ContactUs() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<ContactUsInputs>({ mode: "onBlur" });
 
-  const { mutate } = useMutation({
+  const toast = useToast();
+
+  const { mutateAsync } = useMutation({
     mutationKey: ["contactData"],
     mutationFn: async (contactData: ContactUsInputs) => {
       const res = await fetch(
@@ -46,14 +50,25 @@ export default function ContactUs() {
 
       return res.json();
     },
-    onError: (error) => {
-      console.error("Error sending email:", error);
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Could not connect to the server.",
+        status: "error",
+      });
+    },
+    onSuccess: () => {
+      reset();
+      toast({
+        title: "Done",
+        description: "Message sent successfully.",
+        status: "success",
+      });
     },
   });
 
   const onSubmit: SubmitHandler<ContactUsInputs> = async (data) => {
-    console.log(data);
-    mutate(data);
+    await mutateAsync(data);
   };
 
   return (
@@ -66,6 +81,7 @@ export default function ContactUs() {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className={"p-4 border rounded-lg h-full w-1/2"}
+          noValidate
         >
           <FormControl isRequired isInvalid={!!errors.userEmail}>
             <FormLabel htmlFor="userEmail">Your Email:</FormLabel>
@@ -75,6 +91,10 @@ export default function ContactUs() {
               placeholder="useremail21@example.com"
               {...register("userEmail", {
                 required: "This field is required",
+                pattern: {
+                  value: /^\S+@{1}\S+[.]{1}\S+$/i,
+                  message: "Enter a valid email",
+                },
               })}
             />
             <FormErrorMessage>
