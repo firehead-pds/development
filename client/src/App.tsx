@@ -20,7 +20,7 @@ const router = createBrowserRouter([
             <Link as={ReactRouterLink} to={"/signup"}>
               Signup
             </Link>
-            <Link as={ReactRouterLink} to={"/contactus"}>
+            <Link as={ReactRouterLink} to={"/contact-us"}>
               Contact Us
             </Link>
           </>
@@ -31,9 +31,9 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: "/contactus",
+        path: "/contact-us",
         element: <ContactUs />,
-      }
+      },
     ],
   },
 ]);
