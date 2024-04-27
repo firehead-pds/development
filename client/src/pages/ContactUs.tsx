@@ -10,6 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 export interface ContactUsInputs {
   userEmail: string;
@@ -24,6 +25,9 @@ export default function ContactUs() {
     formState: { errors, isSubmitting },
     reset,
   } = useForm<ContactUsInputs>();
+
+  const { t: tCommon } = useTranslation("common");
+  const { t } = useTranslation("contact-us");
 
   const toast = useToast();
 
@@ -52,16 +56,16 @@ export default function ContactUs() {
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Could not connect to the server.",
+        title: tCommon("toasts.serverError.title"),
+        description: tCommon("toasts.serverError.description"),
         status: "error",
       });
     },
     onSuccess: () => {
       reset();
       toast({
-        title: "Done",
-        description: "Message sent successfully.",
+        title: t("toasts.sent.title"),
+        description: t("toasts.sent.description"),
         status: "success",
       });
     },
@@ -84,16 +88,18 @@ export default function ContactUs() {
           noValidate
         >
           <FormControl isRequired isInvalid={!!errors.userEmail}>
-            <FormLabel htmlFor="userEmail">Your Email:</FormLabel>
+            <FormLabel htmlFor="userEmail">{t("fields.email.label")}</FormLabel>
             <Input
               id="userEmail"
               type="text"
-              placeholder="useremail21@example.com"
+              placeholder={t("fields.email.placeholder")}
               {...register("userEmail", {
-                required: "This field is required",
+                required: tCommon("forms.validationErrors.required"),
                 pattern: {
-                  value: /^\S+@{1}\S+[.]{1}\S+$/i,
-                  message: "Enter a valid email",
+                  value: /^\S+@\S+[.]\S+$/i,
+                  message: tCommon("forms.validationErrors.invalid", {
+                    field: t("fields.email.name"),
+                  }),
                 },
               })}
             />
@@ -101,27 +107,41 @@ export default function ContactUs() {
               {errors.userEmail && errors.userEmail.message}
             </FormErrorMessage>
           </FormControl>
+
           <FormControl isRequired isInvalid={!!errors.title}>
-            <FormLabel htmlFor="title">Title:</FormLabel>
+            <FormLabel htmlFor="title">{t("fields.title.label")}</FormLabel>
             <Input
               id="title"
               type="text"
-              placeholder="I can't enter in my profile"
+              placeholder={t("fields.title.placeholder")}
               {...register("title", {
-                required: "This field is required",
+                required: tCommon("forms.validationErrors.required"),
+                max: {
+                  value: 50,
+                  message: tCommon("forms.validationErrors.maxLength", {
+                    limit: 50,
+                  }),
+                },
               })}
             />
             <FormErrorMessage>
               {errors.title && errors.title.message}
             </FormErrorMessage>
           </FormControl>
+
           <FormControl isRequired isInvalid={!!errors.message}>
-            <FormLabel htmlFor="message">Message:</FormLabel>
+            <FormLabel htmlFor="message">{t("fields.message.label")}</FormLabel>
             <Textarea
               id="message"
-              placeholder="Type here your message..."
+              placeholder={t("fields.message.placeholder")}
               {...register("message", {
-                required: "This field is required",
+                required: tCommon("forms.validationErrors.required"),
+                max: {
+                  value: 200,
+                  message: tCommon("forms.validationErrors.maxLength", {
+                    limit: 200,
+                  }),
+                },
               })}
             />
             <FormErrorMessage>
@@ -130,7 +150,7 @@ export default function ContactUs() {
           </FormControl>
 
           <Button isLoading={isSubmitting} type="submit">
-            Submit
+            {tCommon("forms.submit")}
           </Button>
         </form>
       </Flex>

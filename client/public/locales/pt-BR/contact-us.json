@@ -1,0 +1,25 @@
+{
+  "fields": {
+    "email": {
+      "name": "Email",
+      "label": "Seu email:",
+      "placeholder": "Digite seu email..."
+    },
+    "title": {
+      "name": "Título",
+      "label": "Título:",
+      "placeholder": "Digite um título para sua mensagem..."
+    },
+    "message": {
+      "name": "Mensagem",
+      "label": "Mensagem:",
+      "placeholder": "Digite sua mensagem..."
+    }
+  },
+  "toast": {
+    "sent": {
+      "title": "Enviado",
+      "description": "Sua mensagem foi enviada com sucesso."
+    }
+  }
+}

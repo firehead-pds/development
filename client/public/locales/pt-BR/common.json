@@ -1,0 +1,20 @@
+{
+  "forms": {
+    "validationErrors": {
+      "required": "Obrigatório",
+      "invalid": "{{field}} inválido",
+      "alreadyInUse": "{{field}} já em uso",
+      "nonExistent": "{{field}} não existe",
+      "minLength": "Deve ter pelo menos {{limit}} caracteres",
+      "maxLength": "Não deve ter mais de {{limit}} caracteres",
+      "onlyLetters": "Apenas letras permitidas"
+    },
+    "submit": "Enviar"
+  },
+  "toasts": {
+    "serverError": {
+      "title": "Erro",
+      "description": "Houve um erro ao conectar ao servidor. Tente novamente mais tarde."
+    }
+  }
+}
