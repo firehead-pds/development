@@ -23,7 +23,7 @@ export default function ContactUs() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<ContactUsInputs>({ mode: "onBlur" });
+  } = useForm<ContactUsInputs>();
 
   const toast = useToast();
 
@@ -76,11 +76,11 @@ export default function ContactUs() {
       <Flex
         alignItems={"center"}
         justifyContent={"center"}
-        className={"w-screen my-40"}
+        className={"w-screen my-6"}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className={"p-4 border rounded-lg h-full w-1/2"}
+          className={"p-4 border rounded-lg mx-2 w-[600px]"}
           noValidate
         >
           <FormControl isRequired isInvalid={!!errors.userEmail}>
