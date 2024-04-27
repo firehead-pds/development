@@ -14,7 +14,6 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@nestjs/testing": "^10.3.8",
     "@tanstack/react-query": "^5.29.2",
     "cpf-cnpj-validator": "^1.0.3",
     "framer-motion": "^11.0.28",
@@ -28,7 +27,6 @@
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.12",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.22",
