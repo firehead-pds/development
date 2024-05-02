@@ -83,7 +83,15 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
         <Input
           id="birthday"
           type="date"
-          {...register("birthdate", { required: tErrors("required") })}
+          {...register("birthdate", {
+            required: tErrors("required"),
+            validate: (v) =>{
+              const inputDate = new Date(v);
+              const eighteenYearsAgo = new Date();
+              eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
+              return inputDate < eighteenYearsAgo || t("");
+            }
+          })}
         />
 
         <FormErrorMessage>

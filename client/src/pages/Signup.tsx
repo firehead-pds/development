@@ -35,6 +35,7 @@ export default function Signup() {
     setValue,
     getValues,
     trigger,
+    watch
   } = useForm<SignupFormFields>({ mode: "onBlur" });
 
   const { mutateAsync } = useMutation({
@@ -180,6 +181,7 @@ export default function Signup() {
             setValue={setValue}
             getValues={getValues}
             trigger={trigger}
+            watch={watch}
           />
           <Button isLoading={isSubmitting} type="submit" form={"signupForm"}>
             {t("submit")}

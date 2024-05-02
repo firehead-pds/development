@@ -1,4 +1,5 @@
 import Signup from "./pages/Signup.tsx";
+import ContactUs from "./pages/ContactUs.tsx";
 import {
   createBrowserRouter,
   Link as ReactRouterLink,
@@ -15,15 +16,24 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: (
-          <Link as={ReactRouterLink} to={"/signup"}>
-            Signup
-          </Link>
+          <>
+            <Link as={ReactRouterLink} to={"/signup"}>
+              Signup
+            </Link>
+            <Link as={ReactRouterLink} to={"/contactus"}>
+              Contact Us
+            </Link>
+          </>
         ),
       },
       {
         path: "/signup",
         element: <Signup />,
       },
+      {
+        path: "/contactus",
+        element: <ContactUs />,
+      }
     ],
   },
 ]);
