@@ -1,6 +1,17 @@
-import { IsDate, IsEmail, IsInt, IsOptional, IsString, Length, Matches, Min } from "class-validator";
-import { Type } from "class-transformer";
+import {
+  IsDate,
+  IsEmail,
+  IsInt,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+  Min,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
+// TODO - Should address and measurements updates be made through their own separate routes
+//  and services or through the user update directly? All 3 tables have relationships.
 export class UpdateUserDto {
   @IsOptional()
   @IsString()
@@ -38,6 +49,6 @@ export class UpdateUserDto {
   phoneNumber?: string;
 
   @IsOptional()
-  @Matches(/^\d{11}$/, { message: "CPF must be an 11-digit number" })
+  @Matches(/^\d{11}$/, { message: 'CPF must be an 11-digit number' })
   cpf?: string;
 }
