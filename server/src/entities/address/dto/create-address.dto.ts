@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAddressDto {
   @IsNotEmpty()
@@ -13,6 +13,7 @@ export class CreateAddressDto {
   addressLine: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
   @Length(1, 4)
