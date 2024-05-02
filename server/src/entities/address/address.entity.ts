@@ -12,7 +12,7 @@ export class Address {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'postalCode', type: 'varchar', nullable: false, length: 8 })
+  @Column({ name: 'postalCode', type: 'varchar', nullable: false, length: 9 })
   postalCode: string;
 
   @Column({ name: 'addressLine', type: 'varchar', nullable: false, length: 70 })

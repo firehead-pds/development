@@ -1,10 +1,20 @@
-import { IsDate, IsEmail, IsObject, IsString, Length, Matches, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
-import { Address } from "../../address/address.entity";
-import { Measurements } from "../../measurements/measurements.entity";
-import { CreateMeasurementsDto } from "../../measurements/dto/create-measurements.dto";
-import { CreateAddressDto } from "../../address/dto/create-address.dto";
-import { ApiProperty } from "@nestjs/swagger";
+import {
+  IsDate,
+  IsEmail,
+  IsObject,
+  IsString,
+  Length,
+  Matches,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { Address } from '../../address/address.entity';
+import { Measurements } from '../../measurements/measurements.entity';
+import { CreateMeasurementsDto } from '../../measurements/dto/create-measurements.dto';
+import { CreateAddressDto } from '../../address/dto/create-address.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsCpf } from '../../../common/decorators/validation/is-cpf.decorator';
+import { IsAdult } from '../../../common/decorators/validation/is-adult.decorator';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -20,6 +30,7 @@ export class CreateUserDto {
   @ApiProperty()
   @IsDate()
   @Type(() => Date)
+  @IsAdult()
   birthdate: Date;
 
   @ApiProperty()
@@ -39,7 +50,7 @@ export class CreateUserDto {
 
   @IsString()
   @Length(11, 11)
-  @Matches(/^\d+$/)
+  @IsCpf()
   cpf: string;
 
   @ApiProperty({ type: CreateMeasurementsDto })

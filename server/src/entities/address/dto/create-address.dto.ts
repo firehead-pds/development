@@ -1,10 +1,17 @@
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsPostalCode,
+  IsString,
+  Length,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAddressDto {
   @IsNotEmpty()
   @IsString()
   @Length(8)
+  @IsPostalCode('BR')
   postalCode: string;
 
   @IsNotEmpty()
