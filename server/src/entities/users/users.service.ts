@@ -1,69 +1,25 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { Repository } from "typeorm";
-import { User } from "./user.entity";
-import { UsersValidator } from "./validators/users.validator";
-import { InjectRepository } from "@nestjs/typeorm";
-import IUser from "./interfaces/IUser";
-import { HashingService } from "../../common/hashing/hashing.service";
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
+import { UsersValidator } from './validators/users.validator';
+import { InjectRepository } from '@nestjs/typeorm';
+import { HashingService } from '../../common/hashing/hashing.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly repo: Repository<User>,
     private readonly validator: UsersValidator,
-    private readonly hashingService: HashingService
-  ) {
-  }
+    private readonly hashingService: HashingService,
+  ) {}
 
-  public async create(
-    user: Partial<User>
-  ) {
+  public async create(user: Partial<User>) {
     await this.validator.validateCreateUser(user);
 
     user.password = await this.hashingService.hashData(user.password);
     const newUser = this.repo.create(user);
     await this.repo.save(newUser);
 
-    return "user created successfully";
-  }
-
-  public async findAll(): Promise<User[]> {
-    return this.repo.find();
-  }
-
-  public async findOne(id: number): Promise<User> {
-    const user = await this.repo.findOne({ where: { id } });
-
-    if (!user) {
-      throw new NotFoundException(`No users found.`);
-    }
-
-    return user;
-  }
-
-  public async update(id: number, body: IUser): Promise<User> {
-    const user = await this.repo.findOne({ where: { id } });
-
-    if (!user) {
-      throw new NotFoundException(`No users found.`);
-    }
-
-    await this.validator.validateUserUpdate(id, body, user);
-
-    await this.repo.update({ id }, body);
-
-    return this.repo.findOne({ where: { id } });
-  }
-
-  public async delete(id: number): Promise<string> {
-    const user = await this.repo.findOne({ where: { id } });
-
-    if (!user) {
-      throw new NotFoundException(`No users found.`);
-    }
-
-    await this.repo.delete(id);
-
-    return "User successfully deleted";
+    return 'user created successfully';
   }
 }
