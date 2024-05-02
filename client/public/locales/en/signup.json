@@ -114,6 +114,7 @@
     "nonExistent": "This {{field}} does not exist",
     "minLength": "Should have at least {{limit}} characters",
     "maxLength": "Should not have more than {{limit}} characters",
-    "onlyLetters": "Only letters allowed"
+    "onlyLetters": "Only letters allowed",
+    "invalidAge": "You must be {{age}} or older in order to sign up"
   }
 }
