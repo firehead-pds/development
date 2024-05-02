@@ -1,13 +1,22 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
+import { cpf } from 'cpf-cnpj-validator';
 
 @Injectable()
 export class UsersValidator {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   public async validateCreateUser(newUser: Partial<User>) {
+    if (!cpf.isValid(newUser.cpf)) {
+      throw new BadRequestException('cpf is invalid');
+    }
+
     const existsWithEmail = await this.checkExistingEmail(newUser.email);
     if (existsWithEmail) {
       throw new ConflictException(`email already in use`);
