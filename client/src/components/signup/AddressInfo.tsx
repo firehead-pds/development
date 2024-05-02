@@ -5,12 +5,15 @@ import {
   UseFormSetError,
   UseFormSetValue,
   UseFormTrigger,
+  UseFormWatch,
 } from "react-hook-form";
 import {
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Grid,
+  HStack,
   Input,
 } from "@chakra-ui/react";
 import { ChangeEventHandler } from "react";
@@ -24,6 +27,7 @@ interface AddressInfoProps {
   setValue: UseFormSetValue<SignupFormFields>;
   getValues: UseFormGetValues<SignupFormFields>;
   trigger: UseFormTrigger<SignupFormFields>;
+  watch: UseFormWatch<SignupFormFields>;
 }
 
 interface ViacepApiResponse {
@@ -47,6 +51,7 @@ export default function AddressInfo({
   setValue,
   getValues,
   trigger,
+  watch,
 }: AddressInfoProps) {
   const { t } = useTranslation("signup", {
     keyPrefix: "fields.addressInfo",
@@ -54,6 +59,8 @@ export default function AddressInfo({
   const { t: tErrors } = useTranslation("signup", {
     keyPrefix: "validationErrors",
   });
+
+  const watchCheckBox = watch("address.noHouseNumber");
 
   let controller: AbortController | null = null;
 
@@ -178,26 +185,32 @@ export default function AddressInfo({
         />
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.address?.addressNumber}>
-        <FormLabel htmlFor="houseNumber">Número:</FormLabel>
-        <Input
-          id="houseNumber"
-          type="text"
-          placeholder="Ex: 182"
-          {...register("address.addressNumber", {
-            required: tErrors("required"),
-            pattern: {
-              value: /^[0-9]+$/,
-              message: "Just Numbers!",
-            },
-          })}
-          inputMode={"numeric"}
-        />
-        <FormErrorMessage>
-          {errors.address?.addressNumber &&
-            errors.address.addressNumber.message}
-        </FormErrorMessage>
-      </FormControl>
+      <HStack>
+        <FormControl isRequired={!watchCheckBox} isDisabled={watchCheckBox} isInvalid={!!errors.address?.addressNumber}>
+          <FormLabel htmlFor="houseNumber">Número:</FormLabel>
+
+          <Input
+            id="houseNumber"
+            type="text"
+            placeholder="Ex: 182"
+            {...register("address.addressNumber", {
+              required: tErrors("required"),
+              pattern: {
+                value: /^[0-9]+$/,
+                message: "Just Numbers!",
+              }
+            })}
+            inputMode={"numeric"}
+          />
+
+          <FormErrorMessage>
+            {errors.address?.addressNumber &&
+              errors.address.addressNumber.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <Checkbox {...register("address.noHouseNumber")}>Checkbox</Checkbox>
+      </HStack>
 
       <FormControl isInvalid={!!errors.address?.complement}>
         <FormLabel htmlFor="complement">{t("additionalInfo.label")}</FormLabel>
