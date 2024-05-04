@@ -57,7 +57,28 @@ export class GridService {
   }
 
   private isValidPosition(row: number, col: number, usuario: User): boolean {
-    // Pedro vai implementar a lógica de validação da posição
-    return true;
+      if (row < 0 || row >= 7 || col < 0 || col >= 11) { 
+          return false;
+      }
+  
+      if (this.grid[row][col] !== 0) {
+          return false;
+      }
+  
+      const adjacentes = [
+          [-1, 0], [1, 0], [0, -1], [0, 1] 
+      ];
+  
+      for (const [dr, dc] of adjacentes) {
+          const newRow = row + dr;
+          const newCol = col + dc;
+
+          if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 11) {
+              if (this.grid[newRow][newCol] === usuario.id) {
+                  return false; 
+              }
+          }
+      }
+      return true;
   }
 }
