@@ -9,6 +9,7 @@ import { MeasurementsModule } from "./entities/measurements/measurements.module"
 import { AddressModule } from "./entities/address/address.module";
 import { HashingModule } from "./common/hashing/hashing.module";
 import { ContactUsModule } from "./entities/contactUs/contact-us.module";
+import { FriendshipsModule } from './entities/friendships/friendships.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { ContactUsModule } from "./entities/contactUs/contact-us.module";
     MeasurementsModule,
     AddressModule,
     HashingModule,
-    ContactUsModule
+    ContactUsModule,
+    FriendshipsModule
   ],
   controllers: [AppController],
   providers: [AppService]

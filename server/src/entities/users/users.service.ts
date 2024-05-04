@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { In, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UsersValidator } from './validators/users.validator';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,5 +21,17 @@ export class UsersService {
     await this.repo.save(newUser);
 
     return 'user created successfully';
+  }
+
+  public async findOneById(id: number) {
+    const user = await this.repo.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return user;
+  }
+
+  public async findManyByIds(ids: number[]) {
+    return this.repo.findBy({ id: In(ids) });
   }
 }
