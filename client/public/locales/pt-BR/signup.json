@@ -93,6 +93,9 @@
         "label": "Número:",
         "placeholder": "Ex: 1976"
       },
+      "noHouseNumber": {
+        "label": "Sem Número"
+      },
       "additionalInfo": {
         "name": "Complemento",
         "label": "Complemento:",
@@ -115,6 +118,7 @@
     "minLength": "Deve ter pelo menos {{limit}} caracteres",
     "maxLength": "Não deve ter mais de {{limit}} caracteres",
     "onlyLetters": "Apenas letras permitidas",
+    "onlyNumbers": "Apenas números permitidos",
     "invalidAge": "É necessário ter {{age}} anos ou mais para o cadastro"
   }
 }

@@ -93,6 +93,9 @@
         "label": "Address number:",
         "placeholder": "Ex: 1976"
       },
+      "noHouseNumber": {
+        "label": "No Number"
+      },
       "additionalInfo": {
         "name": "additional info",
         "label": "Additional Info:",
@@ -115,6 +118,7 @@
     "minLength": "Should have at least {{limit}} characters",
     "maxLength": "Should not have more than {{limit}} characters",
     "onlyLetters": "Only letters allowed",
+    "onlyNumbers": "Just Numbers!",
     "invalidAge": "You must be {{age}} or older in order to sign up"
   }
 }

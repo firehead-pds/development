@@ -13,7 +13,6 @@ import {
   FormErrorMessage,
   FormLabel,
   Grid,
-  HStack,
   Input,
 } from "@chakra-ui/react";
 import { ChangeEventHandler } from "react";
@@ -190,9 +189,8 @@ export default function AddressInfo({
         />
       </FormControl>
 
-      <HStack>
-        <FormControl isRequired={!watchCheckBox} isDisabled={watchCheckBox} isInvalid={!!errors.address?.addressNumber}>
-          <FormLabel htmlFor="houseNumber">Número:</FormLabel>
+      <FormControl isRequired={!watchCheckBox} isDisabled={watchCheckBox} isInvalid={!!errors.address?.addressNumber}>
+        <FormLabel htmlFor="houseNumber">{t("addressNumber.label")}</FormLabel>
 
         <Input
           id="houseNumber"
@@ -216,8 +214,7 @@ export default function AddressInfo({
         </FormErrorMessage>
       </FormControl>
 
-        <Checkbox {...register("address.noHouseNumber")}>Checkbox</Checkbox>
-      </HStack>
+      <Checkbox {...register("address.noHouseNumber")}>{t("noHouseNumber.label")}</Checkbox>
 
       <FormControl isInvalid={!!errors.address?.complement}>
         <FormLabel htmlFor="complement">{t("additionalInfo.label")}</FormLabel>
