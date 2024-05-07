@@ -16,7 +16,7 @@
       "placeholder": "Digite sua mensagem..."
     }
   },
-  "toast": {
+  "toasts": {
     "sent": {
       "title": "Enviado",
       "description": "Sua mensagem foi enviada com sucesso."
