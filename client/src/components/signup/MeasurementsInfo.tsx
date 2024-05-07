@@ -36,8 +36,8 @@ export default function MeasurementsInfo({
   const { t } = useTranslation("signup", {
     keyPrefix: "fields.measurements",
   });
-  const { t: tErrors } = useTranslation("signup", {
-    keyPrefix: "validationErrors",
+  const { t: tErrors } = useTranslation("common", {
+    keyPrefix: "forms.validationErrors",
   });
 
   // Can't add onChange prop to numeric input for some reason

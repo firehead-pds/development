@@ -104,22 +104,10 @@
       }
     }
   },
-  "submit": "Submit",
   "dividers": {
     "personalInfo": "Personal Info",
     "accessCredentials": "Access Credentials",
     "measurements": "Measurements",
     "address": "Address"
-  },
-  "validationErrors": {
-    "required": "Required",
-    "invalid": "Invalid {{field}}",
-    "alreadyInUse": "{{field}} already in use",
-    "nonExistent": "This {{field}} does not exist",
-    "minLength": "Should have at least {{limit}} characters",
-    "maxLength": "Should not have more than {{limit}} characters",
-    "onlyLetters": "Only letters allowed",
-    "onlyNumbers": "Just Numbers!",
-    "invalidAge": "You must be {{age}} or older in order to sign up"
   }
 }

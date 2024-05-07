@@ -57,8 +57,8 @@ export default function AddressInfo({
   const { t } = useTranslation("signup", {
     keyPrefix: "fields.addressInfo",
   });
-  const { t: tErrors } = useTranslation("signup", {
-    keyPrefix: "validationErrors",
+  const { t: tErrors } = useTranslation("common", {
+    keyPrefix: "forms.validationErrors",
   });
 
   const watchCheckBox = watch("address.noHouseNumber");

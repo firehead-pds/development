@@ -41,8 +41,8 @@ export default function AccessCredentials({
   const { t } = useTranslation("signup", {
     keyPrefix: "fields.accessCredentials",
   });
-  const { t: tErrors } = useTranslation("signup", {
-    keyPrefix: "validationErrors",
+  const { t: tErrors } = useTranslation("common", {
+    keyPrefix: "forms.validationErrors",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -111,6 +111,9 @@ export default function AccessCredentials({
             </Button>
           </InputRightElement>
         </InputGroup>
+        <FormErrorMessage>
+          {errors.password && errors.password.message}
+        </FormErrorMessage>
         <UnorderedList color={"grey"}>
           <ListItem color={(errorList.maxLength ? "green": "grey")}>{t("password.requirements.maxLength", { limit: 24 })}</ListItem>
           <ListItem color={(errorList.minLength ? "green": "grey")}>{t("password.requirements.minLength", { limit: 8 })}</ListItem>
@@ -119,10 +122,6 @@ export default function AccessCredentials({
           <ListItem color={(errorList.number ? "green": "grey")}>{t("password.requirements.number")}</ListItem>
           <ListItem color={(errorList.specialCharacter ? "green": "grey")}>{t("password.requirements.specialCharacter")}</ListItem>
         </UnorderedList>
-
-        <FormErrorMessage>
-          {errors.password && errors.password.message}
-        </FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.confirmPassword}>

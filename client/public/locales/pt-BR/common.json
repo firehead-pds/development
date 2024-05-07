@@ -7,7 +7,9 @@
       "nonExistent": "{{field}} não existe",
       "minLength": "Deve ter pelo menos {{limit}} caracteres",
       "maxLength": "Não deve ter mais de {{limit}} caracteres",
-      "onlyLetters": "Apenas letras permitidas"
+      "onlyLetters": "Apenas letras permitidas",
+      "onlyNumbers": "Apenas números permitidos",
+      "invalidAge": "É necessário ter {{age}} anos ou mais para o cadastro"
     },
     "submit": "Enviar"
   },

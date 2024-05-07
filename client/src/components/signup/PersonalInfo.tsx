@@ -26,8 +26,8 @@ interface PersonalInfoProps {
 
 export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
   const { t } = useTranslation("signup", { keyPrefix: "fields.personalInfo" });
-  const { t: tErrors } = useTranslation("signup", {
-    keyPrefix: "validationErrors",
+  const { t: tErrors } = useTranslation("common", {
+    keyPrefix: "forms.validationErrors",
   });
 
   return (

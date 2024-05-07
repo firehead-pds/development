@@ -104,22 +104,10 @@
       }
     }
   },
-  "submit": "Enviar",
   "dividers": {
     "personalInfo": "Informações pessoais",
     "accessCredentials": "Credenciais de acesso",
     "measurements": "Medidas",
     "address": "Endereço"
-  },
-  "validationErrors": {
-    "required": "Obrigatório",
-    "invalid": "{{field}} inválido",
-    "alreadyInUse": "{{field}} já em uso",
-    "nonExistent": "{{field}} não existe",
-    "minLength": "Deve ter pelo menos {{limit}} caracteres",
-    "maxLength": "Não deve ter mais de {{limit}} caracteres",
-    "onlyLetters": "Apenas letras permitidas",
-    "onlyNumbers": "Apenas números permitidos",
-    "invalidAge": "É necessário ter {{age}} anos ou mais para o cadastro"
   }
 }
