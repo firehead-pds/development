@@ -40,7 +40,7 @@ export default function Signup() {
     getValues,
     trigger,
     watch
-  } = useForm<SignupFormFields>({ mode: "onBlur" });
+  } = useForm<SignupFormFields>({ mode: "onBlur", defaultValues: {address: {noHouseNumber: false}}});
 
   const { mutateAsync } = useMutation({
     mutationKey: ["sendSignupData"],
@@ -148,7 +148,6 @@ export default function Signup() {
               {t("dividers.accessCredentials")}
             </AbsoluteCenter>
           </Box>
-
           <AccessCredentials
             register={register}
             errors={errors}
@@ -163,7 +162,6 @@ export default function Signup() {
               {t("dividers.measurements")}
             </AbsoluteCenter>
           </Box>
-
           <MeasurementsInfo
             register={register}
             errors={errors}
@@ -177,7 +175,6 @@ export default function Signup() {
               {t("dividers.address")}
             </AbsoluteCenter>
           </Box>
-
           <AddressInfo
             register={register}
             errors={errors}

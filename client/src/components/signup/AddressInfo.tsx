@@ -194,25 +194,27 @@ export default function AddressInfo({
         <FormControl isRequired={!watchCheckBox} isDisabled={watchCheckBox} isInvalid={!!errors.address?.addressNumber}>
           <FormLabel htmlFor="houseNumber">Número:</FormLabel>
 
-          <Input
-            id="houseNumber"
-            type="text"
-            placeholder="Ex: 182"
-            {...register("address.addressNumber", {
-              required: tErrors("required"),
-              pattern: {
-                value: /^[0-9]+$/,
-                message: "Just Numbers!",
-              }
-            })}
-            inputMode={"numeric"}
-          />
+        <Input
+          id="houseNumber"
+          type="text"
+          placeholder="Ex: 182"
+          {...register("address.addressNumber", {
+            required: {
+              value: !watchCheckBox,
+              message: tErrors("required")
+            },
+            pattern: {
+              value: /^[0-9]+$/,
+              message: tErrors("onlyNumbers"),
+            }
+          })}
+          inputMode={"numeric"}
+        />
 
-          <FormErrorMessage>
-            {errors.address?.addressNumber &&
-              errors.address.addressNumber.message}
-          </FormErrorMessage>
-        </FormControl>
+        <FormErrorMessage>
+          {errors.address?.addressNumber && errors.address.addressNumber.message}
+        </FormErrorMessage>
+      </FormControl>
 
         <Checkbox {...register("address.noHouseNumber")}>Checkbox</Checkbox>
       </HStack>
