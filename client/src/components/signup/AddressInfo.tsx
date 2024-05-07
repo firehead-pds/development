@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 interface AddressInfoProps {
   register: UseFormRegister<SignupFormFields>;
   errors: FieldErrors<SignupFormFields>;
+  setIsFetchingPostalCode: (value: boolean) => void;
   setError: UseFormSetError<SignupFormFields>;
   setValue: UseFormSetValue<SignupFormFields>;
   getValues: UseFormGetValues<SignupFormFields>;
@@ -47,6 +48,7 @@ interface ViacepApiResponse {
 export default function AddressInfo({
   register,
   errors,
+  setIsFetchingPostalCode,
   setError,
   setValue,
   getValues,
@@ -89,6 +91,8 @@ export default function AddressInfo({
       return;
     }
 
+    setIsFetchingPostalCode(true);
+
     const req = await fetch(
       "https://viacep.com.br/ws/" + currentPostalCode + "/json",
       { signal: controller.signal },
@@ -117,6 +121,7 @@ export default function AddressInfo({
       state: res.uf,
     });
 
+    setIsFetchingPostalCode(false);
     await trigger("address.postalCode");
   };
 

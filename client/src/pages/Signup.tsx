@@ -17,6 +17,7 @@ import PostUsers from "../interfaces/backend-fetches/requests/users/PostUsers.ts
 import ErrorResponse from "../interfaces/backend-fetches/responses/ErrorResponse.ts";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Signup() {
   const { t } = useTranslation("signup");
@@ -26,6 +27,9 @@ export default function Signup() {
 
   const errorToast = useToast();
   const navigate = useNavigate();
+
+  const [isFetchingPostalCode, setIsFetchingPostalCode] = useState(false);
+  const setIsFetchingPostalCodeHandler = (value: boolean) => {setIsFetchingPostalCode(value);}
 
   const {
     register,
@@ -177,13 +181,14 @@ export default function Signup() {
           <AddressInfo
             register={register}
             errors={errors}
+            setIsFetchingPostalCode={setIsFetchingPostalCodeHandler}
             setError={setError}
             setValue={setValue}
             getValues={getValues}
             trigger={trigger}
             watch={watch}
           />
-          <Button isLoading={isSubmitting} type="submit" form={"signupForm"}>
+          <Button isLoading={isSubmitting || isFetchingPostalCode} type="submit" form={"signupForm"}>
             {t("submit")}
           </Button>
         </form>
