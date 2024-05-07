@@ -89,7 +89,7 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
               const inputDate = new Date(v);
               const eighteenYearsAgo = new Date();
               eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
-              return inputDate < eighteenYearsAgo || t("");
+              return inputDate < eighteenYearsAgo || tErrors("invalidAge", { age : 18 });
             }
           })}
         />
