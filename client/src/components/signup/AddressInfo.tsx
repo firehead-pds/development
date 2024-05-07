@@ -83,9 +83,9 @@ export default function AddressInfo({
       state: "",
     });
 
-    const currentPostalCode = e.target.value.replace("-", "");
+    const currentPostalCode = e.target.value;
 
-    if (currentPostalCode.length !== 8 || !/^\d+$/.test(currentPostalCode)) {
+    if (currentPostalCode.length < 8 || currentPostalCode.length > 9 || !/^\d{5}-?\d{3}$/.test(currentPostalCode)) {
       return;
     }
 
@@ -110,7 +110,7 @@ export default function AddressInfo({
 
     setValue("address", {
       addressNumber: currentValues.addressNumber,
-      postalCode: res.cep.replace("-", ""),
+      postalCode: res.cep,
       addressLine: res.logradouro,
       district: res.bairro,
       city: res.localidade,
