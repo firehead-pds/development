@@ -108,6 +108,7 @@ export default function AddressInfo({
         type: "custom",
         message: tErrors("nonExistent", { field: t("postalCode.name") }),
       });
+      setIsFetchingPostalCode(false);
       return null;
     }
 

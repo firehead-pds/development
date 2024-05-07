@@ -21,8 +21,8 @@ import { useState } from "react";
 
 export default function Signup() {
   const { t } = useTranslation("signup");
-  const { t: tError } = useTranslation("signup", {
-    keyPrefix: "validationErrors",
+  const { t: tCommon } = useTranslation("common", {
+    keyPrefix: "forms"
   });
 
   const errorToast = useToast();
@@ -40,7 +40,14 @@ export default function Signup() {
     getValues,
     trigger,
     watch
-  } = useForm<SignupFormFields>({ mode: "onBlur", defaultValues: {address: {noHouseNumber: false}}});
+  } = useForm<SignupFormFields>({
+    mode: "onBlur",
+    defaultValues: {
+      address: {
+        noHouseNumber: false
+      }
+    }
+  });
 
   const { mutateAsync } = useMutation({
     mutationKey: ["sendSignupData"],
@@ -63,7 +70,7 @@ export default function Signup() {
               "cpf",
               {
                 type: "custom",
-                message: tError("alreadyInUse", {
+                message: tCommon("validationErrors.alreadyInUse", {
                   field: t("fields.personalInfo.cpf.name"),
                 }),
               },
@@ -77,7 +84,7 @@ export default function Signup() {
               "email",
               {
                 type: "custom",
-                message: tError("alreadyInUse", {
+                message: tCommon("validationErrors.alreadyInUse", {
                   field: t("fields.accessCredentials.email.name"),
                 }),
               },
@@ -187,7 +194,7 @@ export default function Signup() {
             watch={watch}
           />
           <Button isLoading={isSubmitting || isFetchingPostalCode} type="submit" form={"signupForm"}>
-            {t("submit")}
+            {tCommon("submit")}
           </Button>
         </form>
       </Flex>

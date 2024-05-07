@@ -50,12 +50,12 @@ export default function AccessCredentials({
 
   const watchPassword = watch("password");
   const errorList = {
-    "maxLength" : (watchPassword && watchPassword.length <= 24),
-    "minLength" : (watchPassword && watchPassword.length >= 8),
-    "uppercase" : /[A-Z]/.test(watchPassword),
-    "lowercase" : /[a-z]/.test(watchPassword),
-    "number" : /\d/.test(watchPassword),
-    "specialCharacter" : /[!@#$%^&*]/.test(watchPassword),
+    maxLength : (watchPassword && watchPassword.length <= 24),
+    minLength : (watchPassword && watchPassword.length >= 8),
+    uppercase : /[A-Z]/.test(watchPassword),
+    lowercase : /[a-z]/.test(watchPassword),
+    number : /\d/.test(watchPassword),
+    specialCharacter : /[!@#$%^&*]/.test(watchPassword)
   };
 
   return (

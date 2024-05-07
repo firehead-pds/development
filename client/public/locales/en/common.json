@@ -8,7 +8,7 @@
       "minLength": "Should have at least {{limit}} characters",
       "maxLength": "Should not have more than {{limit}} characters",
       "onlyLetters": "Only letters allowed",
-      "onlyNumbers": "Just Numbers!",
+      "onlyNumbers": "Only numbers allowed",
       "invalidAge": "You must be {{age}} or older in order to sign up"
     },
     "submit": "Submit"

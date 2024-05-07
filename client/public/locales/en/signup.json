@@ -86,7 +86,7 @@
       },
       "addressLine": {
         "name": "address line",
-        "label": "Address Line:",
+        "label": "Address line:",
         "placeholder": "Your address..."
       },
       "addressNumber": {
@@ -95,11 +95,11 @@
         "placeholder": "Ex: 1976"
       },
       "noHouseNumber": {
-        "label": "No Number"
+        "label": "No house number"
       },
       "additionalInfo": {
         "name": "additional info",
-        "label": "Additional Info:",
+        "label": "Additional info:",
         "placeholder": "Ex: Apt. 3"
       }
     }
