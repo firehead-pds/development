@@ -154,6 +154,7 @@ export default function Signup() {
             setError={setError}
             setValue={setValue}
             getValues={getValues}
+            watch={watch}
           />
 
           <Box position="relative" paddingY="10">

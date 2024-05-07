@@ -37,7 +37,8 @@
           "maxLength": "Até {{limit}} caracteres",
           "uppercase": "Pelo menos uma letra maiúscula",
           "lowercase": "Pelo menos uma letra minúscula",
-          "number": "Pelo menos um número"
+          "number": "Pelo menos um número",
+          "specialCharacter": "Pelo menos um carácter especial"
         },
         "toggle": {
           "show": "Mostrar",

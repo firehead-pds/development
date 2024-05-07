@@ -7,6 +7,8 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  ListItem,
+  UnorderedList,
 } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
 import {
@@ -15,6 +17,7 @@ import {
   UseFormRegister,
   UseFormSetError,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import { useState } from "react";
 import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
@@ -26,12 +29,14 @@ interface AccessCredentialsProps {
   setError: UseFormSetError<SignupFormFields>;
   setValue: UseFormSetValue<SignupFormFields>;
   getValues: UseFormGetValues<SignupFormFields>;
+  watch: UseFormWatch<SignupFormFields>;
 }
 
 export default function AccessCredentials({
   register,
   errors,
   getValues,
+  watch,
 }: AccessCredentialsProps) {
   const { t } = useTranslation("signup", {
     keyPrefix: "fields.accessCredentials",
@@ -42,6 +47,16 @@ export default function AccessCredentials({
 
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((prev) => !prev);
+
+  const watchPassword = watch("password");
+  const errorList = {
+    "maxLength" : (watchPassword && watchPassword.length <= 24),
+    "minLength" : (watchPassword && watchPassword.length >= 8),
+    "uppercase" : /[A-Z]/.test(watchPassword),
+    "lowercase" : /[a-z]/.test(watchPassword),
+    "number" : /\d/.test(watchPassword),
+    "specialCharacter" : /[!@#$%^&*]/.test(watchPassword),
+  };
 
   return (
     <>
@@ -96,6 +111,14 @@ export default function AccessCredentials({
             </Button>
           </InputRightElement>
         </InputGroup>
+        <UnorderedList color={"grey"}>
+          <ListItem color={(errorList.maxLength ? "green": "grey")}>{t("password.requirements.maxLength", { limit: 24 })}</ListItem>
+          <ListItem color={(errorList.minLength ? "green": "grey")}>{t("password.requirements.minLength", { limit: 8 })}</ListItem>
+          <ListItem color={(errorList.uppercase ? "green": "grey")}>{t("password.requirements.uppercase")}</ListItem>
+          <ListItem color={(errorList.lowercase ? "green": "grey")}>{t("password.requirements.lowercase")}</ListItem>
+          <ListItem color={(errorList.number ? "green": "grey")}>{t("password.requirements.number")}</ListItem>
+          <ListItem color={(errorList.specialCharacter ? "green": "grey")}>{t("password.requirements.specialCharacter")}</ListItem>
+        </UnorderedList>
 
         <FormErrorMessage>
           {errors.password && errors.password.message}

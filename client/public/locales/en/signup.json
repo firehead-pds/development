@@ -37,7 +37,8 @@
           "maxLength": "Up to {{limit}} characters",
           "uppercase": "At least one uppercase letter",
           "lowercase": "At least one lowercase letter",
-          "number": "At least one number"
+          "number": "At least one number",
+          "specialCharacter": "At least one special character"
         },
         "toggle": {
           "show": "Show",
