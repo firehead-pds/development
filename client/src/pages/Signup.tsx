@@ -41,6 +41,7 @@ export default function Signup() {
     getValues,
     trigger,
     watch,
+    resetField,
   } = useForm<SignupFormFields>({
     mode: 'onBlur',
     defaultValues: {
@@ -184,6 +185,7 @@ export default function Signup() {
             getValues={getValues}
             trigger={trigger}
             watch={watch}
+            resetField={resetField}
           />
           <Button
             isLoading={isSubmitting || isFetchingPostalCode}

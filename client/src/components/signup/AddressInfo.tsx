@@ -2,6 +2,7 @@ import {
   FieldErrors,
   UseFormGetValues,
   UseFormRegister,
+  UseFormResetField,
   UseFormSetError,
   UseFormSetValue,
   UseFormTrigger,
@@ -28,6 +29,7 @@ interface AddressInfoProps {
   getValues: UseFormGetValues<SignupFormFields>;
   trigger: UseFormTrigger<SignupFormFields>;
   watch: UseFormWatch<SignupFormFields>;
+  resetField: UseFormResetField<SignupFormFields>;
 }
 
 interface ViacepApiResponse {
@@ -53,6 +55,7 @@ export default function AddressInfo({
   getValues,
   trigger,
   watch,
+  resetField,
 }: AddressInfoProps) {
   const { t } = useTranslation('signup', {
     keyPrefix: 'fields.addressInfo',
@@ -230,7 +233,7 @@ export default function AddressInfo({
       <Checkbox
         {...register('address.noAddressNumber', {
           onChange: () => {
-            setValue('address.addressNumber', '', { shouldValidate: true });
+            resetField('address.addressNumber');
           },
         })}
       >
