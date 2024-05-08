@@ -9,7 +9,8 @@
       "maxLength": "Não deve ter mais de {{limit}} caracteres",
       "onlyLetters": "Apenas letras permitidas",
       "onlyNumbers": "Apenas números permitidos",
-      "invalidAge": "É necessário ter {{age}} anos ou mais para o cadastro"
+      "invalidAge": "É necessário ter {{age}} anos ou mais para o cadastro",
+      "notMeetingRequirements": "Não atende aos requisitos"
     },
     "submit": "Enviar"
   },

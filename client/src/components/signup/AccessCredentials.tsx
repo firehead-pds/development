@@ -98,9 +98,11 @@ export default function AccessCredentials({
             placeholder={t('password.placeholder')}
             {...register('password', {
               required: tErrors('required'),
-              minLength: 8,
-              maxLength: 24,
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,}$/,
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,24}$/,
+                message: tErrors('notMeetingRequirements'),
+              },
             })}
           />
           <InputRightElement width="4.5rem">
@@ -114,24 +116,40 @@ export default function AccessCredentials({
         <FormErrorMessage>
           {errors.password && errors.password.message}
         </FormErrorMessage>
-        <UnorderedList color={'grey'}>
-          <ListItem color={errorList.maxLength ? 'green' : 'grey'}>
-            {t('password.requirements.maxLength', { limit: 24 })}
-          </ListItem>
-          <ListItem color={errorList.minLength ? 'green' : 'grey'}>
+        <UnorderedList>
+          <ListItem
+            className={
+              errorList.minLength ? 'text-green-700' : 'text-slate-400'
+            }
+          >
             {t('password.requirements.minLength', { limit: 8 })}
           </ListItem>
-          <ListItem color={errorList.uppercase ? 'green' : 'grey'}>
+          <ListItem
+            className={errorList.uppercase ? 'text-green-600' : 'text-gray-400'}
+          >
             {t('password.requirements.uppercase')}
           </ListItem>
-          <ListItem color={errorList.lowercase ? 'green' : 'grey'}>
+          <ListItem
+            className={errorList.lowercase ? 'text-green-600' : 'text-gray-400'}
+          >
             {t('password.requirements.lowercase')}
           </ListItem>
-          <ListItem color={errorList.number ? 'green' : 'grey'}>
+          <ListItem
+            className={errorList.number ? 'text-green-600' : 'text-gray-400'}
+          >
             {t('password.requirements.number')}
           </ListItem>
-          <ListItem color={errorList.specialCharacter ? 'green' : 'grey'}>
+          <ListItem
+            className={
+              errorList.specialCharacter ? 'text-green-600' : 'text-gray-400'
+            }
+          >
             {t('password.requirements.specialCharacter')}
+          </ListItem>
+          <ListItem
+            className={errorList.maxLength ? 'text-green-600' : 'text-gray-400'}
+          >
+            {t('password.requirements.maxLength', { limit: 24 })}
           </ListItem>
         </UnorderedList>
       </FormControl>

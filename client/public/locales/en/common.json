@@ -9,7 +9,8 @@
       "maxLength": "Should not have more than {{limit}} characters",
       "onlyLetters": "Only letters allowed",
       "onlyNumbers": "Only numbers allowed",
-      "invalidAge": "You must be {{age}} or older in order to sign up"
+      "invalidAge": "You must be {{age}} or older in order to sign up",
+      "notMeetingRequirements": "Does not meet the requirements"
     },
     "submit": "Submit"
   },
