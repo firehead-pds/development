@@ -24,7 +24,11 @@ interface PersonalInfoProps {
   setValue: UseFormSetValue<SignupFormFields>;
 }
 
-export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
+export default function PersonalInfo({
+  register,
+  errors,
+  setValue,
+}: PersonalInfoProps) {
   const { t } = useTranslation('signup', { keyPrefix: 'fields.personalInfo' });
   const { t: tErrors } = useTranslation('common', {
     keyPrefix: 'forms.validationErrors',
@@ -113,10 +117,17 @@ export default function PersonalInfo({ register, errors }: PersonalInfoProps) {
             required: tErrors('required'),
             validate: (v) =>
               cpf.isValid(v) || tErrors('invalid', { field: t('cpf.name') }),
+            onChange: (event: any) => {
+              setValue(
+                'cpf',
+                event.target.value
+                  .replace(/\D/g, '')
+                  .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'),
+              );
+            },
           })}
           inputMode={'numeric'}
         />
-
         <FormErrorMessage>{errors.cpf && errors.cpf.message}</FormErrorMessage>
       </FormControl>
 
