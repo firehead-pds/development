@@ -46,7 +46,7 @@ export default function Signup() {
     mode: 'onBlur',
     defaultValues: {
       address: {
-        noHouseNumber: false,
+        noAddressNumber: false,
       },
     },
   });
@@ -120,9 +120,15 @@ export default function Signup() {
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword: _, ...postData } = data;
-    postData.cpf = postData.cpf.replace(/\./, '').replace('-', '');
-    await mutateAsync(postData);
+    delete data.confirmPassword;
+    data.cpf = data.cpf.replace(/\./, '').replace('-', '');
+
+    if (data.address.noAddressNumber) {
+      delete data.address.addressNumber;
+    }
+
+    delete data.address.noAddressNumber;
+    await mutateAsync(data);
   };
 
   return (

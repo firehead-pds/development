@@ -11,5 +11,5 @@ export default interface SignupFormFields {
   address: Address;
   measurements: Measurements;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
 }

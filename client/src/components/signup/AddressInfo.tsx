@@ -61,7 +61,7 @@ export default function AddressInfo({
     keyPrefix: 'forms.validationErrors',
   });
 
-  const watchCheckBox = watch('address.noHouseNumber');
+  const watchCheckBox = watch('address.noAddressNumber');
 
   let controller: AbortController | null = null;
 
@@ -227,7 +227,13 @@ export default function AddressInfo({
         </FormErrorMessage>
       </FormControl>
 
-      <Checkbox {...register('address.noHouseNumber')}>
+      <Checkbox
+        {...register('address.noAddressNumber', {
+          onChange: () => {
+            setValue('address.addressNumber', '');
+          },
+        })}
+      >
         {t('noHouseNumber.label')}
       </Checkbox>
 

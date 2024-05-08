@@ -3,7 +3,7 @@
     "validationErrors": {
       "required": "Required",
       "invalid": "Invalid {{field}}",
-      "alreadyInUse": "{{field}} already in use",
+      "alreadyInUse": "Already in use",
       "nonExistent": "This {{field}} does not exist",
       "minLength": "Should have at least {{limit}} characters",
       "maxLength": "Should not have more than {{limit}} characters",
