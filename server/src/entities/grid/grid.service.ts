@@ -43,7 +43,7 @@ export class GridService {
       let positionFound = false;
       for (let row = 0; row < 7; row++) {
         for (let col = 0; col < 11; col++) {
-          if (!this.grid[row][col] && this.isValidPosition(row, col, usuario)) {
+          if (!this.grid[row][col]) {
             this.grid[row][col] = usuario.id;
             positionFound = true;
             break;
@@ -54,31 +54,5 @@ export class GridService {
     });
 
     return this.grid;
-  }
-
-  private isValidPosition(row: number, col: number, usuario: User): boolean {
-      if (row < 0 || row >= 7 || col < 0 || col >= 11) { 
-          return false;
-      }
-  
-      if (this.grid[row][col] !== 0) {
-          return false;
-      }
-  
-      const adjacentes = [
-          [-1, 0], [1, 0], [0, -1], [0, 1] 
-      ];
-  
-      for (const [dr, dc] of adjacentes) {
-          const newRow = row + dr;
-          const newCol = col + dc;
-
-          if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 11) {
-              if (this.grid[newRow][newCol] === usuario.id) {
-                  return false; 
-              }
-          }
-      }
-      return true;
   }
 }
