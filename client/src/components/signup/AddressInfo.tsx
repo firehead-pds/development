@@ -68,65 +68,68 @@ export default function AddressInfo({
   const postalCodeChangeHandler: ChangeEventHandler<HTMLInputElement> = async (
     e,
   ) => {
-    if (controller) {
-      controller.abort();
-    }
-    const currentValues = getValues('address');
-    console.log(currentValues);
+    try {
+      setIsFetchingPostalCode(true);
 
-    controller = new AbortController();
+      if (controller) {
+        controller.abort();
+      }
 
-    setValue('address', {
-      addressNumber: currentValues.addressNumber,
-      addressLine: '',
-      district: '',
-      city: '',
-      state: '',
-    });
+      const currentValues = getValues('address');
 
-    const currentPostalCode = e.target.value;
+      controller = new AbortController();
 
-    if (
-      currentPostalCode.length < 8 ||
-      currentPostalCode.length > 9 ||
-      !/^\d{5}-?\d{3}$/.test(currentPostalCode)
-    ) {
-      return;
-    }
-
-    setIsFetchingPostalCode(true);
-
-    const req = await fetch(
-      'https://viacep.com.br/ws/' + currentPostalCode + '/json',
-      { signal: controller.signal },
-    );
-
-    if (!req.ok) {
-      throw new Error(`Fetch request failed: ${req.status} ${req.statusText}`);
-    }
-
-    const res = (await req.json()) as ViacepApiResponse;
-
-    if (res.erro) {
-      setError('address.postalCode', {
-        type: 'custom',
-        message: tErrors('nonExistent', { field: t('postalCode.name') }),
+      setValue('address', {
+        addressNumber: currentValues.addressNumber,
+        addressLine: '',
+        district: '',
+        city: '',
+        state: '',
       });
+
+      const currentPostalCode = e.target.value;
+
+      if (
+        currentPostalCode.length < 8 ||
+        currentPostalCode.length > 9 ||
+        !/^\d{5}-?\d{3}$/.test(currentPostalCode)
+      ) {
+        return;
+      }
+
+      const req = await fetch(
+        'https://viacep.com.br/ws/' + currentPostalCode + '/json',
+        { signal: controller.signal },
+      );
+
+      if (!req.ok) {
+        throw new Error(
+          `Fetch request failed: ${req.status} ${req.statusText}`,
+        );
+      }
+
+      const res = (await req.json()) as ViacepApiResponse;
+
+      if (res.erro) {
+        setError('address.postalCode', {
+          type: 'custom',
+          message: tErrors('nonExistent', { field: t('postalCode.name') }),
+        });
+        return;
+      }
+
+      setValue('address', {
+        addressNumber: currentValues.addressNumber,
+        postalCode: res.cep,
+        addressLine: res.logradouro,
+        district: res.bairro,
+        city: res.localidade,
+        state: res.uf,
+      });
+    } finally {
       setIsFetchingPostalCode(false);
-      return null;
+      await trigger('address.postalCode');
     }
-
-    setValue('address', {
-      addressNumber: currentValues.addressNumber,
-      postalCode: res.cep,
-      addressLine: res.logradouro,
-      district: res.bairro,
-      city: res.localidade,
-      state: res.uf,
-    });
-
-    setIsFetchingPostalCode(false);
-    await trigger('address.postalCode');
   };
 
   return (
