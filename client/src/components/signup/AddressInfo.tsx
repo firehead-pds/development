@@ -80,8 +80,6 @@ export default function AddressInfo({
 
       const currentValues = getValues('address');
 
-      controller = new AbortController();
-
       setValue('address', {
         addressNumber: currentValues.addressNumber,
         addressLine: '',
@@ -100,6 +98,7 @@ export default function AddressInfo({
         return;
       }
 
+      controller = new AbortController();
       const req = await fetch(
         'https://viacep.com.br/ws/' + currentPostalCode + '/json',
         { signal: controller.signal },
