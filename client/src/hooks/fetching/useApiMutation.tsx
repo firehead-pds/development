@@ -25,6 +25,11 @@ async function fetchData(endpoint: string, method: string, body?: any) {
   }
 }
 
+// Using custom types to organize what endpoints we have available in the API and what data to send
+// Here, E is a type with all the endpoints, where the key is the endpoint and the value is another type (M)
+// M is a type with all the available methods for a given endpoint, where the key is the method and the value is an
+// interface that says what the body of the request should have.
+// B is the request body interface
 export default function useApiMutate<
   E extends keyof Endpoints,
   M extends keyof Endpoints[E],

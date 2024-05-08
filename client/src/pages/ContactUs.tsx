@@ -9,8 +9,8 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
 
 export interface ContactUsInputs {
   userEmail: string;
@@ -31,42 +31,23 @@ export default function ContactUs() {
 
   const toast = useToast();
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync } = useApiMutate({
     mutationKey: ['contactData'],
-    mutationFn: async (contactData: ContactUsInputs) => {
-      const res = await fetch(
-        `${import.meta.env.VITE_BASE_API_URL!}/contact-us`,
-        {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(contactData),
-        },
-      );
-
-      if (!res.ok) {
-        throw new Error(
-          `Fetch request failed: ${res.status} ${res.statusText}`,
-        );
-      }
-
-      return res.json();
-    },
-    onError: () => {
-      toast({
-        title: tCommon('toasts.serverError.title'),
-        description: tCommon('toasts.serverError.description'),
-        status: 'error',
-      });
-    },
-    onSuccess: () => {
+    endpoint: 'contact-us',
+    method: 'POST',
+    onSuccess: (_res) => {
       reset();
       toast({
         title: t('toasts.sent.title'),
         description: t('toasts.sent.description'),
         status: 'success',
+      });
+    },
+    onError: (_error) => {
+      toast({
+        title: tCommon('toasts.serverError.title'),
+        description: tCommon('toasts.serverError.description'),
+        status: 'error',
       });
     },
   });

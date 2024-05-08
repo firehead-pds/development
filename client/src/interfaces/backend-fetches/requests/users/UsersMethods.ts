@@ -1,5 +1,5 @@
 import PostUsers from './PostUsers.ts';
 
-export type UsersEndpoints = {
+export type UsersMethods = {
   POST: PostUsers;
 };
