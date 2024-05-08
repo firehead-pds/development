@@ -16,7 +16,7 @@
       "placeholder": "Enter your message..."
     }
   },
-  "toast": {
+  "toasts": {
     "sent": {
       "title": "Sent",
       "description": "Your message has been successfully sent."
