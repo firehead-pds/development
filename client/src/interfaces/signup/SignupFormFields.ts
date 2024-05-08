@@ -1,5 +1,5 @@
-import Address from "../user/Address.ts";
-import Measurements from "../user/Measurements.ts";
+import Address from '../user/Address.ts';
+import Measurements from '../user/Measurements.ts';
 
 export default interface SignupFormFields {
   firstName: string;
@@ -11,5 +11,5 @@ export default interface SignupFormFields {
   address: Address;
   measurements: Measurements;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
 }

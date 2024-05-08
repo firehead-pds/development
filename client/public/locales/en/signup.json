@@ -37,7 +37,8 @@
           "maxLength": "Up to {{limit}} characters",
           "uppercase": "At least one uppercase letter",
           "lowercase": "At least one lowercase letter",
-          "number": "At least one number"
+          "number": "At least one number",
+          "specialCharacter": "At least one special character"
         },
         "toggle": {
           "show": "Show",
@@ -85,7 +86,7 @@
       },
       "addressLine": {
         "name": "address line",
-        "label": "Address Line:",
+        "label": "Address line:",
         "placeholder": "Your address..."
       },
       "addressNumber": {
@@ -93,28 +94,20 @@
         "label": "Address number:",
         "placeholder": "Ex: 1976"
       },
+      "noHouseNumber": {
+        "label": "No house number"
+      },
       "additionalInfo": {
         "name": "additional info",
-        "label": "Additional Info:",
+        "label": "Additional info:",
         "placeholder": "Ex: Apt. 3"
       }
     }
   },
-  "submit": "Submit",
   "dividers": {
     "personalInfo": "Personal Info",
     "accessCredentials": "Access Credentials",
     "measurements": "Measurements",
     "address": "Address"
-  },
-  "validationErrors": {
-    "required": "Required",
-    "invalid": "Invalid {{field}}",
-    "alreadyInUse": "{{field}} already in use",
-    "nonExistent": "This {{field}} does not exist",
-    "minLength": "Should have at least {{limit}} characters",
-    "maxLength": "Should not have more than {{limit}} characters",
-    "onlyLetters": "Only letters allowed",
-    "invalidAge": "You must be {{age}} or older in order to sign up"
   }
 }
