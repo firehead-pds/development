@@ -119,7 +119,7 @@ export default function AccessCredentials({
         <UnorderedList>
           <ListItem
             className={
-              errorList.minLength ? 'text-green-700' : 'text-slate-400'
+              errorList.minLength ? 'text-green-600' : 'text-slate-400'
             }
           >
             {t('password.requirements.minLength', { limit: 8 })}
