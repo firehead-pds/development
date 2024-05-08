@@ -55,7 +55,7 @@ export default function AccessCredentials({
     uppercase: /[A-Z]/.test(watchPassword),
     lowercase: /[a-z]/.test(watchPassword),
     number: /\d/.test(watchPassword),
-    specialCharacter: /[!@#$%^&*]/.test(watchPassword),
+    specialCharacter: /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/.test(watchPassword),
   };
 
   return (
@@ -100,7 +100,7 @@ export default function AccessCredentials({
               required: tErrors('required'),
               pattern: {
                 value:
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{8,24}$/,
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]).{8,24}$/,
                 message: tErrors('notMeetingRequirements'),
               },
             })}
