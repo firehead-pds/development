@@ -39,7 +39,15 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsString()
-  @Length(5, 24)
+  @Length(8, 24)
+  //Checks if there is at least:
+  // - a lowercase letter
+  // - an uppercase letter
+  // - a number
+  // - a symbol
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]).{8,24}$/,
+  )
   password: string;
 
   @ApiProperty()
