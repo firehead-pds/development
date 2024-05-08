@@ -1,5 +1,5 @@
-import Address from "./Address.ts";
-import Measurements from "./Measurements.ts";
+import Address from './Address.ts';
+import Measurements from './Measurements.ts';
 
 export default interface UserInfo {
   firstName: string;

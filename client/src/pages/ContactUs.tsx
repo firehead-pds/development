@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   Button,
   Flex,
@@ -8,9 +8,9 @@ import {
   Input,
   Textarea,
   useToast,
-} from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
+} from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 export interface ContactUsInputs {
   userEmail: string;
@@ -26,21 +26,21 @@ export default function ContactUs() {
     reset,
   } = useForm<ContactUsInputs>();
 
-  const { t: tCommon } = useTranslation("common");
-  const { t } = useTranslation("contact-us");
+  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation('contact-us');
 
   const toast = useToast();
 
   const { mutateAsync } = useMutation({
-    mutationKey: ["contactData"],
+    mutationKey: ['contactData'],
     mutationFn: async (contactData: ContactUsInputs) => {
       const res = await fetch(
         `${import.meta.env.VITE_BASE_API_URL!}/contact-us`,
         {
-          method: "POST",
-          mode: "cors",
+          method: 'POST',
+          mode: 'cors',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(contactData),
         },
@@ -56,17 +56,17 @@ export default function ContactUs() {
     },
     onError: () => {
       toast({
-        title: tCommon("toasts.serverError.title"),
-        description: tCommon("toasts.serverError.description"),
-        status: "error",
+        title: tCommon('toasts.serverError.title'),
+        description: tCommon('toasts.serverError.description'),
+        status: 'error',
       });
     },
     onSuccess: () => {
       reset();
       toast({
-        title: t("toasts.sent.title"),
-        description: t("toasts.sent.description"),
-        status: "success",
+        title: t('toasts.sent.title'),
+        description: t('toasts.sent.description'),
+        status: 'success',
       });
     },
   });
@@ -78,27 +78,27 @@ export default function ContactUs() {
   return (
     <>
       <Flex
-        alignItems={"center"}
-        justifyContent={"center"}
-        className={"w-screen my-6"}
+        alignItems={'center'}
+        justifyContent={'center'}
+        className={'w-screen my-6'}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className={"p-4 border rounded-lg mx-2 w-[600px]"}
+          className={'p-4 border rounded-lg mx-2 w-[600px]'}
           noValidate
         >
           <FormControl isRequired isInvalid={!!errors.userEmail}>
-            <FormLabel htmlFor="userEmail">{t("fields.email.label")}</FormLabel>
+            <FormLabel htmlFor="userEmail">{t('fields.email.label')}</FormLabel>
             <Input
               id="userEmail"
               type="text"
-              placeholder={t("fields.email.placeholder")}
-              {...register("userEmail", {
-                required: tCommon("forms.validationErrors.required"),
+              placeholder={t('fields.email.placeholder')}
+              {...register('userEmail', {
+                required: tCommon('forms.validationErrors.required'),
                 pattern: {
                   value: /^\S+@\S+[.]\S+$/i,
-                  message: tCommon("forms.validationErrors.invalid", {
-                    field: t("fields.email.name"),
+                  message: tCommon('forms.validationErrors.invalid', {
+                    field: t('fields.email.name'),
                   }),
                 },
               })}
@@ -109,16 +109,16 @@ export default function ContactUs() {
           </FormControl>
 
           <FormControl isRequired isInvalid={!!errors.title}>
-            <FormLabel htmlFor="title">{t("fields.title.label")}</FormLabel>
+            <FormLabel htmlFor="title">{t('fields.title.label')}</FormLabel>
             <Input
               id="title"
               type="text"
-              placeholder={t("fields.title.placeholder")}
-              {...register("title", {
-                required: tCommon("forms.validationErrors.required"),
+              placeholder={t('fields.title.placeholder')}
+              {...register('title', {
+                required: tCommon('forms.validationErrors.required'),
                 max: {
                   value: 50,
-                  message: tCommon("forms.validationErrors.maxLength", {
+                  message: tCommon('forms.validationErrors.maxLength', {
                     limit: 50,
                   }),
                 },
@@ -130,15 +130,15 @@ export default function ContactUs() {
           </FormControl>
 
           <FormControl isRequired isInvalid={!!errors.message}>
-            <FormLabel htmlFor="message">{t("fields.message.label")}</FormLabel>
+            <FormLabel htmlFor="message">{t('fields.message.label')}</FormLabel>
             <Textarea
               id="message"
-              placeholder={t("fields.message.placeholder")}
-              {...register("message", {
-                required: tCommon("forms.validationErrors.required"),
+              placeholder={t('fields.message.placeholder')}
+              {...register('message', {
+                required: tCommon('forms.validationErrors.required'),
                 max: {
                   value: 200,
-                  message: tCommon("forms.validationErrors.maxLength", {
+                  message: tCommon('forms.validationErrors.maxLength', {
                     limit: 200,
                   }),
                 },
@@ -150,7 +150,7 @@ export default function ContactUs() {
           </FormControl>
 
           <Button isLoading={isSubmitting} type="submit">
-            {tCommon("forms.submit")}
+            {tCommon('forms.submit')}
           </Button>
         </form>
       </Flex>

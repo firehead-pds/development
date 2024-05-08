@@ -1,37 +1,37 @@
-import Signup from "./pages/Signup.tsx";
-import ContactUs from "./pages/ContactUs.tsx";
+import Signup from './pages/Signup.tsx';
+import ContactUs from './pages/ContactUs.tsx';
 import {
   createBrowserRouter,
   Link as ReactRouterLink,
   RouterProvider,
-} from "react-router-dom";
-import Layout from "./pages/Layout.tsx";
-import { Link } from "@chakra-ui/react";
+} from 'react-router-dom';
+import Layout from './pages/Layout.tsx';
+import { Link } from '@chakra-ui/react';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Layout />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: (
           <>
-            <Link as={ReactRouterLink} to={"/signup"}>
+            <Link as={ReactRouterLink} to={'/signup'}>
               Signup
             </Link>
-            <Link as={ReactRouterLink} to={"/contact-us"}>
+            <Link as={ReactRouterLink} to={'/contact-us'}>
               Contact Us
             </Link>
           </>
         ),
       },
       {
-        path: "/signup",
+        path: '/signup',
         element: <Signup />,
       },
       {
-        path: "/contact-us",
+        path: '/contact-us',
         element: <ContactUs />,
       },
     ],

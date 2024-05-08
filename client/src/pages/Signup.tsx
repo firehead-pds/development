@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   AbsoluteCenter,
   Box,
@@ -6,30 +6,32 @@ import {
   Divider,
   Flex,
   useToast,
-} from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import AddressInfo from "../components/signup/AddressInfo.tsx";
-import MeasurementsInfo from "../components/signup/MeasurementsInfo.tsx";
-import PersonalInfo from "../components/signup/PersonalInfo.tsx";
-import AccessCredentials from "../components/signup/AccessCredentials.tsx";
-import SignupFormFields from "../interfaces/signup/SignupFormFields.ts";
-import PostUsers from "../interfaces/backend-fetches/requests/users/PostUsers.ts";
-import ErrorResponse from "../interfaces/backend-fetches/responses/ErrorResponse.ts";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+} from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
+import AddressInfo from '../components/signup/AddressInfo.tsx';
+import MeasurementsInfo from '../components/signup/MeasurementsInfo.tsx';
+import PersonalInfo from '../components/signup/PersonalInfo.tsx';
+import AccessCredentials from '../components/signup/AccessCredentials.tsx';
+import SignupFormFields from '../interfaces/signup/SignupFormFields.ts';
+import PostUsers from '../interfaces/backend-fetches/requests/users/PostUsers.ts';
+import ErrorResponse from '../interfaces/backend-fetches/responses/ErrorResponse.ts';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function Signup() {
-  const { t } = useTranslation("signup");
-  const { t: tCommon } = useTranslation("common", {
-    keyPrefix: "forms"
+  const { t } = useTranslation('signup');
+  const { t: tCommon } = useTranslation('common', {
+    keyPrefix: 'forms',
   });
 
   const errorToast = useToast();
   const navigate = useNavigate();
 
   const [isFetchingPostalCode, setIsFetchingPostalCode] = useState(false);
-  const setIsFetchingPostalCodeHandler = (value: boolean) => {setIsFetchingPostalCode(value);}
+  const setIsFetchingPostalCodeHandler = (value: boolean) => {
+    setIsFetchingPostalCode(value);
+  };
 
   const {
     register,
@@ -39,24 +41,24 @@ export default function Signup() {
     setValue,
     getValues,
     trigger,
-    watch
+    watch,
   } = useForm<SignupFormFields>({
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues: {
       address: {
-        noHouseNumber: false
-      }
-    }
+        noHouseNumber: false,
+      },
+    },
   });
 
   const { mutateAsync } = useMutation({
-    mutationKey: ["sendSignupData"],
+    mutationKey: ['sendSignupData'],
     mutationFn: async (formData: PostUsers) => {
       const res = await fetch(`${import.meta.env.VITE_BASE_API_URL!}/users`, {
-        method: "POST",
-        mode: "cors",
+        method: 'POST',
+        mode: 'cors',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
@@ -65,13 +67,13 @@ export default function Signup() {
         if (res.status === 409) {
           const data = (await res.json()) as ErrorResponse;
 
-          if (data.message === "cpf already in use") {
+          if (data.message === 'cpf already in use') {
             setError(
-              "cpf",
+              'cpf',
               {
-                type: "custom",
-                message: tCommon("validationErrors.alreadyInUse", {
-                  field: t("fields.personalInfo.cpf.name"),
+                type: 'custom',
+                message: tCommon('validationErrors.alreadyInUse', {
+                  field: t('fields.personalInfo.cpf.name'),
                 }),
               },
               { shouldFocus: true },
@@ -79,13 +81,13 @@ export default function Signup() {
             return;
           }
 
-          if (data.message === "email already in use") {
+          if (data.message === 'email already in use') {
             setError(
-              "email",
+              'email',
               {
-                type: "custom",
-                message: tCommon("validationErrors.alreadyInUse", {
-                  field: t("fields.accessCredentials.email.name"),
+                type: 'custom',
+                message: tCommon('validationErrors.alreadyInUse', {
+                  field: t('fields.accessCredentials.email.name'),
                 }),
               },
               { shouldFocus: true },
@@ -101,15 +103,15 @@ export default function Signup() {
     },
     onSuccess: () => {
       if (Object.keys(errors).length === 0) {
-        navigate("/");
+        navigate('/');
       }
     },
     onError: () => {
       errorToast({
-        title: "There was an error connecting to the server.",
-        description: "Try again later.",
-        status: "error",
-        variant: "left-accent",
+        title: 'There was an error connecting to the server.',
+        description: 'Try again later.',
+        status: 'error',
+        variant: 'left-accent',
         duration: 8000,
         isClosable: true,
       });
@@ -119,27 +121,27 @@ export default function Signup() {
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword: _, ...postData } = data;
-    postData.cpf = postData.cpf.replace(/\./, "").replace("-", "");
+    postData.cpf = postData.cpf.replace(/\./, '').replace('-', '');
     await mutateAsync(postData);
   };
 
   return (
     <>
       <Flex
-        alignItems={"center"}
-        justifyContent={"center"}
-        className={"w-screen my-6"}
+        alignItems={'center'}
+        justifyContent={'center'}
+        className={'w-screen my-6'}
       >
         <form
-          id={"signupForm"}
+          id={'signupForm'}
           onSubmit={handleSubmit(onSubmit)}
-          className={"p-4 border rounded-lg mx-2 w-[500px]"}
+          className={'p-4 border rounded-lg mx-2 w-[500px]'}
           noValidate
         >
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.personalInfo")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.personalInfo')}
             </AbsoluteCenter>
           </Box>
           <PersonalInfo
@@ -151,8 +153,8 @@ export default function Signup() {
 
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.accessCredentials")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.accessCredentials')}
             </AbsoluteCenter>
           </Box>
           <AccessCredentials
@@ -166,8 +168,8 @@ export default function Signup() {
 
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.measurements")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.measurements')}
             </AbsoluteCenter>
           </Box>
           <MeasurementsInfo
@@ -179,8 +181,8 @@ export default function Signup() {
 
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.address")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.address')}
             </AbsoluteCenter>
           </Box>
           <AddressInfo
@@ -193,8 +195,12 @@ export default function Signup() {
             trigger={trigger}
             watch={watch}
           />
-          <Button isLoading={isSubmitting || isFetchingPostalCode} type="submit" form={"signupForm"}>
-            {tCommon("submit")}
+          <Button
+            isLoading={isSubmitting || isFetchingPostalCode}
+            type="submit"
+            form={'signupForm'}
+          >
+            {tCommon('submit')}
           </Button>
         </form>
       </Flex>

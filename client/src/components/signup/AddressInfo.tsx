@@ -6,7 +6,7 @@ import {
   UseFormSetValue,
   UseFormTrigger,
   UseFormWatch,
-} from "react-hook-form";
+} from 'react-hook-form';
 import {
   Checkbox,
   FormControl,
@@ -14,10 +14,10 @@ import {
   FormLabel,
   Grid,
   Input,
-} from "@chakra-ui/react";
-import { ChangeEventHandler } from "react";
-import SignupFormFields from "../../interfaces/signup/SignupFormFields.ts";
-import { useTranslation } from "react-i18next";
+} from '@chakra-ui/react';
+import { ChangeEventHandler } from 'react';
+import SignupFormFields from '../../interfaces/signup/SignupFormFields.ts';
+import { useTranslation } from 'react-i18next';
 
 interface AddressInfoProps {
   register: UseFormRegister<SignupFormFields>;
@@ -54,14 +54,14 @@ export default function AddressInfo({
   trigger,
   watch,
 }: AddressInfoProps) {
-  const { t } = useTranslation("signup", {
-    keyPrefix: "fields.addressInfo",
+  const { t } = useTranslation('signup', {
+    keyPrefix: 'fields.addressInfo',
   });
-  const { t: tErrors } = useTranslation("common", {
-    keyPrefix: "forms.validationErrors",
+  const { t: tErrors } = useTranslation('common', {
+    keyPrefix: 'forms.validationErrors',
   });
 
-  const watchCheckBox = watch("address.noHouseNumber");
+  const watchCheckBox = watch('address.noHouseNumber');
 
   let controller: AbortController | null = null;
 
@@ -71,29 +71,33 @@ export default function AddressInfo({
     if (controller) {
       controller.abort();
     }
-    const currentValues = getValues("address");
+    const currentValues = getValues('address');
     console.log(currentValues);
 
     controller = new AbortController();
 
-    setValue("address", {
+    setValue('address', {
       addressNumber: currentValues.addressNumber,
-      addressLine: "",
-      district: "",
-      city: "",
-      state: "",
+      addressLine: '',
+      district: '',
+      city: '',
+      state: '',
     });
 
     const currentPostalCode = e.target.value;
 
-    if (currentPostalCode.length < 8 || currentPostalCode.length > 9 || !/^\d{5}-?\d{3}$/.test(currentPostalCode)) {
+    if (
+      currentPostalCode.length < 8 ||
+      currentPostalCode.length > 9 ||
+      !/^\d{5}-?\d{3}$/.test(currentPostalCode)
+    ) {
       return;
     }
 
     setIsFetchingPostalCode(true);
 
     const req = await fetch(
-      "https://viacep.com.br/ws/" + currentPostalCode + "/json",
+      'https://viacep.com.br/ws/' + currentPostalCode + '/json',
       { signal: controller.signal },
     );
 
@@ -104,15 +108,15 @@ export default function AddressInfo({
     const res = (await req.json()) as ViacepApiResponse;
 
     if (res.erro) {
-      setError("address.postalCode", {
-        type: "custom",
-        message: tErrors("nonExistent", { field: t("postalCode.name") }),
+      setError('address.postalCode', {
+        type: 'custom',
+        message: tErrors('nonExistent', { field: t('postalCode.name') }),
       });
       setIsFetchingPostalCode(false);
       return null;
     }
 
-    setValue("address", {
+    setValue('address', {
       addressNumber: currentValues.addressNumber,
       postalCode: res.cep,
       addressLine: res.logradouro,
@@ -122,26 +126,26 @@ export default function AddressInfo({
     });
 
     setIsFetchingPostalCode(false);
-    await trigger("address.postalCode");
+    await trigger('address.postalCode');
   };
 
   return (
     <Grid>
       <FormControl isRequired isInvalid={!!errors.address?.postalCode}>
-        <FormLabel htmlFor="cep">{t("postalCode.label")}</FormLabel>
+        <FormLabel htmlFor="cep">{t('postalCode.label')}</FormLabel>
         <Input
           id="cep"
           type="text"
           placeholder="00000-000"
-          {...register("address.postalCode", {
-            required: tErrors("required"),
+          {...register('address.postalCode', {
+            required: tErrors('required'),
             pattern: {
               value: /^\d{5}-?\d{3}$/,
-              message: tErrors("invalid", { field: t("postalCode.name") }),
+              message: tErrors('invalid', { field: t('postalCode.name') }),
             },
           })}
           onChange={postalCodeChangeHandler}
-          inputMode={"numeric"}
+          inputMode={'numeric'}
         />
         <FormErrorMessage>
           {errors.address?.postalCode && errors.address.postalCode.message}
@@ -149,84 +153,91 @@ export default function AddressInfo({
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="state">{t("state.label")}</FormLabel>
+        <FormLabel htmlFor="state">{t('state.label')}</FormLabel>
         <Input
           id="state"
           type="text"
-          placeholder={t("state.placeholder")}
-          {...register("address.state", {
-            required: tErrors("required"),
+          placeholder={t('state.placeholder')}
+          {...register('address.state', {
+            required: tErrors('required'),
           })}
         />
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="city">{t("city.label")}</FormLabel>
+        <FormLabel htmlFor="city">{t('city.label')}</FormLabel>
         <Input
           id="city"
           type="text"
-          placeholder={t("city.placeholder")}
-          {...register("address.city")}
+          placeholder={t('city.placeholder')}
+          {...register('address.city')}
         />
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="district">{t("district.label")}</FormLabel>
+        <FormLabel htmlFor="district">{t('district.label')}</FormLabel>
         <Input
           id="district"
           type="text"
-          placeholder={t("district.placeholder")}
-          {...register("address.district")}
+          placeholder={t('district.placeholder')}
+          {...register('address.district')}
         />
       </FormControl>
 
       <FormControl isRequired isDisabled>
-        <FormLabel htmlFor="address">{t("addressLine.label")}</FormLabel>
+        <FormLabel htmlFor="address">{t('addressLine.label')}</FormLabel>
         <Input
           id="address"
           type="text"
-          placeholder={t("addressLine.placeholder")}
-          {...register("address.addressLine")}
+          placeholder={t('addressLine.placeholder')}
+          {...register('address.addressLine')}
         />
       </FormControl>
 
-      <FormControl isRequired={!watchCheckBox} isDisabled={watchCheckBox} isInvalid={!!errors.address?.addressNumber}>
-        <FormLabel htmlFor="houseNumber">{t("addressNumber.label")}</FormLabel>
+      <FormControl
+        isRequired={!watchCheckBox}
+        isDisabled={watchCheckBox}
+        isInvalid={!!errors.address?.addressNumber}
+      >
+        <FormLabel htmlFor="houseNumber">{t('addressNumber.label')}</FormLabel>
 
         <Input
           id="houseNumber"
           type="text"
           placeholder="Ex: 182"
-          {...register("address.addressNumber", {
+          {...register('address.addressNumber', {
             required: {
               value: !watchCheckBox,
-              message: tErrors("required")
+              message: tErrors('required'),
             },
             pattern: {
               value: /^[0-9]+$/,
-              message: tErrors("onlyNumbers"),
-            }
+              message: tErrors('onlyNumbers'),
+            },
           })}
-          inputMode={"numeric"}
+          inputMode={'numeric'}
         />
 
         <FormErrorMessage>
-          {errors.address?.addressNumber && errors.address.addressNumber.message}
+          {errors.address?.addressNumber &&
+            errors.address.addressNumber.message}
         </FormErrorMessage>
       </FormControl>
 
-      <Checkbox {...register("address.noHouseNumber")}>{t("noHouseNumber.label")}</Checkbox>
+      <Checkbox {...register('address.noHouseNumber')}>
+        {t('noHouseNumber.label')}
+      </Checkbox>
 
       <FormControl isInvalid={!!errors.address?.complement}>
-        <FormLabel htmlFor="complement">{t("additionalInfo.label")}</FormLabel>
+        <FormLabel htmlFor="complement">{t('additionalInfo.label')}</FormLabel>
         <Input
           id="complement"
           type="text"
-          placeholder={t("additionalInfo.placeholder")}
-          {...register("address.complement", {
+          placeholder={t('additionalInfo.placeholder')}
+          {...register('address.complement', {
             maxLength: {
               value: 50,
-              message: tErrors("maxLength", { limit: "50" }),
+              message: tErrors('maxLength', { limit: '50' }),
             },
           })}
         />
