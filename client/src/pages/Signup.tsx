@@ -7,17 +7,16 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
 import AddressInfo from '../components/signup/AddressInfo.tsx';
 import MeasurementsInfo from '../components/signup/MeasurementsInfo.tsx';
 import PersonalInfo from '../components/signup/PersonalInfo.tsx';
 import AccessCredentials from '../components/signup/AccessCredentials.tsx';
 import SignupFormFields from '../interfaces/signup/SignupFormFields.ts';
-import PostUsers from '../interfaces/backend-fetches/requests/users/PostUsers.ts';
 import ErrorResponse from '../interfaces/backend-fetches/responses/ErrorResponse.ts';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
 
 export default function Signup() {
   const { t } = useTranslation('signup');
@@ -51,22 +50,19 @@ export default function Signup() {
     },
   });
 
-  const { mutateAsync } = useMutation({
-    mutationKey: ['sendSignupData'],
-    mutationFn: async (formData: PostUsers) => {
-      const res = await fetch(`${import.meta.env.VITE_BASE_API_URL!}/users`, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          const data = (await res.json()) as ErrorResponse;
-
+  const { mutateAsync } = useApiMutate({
+    mutationKey: ['signup'],
+    endpoint: 'users',
+    method: 'POST',
+    onSuccess: (_res) => {
+      if (Object.keys(errors).length === 0) {
+        navigate('/');
+      }
+    },
+    onError: async (error) => {
+      if (error instanceof Response) {
+        if (error.status === 409) {
+          const data = (await error.json()) as ErrorResponse;
           if (data.message === 'cpf already in use') {
             setError(
               'cpf',
@@ -95,18 +91,7 @@ export default function Signup() {
             return;
           }
         }
-
-        throw new Error(
-          `Fetch request failed: ${res.status} ${res.statusText}`,
-        );
       }
-    },
-    onSuccess: () => {
-      if (Object.keys(errors).length === 0) {
-        navigate('/');
-      }
-    },
-    onError: () => {
       errorToast({
         title: 'There was an error connecting to the server.',
         description: 'Try again later.',
@@ -119,9 +104,8 @@ export default function Signup() {
   });
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     delete data.confirmPassword;
-    data.cpf = data.cpf.replace(/\./, '').replace('-', '');
+    data.cpf = data.cpf.replace(/\./g, '').replace('-', '');
 
     if (data.address.noAddressNumber) {
       delete data.address.addressNumber;

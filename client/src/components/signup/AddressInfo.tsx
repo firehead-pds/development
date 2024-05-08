@@ -230,7 +230,7 @@ export default function AddressInfo({
       <Checkbox
         {...register('address.noAddressNumber', {
           onChange: () => {
-            setValue('address.addressNumber', '');
+            setValue('address.addressNumber', '', { shouldValidate: true });
           },
         })}
       >
