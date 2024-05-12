@@ -22,4 +22,8 @@ export class UsersService {
 
     return 'user created successfully';
   }
+
+  public async findByEmail(email: string) {
+    return await this.repo.findOneBy({ email });
+  }
 }
