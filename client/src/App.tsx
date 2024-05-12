@@ -1,5 +1,6 @@
 import Signup from './pages/Signup.tsx';
 import ContactUs from './pages/ContactUs.tsx';
+import Login from './pages/Login.tsx';
 import {
   createBrowserRouter,
   Link as ReactRouterLink,
@@ -18,10 +19,13 @@ const router = createBrowserRouter([
         element: (
           <>
             <Link as={ReactRouterLink} to={'/signup'}>
-              Signup
+              Sign-Up
             </Link>
             <Link as={ReactRouterLink} to={'/contact-us'}>
               Contact Us
+            </Link>
+            <Link as={ReactRouterLink} to={'/login'}>
+              Log-In
             </Link>
           </>
         ),
@@ -33,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: '/contact-us',
         element: <ContactUs />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       },
     ],
   },
