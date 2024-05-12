@@ -1,0 +1,14 @@
+{
+  "fields": {
+    "email" : {
+      "name" : "Email",
+      "label" : "Email",
+      "placeholder": "Digite seu email"
+    },
+    "password" : {
+      "name" : "Senha",
+      "label" : "Senha",
+      "placeholder": "Digite sua senha"
+    }
+  }
+}

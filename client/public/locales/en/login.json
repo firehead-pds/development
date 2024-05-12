@@ -1,0 +1,14 @@
+{
+  "fields": {
+    "email" : {
+      "name" : "email",
+      "label" : "Email",
+      "placeholder": "Enter your email..."
+    },
+    "password" : {
+      "name" : "password",
+      "label" : "Password",
+      "placeholder": "Enter your password..."
+    }
+  }
+}
