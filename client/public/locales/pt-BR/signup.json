@@ -37,7 +37,8 @@
           "maxLength": "Até {{limit}} caracteres",
           "uppercase": "Pelo menos uma letra maiúscula",
           "lowercase": "Pelo menos uma letra minúscula",
-          "number": "Pelo menos um número"
+          "number": "Pelo menos um número",
+          "specialCharacter": "Pelo menos um carácter especial"
         },
         "toggle": {
           "show": "Mostrar",
@@ -93,6 +94,9 @@
         "label": "Número:",
         "placeholder": "Ex: 1976"
       },
+      "noHouseNumber": {
+        "label": "Sem Número"
+      },
       "additionalInfo": {
         "name": "Complemento",
         "label": "Complemento:",
@@ -100,21 +104,10 @@
       }
     }
   },
-  "submit": "Enviar",
   "dividers": {
     "personalInfo": "Informações pessoais",
     "accessCredentials": "Credenciais de acesso",
     "measurements": "Medidas",
     "address": "Endereço"
-  },
-  "validationErrors": {
-    "required": "Obrigatório",
-    "invalid": "{{field}} inválido",
-    "alreadyInUse": "{{field}} já em uso",
-    "nonExistent": "{{field}} não existe",
-    "minLength": "Deve ter pelo menos {{limit}} caracteres",
-    "maxLength": "Não deve ter mais de {{limit}} caracteres",
-    "onlyLetters": "Apenas letras permitidas",
-    "invalidAge": "É necessário ter {{age}} anos ou mais para o cadastro"
   }
 }

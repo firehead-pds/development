@@ -6,5 +6,5 @@ export default interface Address {
   state?: string;
   addressNumber?: string;
   complement?: string | null;
-  noHouseNumber?: boolean;
+  noAddressNumber?: boolean;
 }

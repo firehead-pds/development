@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   AbsoluteCenter,
   Box,
@@ -6,26 +6,31 @@ import {
   Divider,
   Flex,
   useToast,
-} from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import AddressInfo from "../components/signup/AddressInfo.tsx";
-import MeasurementsInfo from "../components/signup/MeasurementsInfo.tsx";
-import PersonalInfo from "../components/signup/PersonalInfo.tsx";
-import AccessCredentials from "../components/signup/AccessCredentials.tsx";
-import SignupFormFields from "../interfaces/signup/SignupFormFields.ts";
-import PostUsers from "../interfaces/backend-fetches/requests/users/PostUsers.ts";
-import ErrorResponse from "../interfaces/backend-fetches/responses/ErrorResponse.ts";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+} from '@chakra-ui/react';
+import AddressInfo from '../components/signup/AddressInfo.tsx';
+import MeasurementsInfo from '../components/signup/MeasurementsInfo.tsx';
+import PersonalInfo from '../components/signup/PersonalInfo.tsx';
+import AccessCredentials from '../components/signup/AccessCredentials.tsx';
+import SignupFormFields from '../interfaces/signup/SignupFormFields.ts';
+import ErrorResponse from '../interfaces/backend-fetches/responses/ErrorResponse.ts';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
 
 export default function Signup() {
-  const { t } = useTranslation("signup");
-  const { t: tError } = useTranslation("signup", {
-    keyPrefix: "validationErrors",
+  const { t } = useTranslation('signup');
+  const { t: tCommon } = useTranslation('common', {
+    keyPrefix: 'forms',
   });
 
   const errorToast = useToast();
   const navigate = useNavigate();
+
+  const [isFetchingPostalCode, setIsFetchingPostalCode] = useState(false);
+  const setIsFetchingPostalCodeHandler = (value: boolean) => {
+    setIsFetchingPostalCode(value);
+  };
 
   const {
     register,
@@ -35,32 +40,37 @@ export default function Signup() {
     setValue,
     getValues,
     trigger,
-    watch
-  } = useForm<SignupFormFields>({ mode: "onBlur" });
+    watch,
+    resetField,
+  } = useForm<SignupFormFields>({
+    mode: 'onBlur',
+    defaultValues: {
+      address: {
+        noAddressNumber: false,
+      },
+    },
+  });
 
-  const { mutateAsync } = useMutation({
-    mutationKey: ["sendSignupData"],
-    mutationFn: async (formData: PostUsers) => {
-      const res = await fetch(`${import.meta.env.VITE_BASE_API_URL!}/users`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          const data = (await res.json()) as ErrorResponse;
-
-          if (data.message === "cpf already in use") {
+  const { mutateAsync } = useApiMutate({
+    mutationKey: ['signup'],
+    endpoint: 'users',
+    method: 'POST',
+    onSuccess: (_res) => {
+      if (Object.keys(errors).length === 0) {
+        navigate('/');
+      }
+    },
+    onError: async (error) => {
+      if (error instanceof Response) {
+        if (error.status === 409) {
+          const data = (await error.json()) as ErrorResponse;
+          if (data.message === 'cpf already in use') {
             setError(
-              "cpf",
+              'cpf',
               {
-                type: "custom",
-                message: tError("alreadyInUse", {
-                  field: t("fields.personalInfo.cpf.name"),
+                type: 'custom',
+                message: tCommon('validationErrors.alreadyInUse', {
+                  field: t('fields.personalInfo.cpf.name'),
                 }),
               },
               { shouldFocus: true },
@@ -68,13 +78,13 @@ export default function Signup() {
             return;
           }
 
-          if (data.message === "email already in use") {
+          if (data.message === 'email already in use') {
             setError(
-              "email",
+              'email',
               {
-                type: "custom",
-                message: tError("alreadyInUse", {
-                  field: t("fields.accessCredentials.email.name"),
+                type: 'custom',
+                message: tCommon('validationErrors.alreadyInUse', {
+                  field: t('fields.accessCredentials.email.name'),
                 }),
               },
               { shouldFocus: true },
@@ -82,23 +92,12 @@ export default function Signup() {
             return;
           }
         }
-
-        throw new Error(
-          `Fetch request failed: ${res.status} ${res.statusText}`,
-        );
       }
-    },
-    onSuccess: () => {
-      if (Object.keys(errors).length === 0) {
-        navigate("/");
-      }
-    },
-    onError: () => {
       errorToast({
-        title: "There was an error connecting to the server.",
-        description: "Try again later.",
-        status: "error",
-        variant: "left-accent",
+        title: 'There was an error connecting to the server.',
+        description: 'Try again later.',
+        status: 'error',
+        variant: 'left-accent',
         duration: 8000,
         isClosable: true,
       });
@@ -106,29 +105,34 @@ export default function Signup() {
   });
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword: _, ...postData } = data;
+    delete data.confirmPassword;
+    data.cpf = data.cpf.replace(/\./g, '').replace('-', '');
 
-    await mutateAsync(postData);
+    if (data.address.noAddressNumber) {
+      delete data.address.addressNumber;
+    }
+
+    delete data.address.noAddressNumber;
+    await mutateAsync(data);
   };
 
   return (
     <>
       <Flex
-        alignItems={"center"}
-        justifyContent={"center"}
-        className={"w-screen my-6"}
+        alignItems={'center'}
+        justifyContent={'center'}
+        className={'w-screen my-6'}
       >
         <form
-          id={"signupForm"}
+          id={'signupForm'}
           onSubmit={handleSubmit(onSubmit)}
-          className={"p-4 border rounded-lg mx-2 w-[500px]"}
+          className={'p-4 border rounded-lg mx-2 w-[500px]'}
           noValidate
         >
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.personalInfo")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.personalInfo')}
             </AbsoluteCenter>
           </Box>
           <PersonalInfo
@@ -140,26 +144,25 @@ export default function Signup() {
 
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.accessCredentials")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.accessCredentials')}
             </AbsoluteCenter>
           </Box>
-
           <AccessCredentials
             register={register}
             errors={errors}
             setError={setError}
             setValue={setValue}
             getValues={getValues}
+            watch={watch}
           />
 
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.measurements")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.measurements')}
             </AbsoluteCenter>
           </Box>
-
           <MeasurementsInfo
             register={register}
             errors={errors}
@@ -169,22 +172,27 @@ export default function Signup() {
 
           <Box position="relative" paddingY="10">
             <Divider />
-            <AbsoluteCenter bg="white" px="4" className={"text-center"}>
-              {t("dividers.address")}
+            <AbsoluteCenter bg="white" px="4" className={'text-center'}>
+              {t('dividers.address')}
             </AbsoluteCenter>
           </Box>
-
           <AddressInfo
             register={register}
             errors={errors}
+            setIsFetchingPostalCode={setIsFetchingPostalCodeHandler}
             setError={setError}
             setValue={setValue}
             getValues={getValues}
             trigger={trigger}
             watch={watch}
+            resetField={resetField}
           />
-          <Button isLoading={isSubmitting} type="submit" form={"signupForm"}>
-            {t("submit")}
+          <Button
+            isLoading={isSubmitting || isFetchingPostalCode}
+            type="submit"
+            form={'signupForm'}
+          >
+            {tCommon('submit')}
           </Button>
         </form>
       </Flex>
