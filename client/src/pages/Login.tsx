@@ -40,7 +40,7 @@ export default function Login() {
 
   const { mutateAsync } = useApiMutate({
     mutationKey: ['log-in'],
-    endpoint: 'log-in',
+    endpoint: 'auth/login',
     method: 'POST',
     onSuccess: (_res) => {
       if (Object.keys(errors).length === 0) {

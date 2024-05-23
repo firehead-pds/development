@@ -5,5 +5,5 @@ import { LogInMethods } from './auth/LogInMethods.ts';
 export type Endpoints = {
   users: UsersMethods;
   'contact-us': ContactUsMethods;
-  'log-in': LogInMethods;
+  'auth/login': LogInMethods;
 };
