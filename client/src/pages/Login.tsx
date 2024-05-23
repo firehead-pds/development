@@ -12,6 +12,8 @@ import LoginFormFields from '../interfaces/login/LoginFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
+import { useAppDispatch } from '../hook.ts';
+import { login } from '../loginSlice.ts';
 
 export default function Login() {
   const { t } = useTranslation('login', {
@@ -34,6 +36,7 @@ export default function Login() {
 
   const errorToast = useToast();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { mutateAsync } = useApiMutate({
     mutationKey: ['log-in'],
@@ -58,6 +61,7 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
+    dispatch(login());
     await mutateAsync(data);
   };
 
