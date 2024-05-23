@@ -84,4 +84,14 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
+
+  async logout(tokenId: string) {
+    const token = await this.tokenRepo.findOneBy({ tokenId });
+    if (!token) {
+      return;
+    }
+
+    await this.tokenRepo.remove(token);
+    return;
+  }
 }

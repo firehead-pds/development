@@ -45,6 +45,4 @@ export class User {
 
   @OneToMany(() => Token, (token) => token.user)
   refreshTokens?: Token;
-
-  tokenId?: string;
 }

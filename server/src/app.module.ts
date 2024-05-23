@@ -11,7 +11,8 @@ import * as process from 'node:process';
 import { DatabaseModule } from './config/database.module';
 import { AuthModule } from './auth/auth.module';
 import fastifyCookie from '@fastify/cookie';
-import { HttpAdapterHost } from '@nestjs/core';
+import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
+import AccessTokenGuard from './auth/guards/access-token.guard';
 
 @Module({
   imports: [
@@ -42,6 +43,10 @@ import { HttpAdapterHost } from '@nestjs/core';
         });
       },
       inject: [HttpAdapterHost, ConfigService],
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AccessTokenGuard,
     },
   ],
 })
