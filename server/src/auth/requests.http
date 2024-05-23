@@ -5,3 +5,7 @@ Content-Type: application/json
   "email": "",
   "password": ""
 }
+
+###
+GET http://localhost:3000/auth/refresh
+Cookie: refreshToken=

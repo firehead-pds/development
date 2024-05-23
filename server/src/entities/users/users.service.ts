@@ -23,6 +23,10 @@ export class UsersService {
     return 'user created successfully';
   }
 
+  public async findById(id: number) {
+    return await this.repo.findOneBy({ id });
+  }
+
   public async findByEmail(email: string) {
     return await this.repo.findOneBy({ email });
   }

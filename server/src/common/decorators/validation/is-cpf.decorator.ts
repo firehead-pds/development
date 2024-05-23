@@ -1,7 +1,7 @@
 import {
   registerDecorator,
-  ValidationOptions,
   ValidationArguments,
+  ValidationOptions,
 } from 'class-validator';
 import { cpf } from 'cpf-cnpj-validator';
 

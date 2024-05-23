@@ -6,7 +6,7 @@ import { ContactUsController } from './contact-us.controller';
 import { EmailModule } from '../../common/email/email.module';
 
 @Module({
-    imports: [EmailModule],
+  imports: [EmailModule],
   controllers: [ContactUsController],
   providers: [ContactUsService],
 })

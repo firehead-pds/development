@@ -1,8 +1,15 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Address } from "../address/address.entity";
-import { Measurements } from "../measurements/measurements.entity";
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Address } from '../address/address.entity';
+import { Measurements } from '../measurements/measurements.entity';
+import Token from '../../auth/token.entity';
 
-@Entity({name: "users"})
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,18 +26,25 @@ export class User {
   @Column({ length: 70, unique: true })
   email: string;
 
-  @Column({ type: "char", length: 60 })
+  @Column({ type: 'char', length: 60 })
   password: string;
 
   @Column({ length: 11 })
   phoneNumber: string;
 
-  @Column({ type: "char", length: 11, unique: true })
+  @Column({ type: 'char', length: 11, unique: true })
   cpf: string;
 
-  @OneToOne(() => Address, address => address.user, { cascade: true })
-  address: Address;
+  @OneToOne(() => Address, (address) => address.user, { cascade: true })
+  address?: Address;
 
-  @OneToOne(() => Measurements, measurements => measurements.user, { cascade: true })
-  measurements: Measurements;
+  @OneToOne(() => Measurements, (measurements) => measurements.user, {
+    cascade: true,
+  })
+  measurements?: Measurements;
+
+  @OneToMany(() => Token, (token) => token.user)
+  refreshTokens?: Token;
+
+  tokenId?: string;
 }

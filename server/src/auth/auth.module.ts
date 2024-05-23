@@ -4,22 +4,19 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../entities/users/users.module';
 import { HashingModule } from '../common/hashing/hashing.module';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import AccessTokenStrategy from './strategies/access-token.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import Token from './token.entity';
+import RefreshTokenStrategy from './strategies/refresh-token.strategy';
 
 @Module({
   imports: [
     UsersModule,
     HashingModule,
-    JwtModule.registerAsync({
-      useFactory: async (config: ConfigService) => ({
-        global: true,
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '7d' },
-      }),
-      inject: [ConfigService],
-    }),
+    JwtModule.register({}),
+    TypeOrmModule.forFeature([Token]),
   ],
-  providers: [AuthService],
+  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
