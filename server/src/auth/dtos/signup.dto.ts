@@ -8,15 +8,15 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Address } from '../../address/address.entity';
-import { Measurements } from '../../measurements/measurements.entity';
-import { CreateMeasurementsDto } from '../../measurements/dto/create-measurements.dto';
-import { CreateAddressDto } from '../../address/dto/create-address.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsCpf } from '../../../common/decorators/validation/is-cpf.decorator';
-import { IsAdult } from '../../../common/decorators/validation/is-adult.decorator';
+import { IsAdult } from '../../common/decorators/validation/is-adult.decorator';
+import { IsCpf } from '../../common/decorators/validation/is-cpf.decorator';
+import { CreateMeasurementsDto } from '../../entities/measurements/dto/create-measurements.dto';
+import { Measurements } from '../../entities/measurements/measurements.entity';
+import { CreateAddressDto } from '../../entities/address/dto/create-address.dto';
+import { Address } from '../../entities/address/address.entity';
 
-export class CreateUserDto {
+export class SignupDto {
   @ApiProperty()
   @IsString()
   @Length(1, 25)

@@ -12,15 +12,38 @@ import {
 import LoginDto from './dtos/login.dto';
 import { AuthService } from './auth.service';
 import { FastifyReply } from 'fastify';
-import { ApiOkResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { CurrentUser } from './decorators/current-user.decorator';
 import RefreshTokenGuard from './guards/refresh-token.guard';
 import { RequestUser } from './types/request-user.type';
 import { Public } from './decorators/is-public.decorator';
+import { UsersService } from '../entities/users/users.service';
+import { SignupDto } from './dtos/signup.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService,
+  ) {}
+
+  @Public()
+  @ApiCreatedResponse({ description: 'User created successfully' })
+  @ApiConflictResponse({
+    description:
+      'Conflict! This could be due to existing cpf or email conflict.',
+  })
+  @ApiBadRequestResponse({ description: 'cpf is invalid' })
+  @Post('local/signup')
+  public async create(@Body() body: SignupDto) {
+    return this.userService.create(body);
+  }
 
   @ApiOkResponse()
   @ApiUnauthorizedResponse()
