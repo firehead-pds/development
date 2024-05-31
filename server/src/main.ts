@@ -7,6 +7,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,13 +15,16 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
+  const configService = app.get(ConfigService);
+
   app.enableCors({
-    origin: process.env.FRONTEND_ORIGIN,
+    origin: configService.get<string>('FRONTEND_ORIGIN'),
     allowedHeaders: [
       'Content-Type',
       'Access-Control-Allow-Headers',
       'Authorization',
     ],
+    credentials: true,
   });
 
   app.useGlobalPipes(new ValidationPipe());
