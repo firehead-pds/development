@@ -1,5 +1,6 @@
 import Signup from './pages/Signup.tsx';
 import ContactUs from './pages/ContactUs.tsx';
+import Friendship from './pages/Friends.tsx';
 import {
   createBrowserRouter,
   Link as ReactRouterLink,
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: '/contact-us',
         element: <ContactUs />,
+      },
+      {
+        path: '/friends',
+        element: <Friendship />,
       },
     ],
   },
