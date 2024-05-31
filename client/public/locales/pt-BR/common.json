@@ -10,7 +10,8 @@
       "onlyLetters": "Apenas letras permitidas",
       "onlyNumbers": "Apenas números permitidos",
       "invalidAge": "É necessário ter {{age}} anos ou mais para o cadastro",
-      "notMeetingRequirements": "Não atende aos requisitos"
+      "notMeetingRequirements": "Não atende aos requisitos",
+      "invalidCredentialsError": "Email e/ou senha"
     },
     "submit": "Enviar"
   },

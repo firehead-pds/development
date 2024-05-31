@@ -10,7 +10,8 @@
       "onlyLetters": "Only letters allowed",
       "onlyNumbers": "Only numbers allowed",
       "invalidAge": "You must be {{age}} or older in order to sign up",
-      "notMeetingRequirements": "Does not meet the requirements"
+      "notMeetingRequirements": "Does not meet the requirements",
+      "invalidCredentialsError": "Email and/or password"
     },
     "submit": "Submit"
   },
