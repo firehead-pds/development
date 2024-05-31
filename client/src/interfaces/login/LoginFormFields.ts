@@ -1,4 +1,7 @@
+import { FieldError } from 'react-hook-form';
+
 export default interface LoginFormFields {
-  userEmail: string;
-  userPassword: string;
+  email: string;
+  password: string;
+  invalidCredentialsError?: FieldError;
 }

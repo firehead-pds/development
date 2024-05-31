@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from './store.ts';
+import { RootState } from '../../app/store.ts';
 
 export interface LogState {
   logged: boolean;

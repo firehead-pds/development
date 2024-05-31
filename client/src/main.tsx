@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './i18n.ts';
 import PageLoader from './components/UI/PageLoader.tsx';
 import { Provider } from 'react-redux';
-import { store } from './store.ts';
+import { store } from './app/store.ts';
 
 const queryClient = new QueryClient();
 

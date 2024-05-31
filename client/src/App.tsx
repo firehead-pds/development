@@ -8,14 +8,8 @@ import {
 } from 'react-router-dom';
 import Layout from './pages/Layout.tsx';
 import { Link } from '@chakra-ui/react';
-import { useAppDispatch, useAppSelector } from './hook.ts';
-import { selectLog } from './loginSlice.ts';
-import { logout } from './loginSlice.ts';
 
 export default function App() {
-  const log = useAppDispatch();
-  const logged = useAppSelector(selectLog);
-
   const router = createBrowserRouter([
     {
       path: '/',
@@ -31,23 +25,9 @@ export default function App() {
               <Link as={ReactRouterLink} to={'/contact-us'}>
                 Contact Us
               </Link>
-              {logged ? (
-                <>
-                  <Link
-                    onClick={() => {
-                      log(logout());
-                    }}
-                  >
-                    Log-Out
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link as={ReactRouterLink} to={'/login'}>
-                    Log-In
-                  </Link>
-                </>
-              )}
+              <Link as={ReactRouterLink} to={'/login'}>
+                Login
+              </Link>
             </>
           ),
         },
