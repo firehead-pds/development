@@ -10,7 +10,6 @@ import {
 import LoginFormFields from '../interfaces/login/LoginFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../features/auth/loginSlice.ts';
 import { useLoginMutation } from '../features/auth/authApiSlice.ts';
 import { useAppDispatch } from '../hook.ts';
 import { setCredentials } from '../features/auth/authSlice.ts';
