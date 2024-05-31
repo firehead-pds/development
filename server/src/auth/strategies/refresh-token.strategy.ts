@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from '../types/jwt-payload.type';
 import { UsersService } from '../../entities/users/users.service';
 
@@ -10,17 +9,14 @@ export default class RefreshTokenStrategy extends PassportStrategy(
   Strategy,
   'refresh-token',
 ) {
-  constructor(
-    private config: ConfigService,
-    private usersService: UsersService,
-  ) {
+  constructor(private usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req) => {
           return req.cookies.refreshToken;
         },
       ]),
-      secretOrKey: config.get<string>('RT_SECRET'),
+      secretOrKey: process.env.RT_SECRET,
     });
   }
 
@@ -29,7 +25,6 @@ export default class RefreshTokenStrategy extends PassportStrategy(
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
-
     const { tokenId } = payload;
     return { ...user, tokenId };
   }
