@@ -87,7 +87,7 @@ export class AuthController {
     @CurrentUser() user: RequestUser,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
-    await this.authService.logout(user.tokenId);
+    await this.authService.deleteRefreshToken(user.tokenId);
     this.authService.clearTokenCookies(res);
     return { message: 'successfully logged out' };
   }

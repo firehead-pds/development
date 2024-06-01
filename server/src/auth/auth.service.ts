@@ -39,16 +39,6 @@ export class AuthService {
     return await this.generateTokens(user);
   }
 
-  async logout(tokenId: string) {
-    const token = await this.tokenRepo.findOneBy({ tokenId });
-    if (!token) {
-      return;
-    }
-
-    await this.tokenRepo.remove(token);
-    return;
-  }
-
   async refreshTokens(user: User, tokenId: string): Promise<Tokens> {
     const token = await this.tokenRepo.findOneBy({
       tokenId,
@@ -61,16 +51,6 @@ export class AuthService {
     await this.tokenRepo.remove(token);
 
     return await this.generateTokens(user);
-  }
-
-  private async storeRefreshToken(user: User, tokenId: string) {
-    const token = this.tokenRepo.create({
-      tokenId,
-      user,
-    });
-
-    await this.tokenRepo.save(token);
-    return;
   }
 
   private async generateTokens(user: User): Promise<Tokens> {
@@ -93,6 +73,23 @@ export class AuthService {
     await this.storeRefreshToken(user, tokenId);
 
     return { accessToken, refreshToken };
+  }
+
+  private async storeRefreshToken(user: User, tokenId: string) {
+    const token = this.tokenRepo.create({
+      tokenId,
+      user,
+    });
+
+    await this.tokenRepo.save(token);
+    return;
+  }
+
+  async deleteRefreshToken(tokenId: string) {
+    const token = await this.tokenRepo.findOneBy({ tokenId });
+    if (!token) return;
+    await this.tokenRepo.remove(token);
+    return;
   }
 
   setTokenCookies(
