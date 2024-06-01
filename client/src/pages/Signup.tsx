@@ -16,7 +16,8 @@ import ErrorResponse from '../interfaces/backend-fetches/responses/ErrorResponse
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
+import { useSignupMutation } from '../features/signup/signupApiSlice.ts';
+//import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
 
 export default function Signup() {
   const { t } = useTranslation('signup');
@@ -51,7 +52,8 @@ export default function Signup() {
     },
   });
 
-  const { mutateAsync } = useApiMutate({
+  const [signup] = useSignupMutation();
+  /*const { mutateAsync } = useApiMutate({
     mutationKey: ['signup'],
     endpoint: 'users',
     method: 'POST',
@@ -102,7 +104,7 @@ export default function Signup() {
         isClosable: true,
       });
     },
-  });
+  });*/
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     delete data.confirmPassword;
@@ -111,9 +113,45 @@ export default function Signup() {
     if (data.address.noAddressNumber) {
       delete data.address.addressNumber;
     }
-
     delete data.address.noAddressNumber;
-    await mutateAsync(data);
+
+    try {
+      await signup(data);
+      navigate('/');
+    } catch (error) {
+      if (error.status === 409) {
+        const data = (await error.json()) as ErrorResponse;
+        if (data.message === 'cpf already in use') {
+          setError(
+            'cpf',
+            {
+              type: 'custom',
+              message: tCommon('validationErrors.alreadyInUse', {
+                field: t('fields.personalInfo.cpf.name'),
+              }),
+            },
+            { shouldFocus: true },
+          );
+          return;
+        }
+
+        if (data.message === 'email already in use') {
+          setError(
+            'email',
+            {
+              type: 'custom',
+              message: tCommon('validationErrors.alreadyInUse', {
+                field: t('fields.accessCredentials.email.name'),
+              }),
+            },
+            { shouldFocus: true },
+          );
+          return;
+        }
+      }
+    }
+
+    //await mutateAsync(data);
   };
 
   return (
