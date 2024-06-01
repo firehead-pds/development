@@ -14,7 +14,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+    refresh: builder.query<null, void>({
+      query: () => '/auth/refresh',
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApiSlice;
+export const { useLoginMutation, useRefreshQuery } = authApiSlice;

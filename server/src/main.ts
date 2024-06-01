@@ -2,7 +2,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as process from 'node:process';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -23,6 +22,7 @@ async function bootstrap() {
       'Content-Type',
       'Access-Control-Allow-Headers',
       'Authorization',
+      'Cookie',
     ],
     credentials: true,
   });

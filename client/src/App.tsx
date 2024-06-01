@@ -8,8 +8,23 @@ import {
 } from 'react-router-dom';
 import Layout from './pages/Layout.tsx';
 import { Link } from '@chakra-ui/react';
+import { useAppDispatch } from './hook.ts';
+import { logOut, setCredentials } from './features/auth/authSlice.ts';
+import { useRefreshQuery } from './features/auth/authApiSlice.ts';
+import { useEffect } from 'react';
 
 export default function App() {
+  const dispatch = useAppDispatch();
+  const { data, error } = useRefreshQuery();
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setCredentials(data));
+    } else if (error) {
+      dispatch(logOut());
+    }
+  }, [data, error, dispatch]);
+
   const router = createBrowserRouter([
     {
       path: '/',

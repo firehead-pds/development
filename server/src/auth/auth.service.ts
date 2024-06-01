@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import Token from './token.entity';
 import { Tokens } from './types/tokens.type';
 import { v4 } from 'uuid';
+import { FastifyReply } from 'fastify';
 
 @Injectable()
 export class AuthService {
@@ -49,18 +50,7 @@ export class AuthService {
 
     await this.tokenRepo.remove(token);
 
-    await this.generateTokens(user);
-    return;
-  }
-
-  private async storeRefreshToken(user: User, tokenId: string) {
-    const token = this.tokenRepo.create({
-      tokenId,
-      user,
-    });
-
-    await this.tokenRepo.save(token);
-    return;
+    return await this.generateTokens(user);
   }
 
   private async generateTokens(user: User): Promise<Tokens> {
@@ -85,13 +75,49 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async logout(tokenId: string) {
-    const token = await this.tokenRepo.findOneBy({ tokenId });
-    if (!token) {
-      return;
-    }
+  private async storeRefreshToken(user: User, tokenId: string) {
+    const token = this.tokenRepo.create({
+      tokenId,
+      user,
+    });
 
+    await this.tokenRepo.save(token);
+    return;
+  }
+
+  async deleteRefreshToken(tokenId: string) {
+    const token = await this.tokenRepo.findOneBy({ tokenId });
+    if (!token) return;
     await this.tokenRepo.remove(token);
     return;
+  }
+
+  setTokenCookies(
+    res: FastifyReply,
+    accessToken: string,
+    refreshToken: string,
+  ) {
+    res.setCookie('accessToken', accessToken, {
+      httpOnly: true,
+      // 15 minutes in seconds
+      maxAge: 60 * 15,
+      sameSite: 'none',
+      secure: true,
+      path: '/',
+    });
+
+    res.setCookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      // 7 days in seconds
+      maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'none',
+      secure: true,
+      path: '/',
+    });
+  }
+
+  clearTokenCookies(res: FastifyReply) {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
   }
 }

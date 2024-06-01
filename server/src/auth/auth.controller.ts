@@ -59,17 +59,7 @@ export class AuthController {
       body.password,
     );
 
-    res.setCookie('accessToken', accessToken, {
-      httpOnly: true,
-      // 15 minutes in seconds
-      maxAge: 60 * 15,
-    });
-
-    res.setCookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      // 7 days in seconds
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    this.authService.setTokenCookies(res, accessToken, refreshToken);
 
     return { message: 'successfully logged in' };
   }
@@ -77,8 +67,18 @@ export class AuthController {
   @Public()
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
-  async refresh(@CurrentUser() user: RequestUser) {
-    return await this.authService.refreshTokens(user, user.tokenId);
+  async refresh(
+    @CurrentUser() user: RequestUser,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ) {
+    try {
+      const { accessToken, refreshToken } =
+        await this.authService.refreshTokens(user, user.tokenId);
+      this.authService.setTokenCookies(res, accessToken, refreshToken);
+    } catch (e) {
+      this.authService.clearTokenCookies(res);
+      throw e;
+    }
   }
 
   @UseGuards(RefreshTokenGuard)
@@ -87,11 +87,8 @@ export class AuthController {
     @CurrentUser() user: RequestUser,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
-    await this.authService.logout(user.tokenId);
-
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
-
+    await this.authService.deleteRefreshToken(user.tokenId);
+    this.authService.clearTokenCookies(res);
     return { message: 'successfully logged out' };
   }
 }
