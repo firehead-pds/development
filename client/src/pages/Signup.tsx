@@ -116,11 +116,11 @@ export default function Signup() {
     delete data.address.noAddressNumber;
 
     try {
-      await signup(data);
+      await signup(data).unwrap();
       navigate('/');
     } catch (error) {
       if (error.status === 409) {
-        const data = (await error.json()) as ErrorResponse;
+        const data = error.data;
         if (data.message === 'cpf already in use') {
           setError(
             'cpf',
