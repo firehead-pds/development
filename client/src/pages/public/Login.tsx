@@ -45,10 +45,7 @@ export default function Login() {
       navigate('/app/dashboard');
     } catch (e) {
       if (e.status === 401) {
-        setError('invalidCredentialsError', {
-          // TODO Igor, fix this and put a translation
-          message: 'Invalid Credentials',
-        });
+        setError('invalidCredentialsError', tError('invalidCredentialsError'));
       }
     }
   };
