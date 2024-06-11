@@ -10,7 +10,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
+import useApiMutate from '../../hooks/fetching/useApiMutation.tsx';
 
 export interface ContactUsInputs {
   userEmail: string;

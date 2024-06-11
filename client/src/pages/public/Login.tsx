@@ -7,12 +7,12 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react';
-import LoginFormFields from '../interfaces/login/LoginFormFields.ts';
+import LoginFormFields from '../../interfaces/login/LoginFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useLoginMutation } from '../features/auth/authApiSlice.ts';
-import { useAppDispatch } from '../hook.ts';
-import { setCredentials } from '../features/auth/authSlice.ts';
+import { useLoginMutation } from '../../features/auth/authApiSlice.ts';
+import { useAppDispatch } from '../../app/hook.ts';
+import { setCredentials } from '../../features/auth/authSlice.ts';
 
 export default function Login() {
   const { t } = useTranslation('login', {
@@ -41,7 +41,8 @@ export default function Login() {
   const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
     try {
       const res = await login(data).unwrap();
-      dispatch(setCredentials(res.data));
+      dispatch(setCredentials(res));
+      navigate('/app/dashboard');
     } catch (e) {
       if (e.status === 401) {
         setError('invalidCredentialsError', {

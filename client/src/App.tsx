@@ -1,21 +1,20 @@
-import Signup from './pages/Signup.tsx';
-import ContactUs from './pages/ContactUs.tsx';
-import Login from './pages/Login.tsx';
-import {
-  createBrowserRouter,
-  Link as ReactRouterLink,
-  RouterProvider,
-} from 'react-router-dom';
-import Layout from './pages/Layout.tsx';
-import { Link } from '@chakra-ui/react';
-import { useAppDispatch } from './hook.ts';
+import Signup from './pages/public/Signup.tsx';
+import ContactUs from './pages/public/ContactUs.tsx';
+import Login from './pages/public/Login.tsx';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { useAppDispatch } from './app/hook.ts';
 import { logOut, setCredentials } from './features/auth/authSlice.ts';
 import { useRefreshQuery } from './features/auth/authApiSlice.ts';
 import { useEffect } from 'react';
+import WelcomePage from './pages/public/WelcomePage.tsx';
+import ProtectedRoute from './guards/ProtectedRoute.tsx';
+import Dashboard from './pages/app/Dashboard.tsx';
+import PublicRoute from './guards/PublicRoute.tsx';
+import PageLoader from './components/UI/PageLoader.tsx';
 
 export default function App() {
   const dispatch = useAppDispatch();
-  const { data, error } = useRefreshQuery();
+  const { data, error, isLoading } = useRefreshQuery();
 
   useEffect(() => {
     if (data) {
@@ -28,23 +27,11 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <Layout />,
+      element: <PublicRoute />,
       children: [
         {
           path: '/',
-          element: (
-            <>
-              <Link as={ReactRouterLink} to={'/signup'}>
-                Sign-Up
-              </Link>
-              <Link as={ReactRouterLink} to={'/contact-us'}>
-                Contact Us
-              </Link>
-              <Link as={ReactRouterLink} to={'/login'}>
-                Login
-              </Link>
-            </>
-          ),
+          element: <WelcomePage />,
         },
         {
           path: '/signup',
@@ -60,7 +47,21 @@ export default function App() {
         },
       ],
     },
+    {
+      path: '/app',
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: 'dashboard',
+          element: <Dashboard />,
+        },
+      ],
+    },
   ]);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <>

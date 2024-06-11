@@ -21,7 +21,7 @@ export class AuthService {
     @InjectRepository(Token) private tokenRepo: Repository<Token>,
   ) {}
 
-  async signInLocal(email: string, password: string): Promise<Tokens> {
+  async signInLocal(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('invalid email and/or password');
@@ -36,7 +36,7 @@ export class AuthService {
       throw new UnauthorizedException('invalid email and/or password');
     }
 
-    return await this.generateTokens(user);
+    return { user, ...(await this.generateTokens(user)) };
   }
 
   async refreshTokens(user: User, tokenId: string): Promise<Tokens> {

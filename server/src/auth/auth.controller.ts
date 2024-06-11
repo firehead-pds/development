@@ -54,14 +54,16 @@ export class AuthController {
     @Body() body: LoginDto,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
-    const { accessToken, refreshToken } = await this.authService.signInLocal(
-      body.email,
-      body.password,
-    );
+    const { user, accessToken, refreshToken } =
+      await this.authService.signInLocal(body.email, body.password);
 
     this.authService.setTokenCookies(res, accessToken, refreshToken);
 
-    return { message: 'successfully logged in' };
+    return {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    };
   }
 
   @Public()
@@ -79,6 +81,12 @@ export class AuthController {
       this.authService.clearTokenCookies(res);
       throw e;
     }
+
+    return {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    };
   }
 
   @UseGuards(RefreshTokenGuard)
