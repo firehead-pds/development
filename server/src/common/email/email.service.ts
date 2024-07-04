@@ -37,6 +37,7 @@ export class EmailService {
         html: html,
       });
     } catch (err) {
+      console.log(err);
       throw new InternalServerErrorException(
         'there was an error connecting to the email service',
       );
