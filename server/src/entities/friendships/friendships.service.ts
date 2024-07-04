@@ -40,29 +40,29 @@ export class FriendshipsService {
       );
     }
 
-    const friendRequest: Partial<Friendship> = {
+    const friendRequest = this.friendshipRepo.create({
       creator,
       receiver,
       status: FriendRequestStatus.PENDING,
-    };
+    });
 
-    return this.friendshipRepo.create(friendRequest);
+    return this.friendshipRepo.save(friendRequest);
   }
 
   public async acceptFriendRequest(friendRequestId: number) {
     const friendRequest = await this.findFriendRequestById(friendRequestId);
+
     if (!friendRequest) {
-      throw new NotFoundException('no requests found with giver id');
+      throw new NotFoundException('no requests found with given id');
     }
 
-    if (friendRequest.status === 'accepted') {
+    if (friendRequest.status === FriendRequestStatus.ACCEPTED) {
       throw new ConflictException(
         'this friend request has already been accepted',
       );
     }
 
     friendRequest.status = FriendRequestStatus.ACCEPTED;
-
     return await this.friendshipRepo.save(friendRequest);
   }
 
@@ -70,6 +70,10 @@ export class FriendshipsService {
     const friendships = await this.getAllFriendshipRecords(currentUser);
 
     let friendIds: number[] = [];
+
+    // Check if the current user created or received the friend request
+    // If they are the creator, add the ID of the receiver as the friend
+    // Otherwise, add the ID of the creator as the friend
 
     friendships.forEach((friend) => {
       if (friend.creator.id === currentUser.id) {
