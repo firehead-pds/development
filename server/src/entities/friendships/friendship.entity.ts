@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
@@ -14,12 +15,12 @@ export class Friendship {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
   @ManyToOne(() => User, (user) => user.sentFriendRequests)
+  @JoinColumn()
   creator: User;
 
   @ManyToOne(() => User, (user) => user.receivedFriendRequests)
-  @Column()
+  @JoinColumn()
   receiver: User;
 
   @Column({ type: 'enum', enum: FriendRequestStatus })

@@ -22,7 +22,7 @@ export default class AccessTokenStrategy extends PassportStrategy(
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.usersService.findById(payload.sub);
+    const user = await this.usersService.findOneById(payload.sub);
     if (!user) {
       throw new UnauthorizedException('User not found');
     }

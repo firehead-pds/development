@@ -7,17 +7,15 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
-import AddressInfo from '../components/signup/AddressInfo.tsx';
-import MeasurementsInfo from '../components/signup/MeasurementsInfo.tsx';
-import PersonalInfo from '../components/signup/PersonalInfo.tsx';
-import AccessCredentials from '../components/signup/AccessCredentials.tsx';
-import SignupFormFields from '../interfaces/signup/SignupFormFields.ts';
-import ErrorResponse from '../interfaces/backend-fetches/responses/ErrorResponse.ts';
+import AddressInfo from '../../components/signup/AddressInfo.tsx';
+import MeasurementsInfo from '../../components/signup/MeasurementsInfo.tsx';
+import PersonalInfo from '../../components/signup/PersonalInfo.tsx';
+import AccessCredentials from '../../components/signup/AccessCredentials.tsx';
+import SignupFormFields from '../../interfaces/signup/SignupFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useSignupMutation } from '../features/signup/signupApiSlice.ts';
-//import useApiMutate from '../hooks/fetching/useApiMutation.tsx';
+import { useSignupMutation } from '../../features/signup/signupApiSlice.ts';
 
 export default function Signup() {
   const { t } = useTranslation('signup');
@@ -25,7 +23,7 @@ export default function Signup() {
     keyPrefix: 'forms',
   });
 
-  const errorToast = useToast();
+  // const errorToast = useToast();
   const navigate = useNavigate();
 
   const [isFetchingPostalCode, setIsFetchingPostalCode] = useState(false);

@@ -8,6 +8,8 @@ import {
 import { Address } from '../address/address.entity';
 import { Measurements } from '../measurements/measurements.entity';
 import Token from '../../auth/token.entity';
+import { Friendship } from '../friendships/friendship.entity';
+import { FriendRequestStatus } from '../friendships/enums/friend-request-status';
 
 @Entity({ name: 'users' })
 export class User {
@@ -45,4 +47,10 @@ export class User {
 
   @OneToMany(() => Token, (token) => token.user)
   refreshTokens?: Token;
+
+  @OneToMany(() => Friendship, (friendship) => friendship.creator)
+  sentFriendRequests: Friendship;
+
+  @OneToMany(() => Friendship, (friendship) => friendship.receiver)
+  receivedFriendRequests: Friendship;
 }

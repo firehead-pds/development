@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UsersValidator } from './validators/users.validator';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,11 +23,15 @@ export class UsersService {
     return 'user created successfully';
   }
 
-  public async findById(id: number) {
+  public async findOneById(id: number) {
     return await this.repo.findOneBy({ id });
   }
 
   public async findByEmail(email: string) {
     return await this.repo.findOneBy({ email });
+  }
+
+  public async findManyByIds(ids: number[]) {
+    return this.repo.findBy({ id: In(ids) });
   }
 }

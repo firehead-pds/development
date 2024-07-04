@@ -6,6 +6,7 @@ import { Address } from '../entities/address/address.entity';
 import { Measurements } from '../entities/measurements/measurements.entity';
 import * as process from 'node:process';
 import Token from '../auth/token.entity';
+import { Friendship } from '../entities/friendships/friendship.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import Token from '../auth/token.entity';
         synchronize: process.env.NODE_ENV !== 'production',
         dropSchema: process.env.NODE_ENV === 'test',
         autoLoadEntities: true,
-        entities: [User, Address, Measurements, Token],
+        entities: [User, Address, Measurements, Token, Friendship],
         ssl: true,
       }),
     }),
