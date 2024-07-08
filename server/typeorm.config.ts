@@ -1,5 +1,4 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import * as path from 'node:path';
 import { config } from 'dotenv';
 import { registerAs } from '@nestjs/config';
 
