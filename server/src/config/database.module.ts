@@ -1,17 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { User } from '../entities/users/user.entity';
-import { Address } from '../entities/address/address.entity';
-import { Measurements } from '../entities/measurements/measurements.entity';
-import * as process from 'node:process';
-import Token from '../auth/token.entity';
-import { Friendship } from '../entities/friendships/friendship.entity';
+import { dataSourceOptions } from '../../typeorm.config';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
+<<<<<<< HEAD
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
         host: config.get<string>('DB_HOST'),
@@ -25,6 +21,9 @@ import { Friendship } from '../entities/friendships/friendship.entity';
         entities: [User, Address, Measurements, Token, Friendship],
         ssl: false,
       }),
+=======
+      useFactory: () => dataSourceOptions,
+>>>>>>> f9ef3f73c683ff1c63d604749cced1b310afad79
     }),
   ],
 })
