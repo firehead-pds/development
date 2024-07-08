@@ -9,7 +9,7 @@ import { Address } from '../address/address.entity';
 import { Measurements } from '../measurements/measurements.entity';
 import Token from '../../auth/token.entity';
 import { Friendship } from '../friendships/friendship.entity';
-import { FriendRequestStatus } from '../friendships/enums/friend-request-status';
+import { Participate } from '../participates/participate.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -53,4 +53,7 @@ export class User {
 
   @OneToMany(() => Friendship, (friendship) => friendship.receiver)
   receivedFriendRequests: Friendship;
+
+  @OneToMany(() => Participate, (participate) => participate)
+  participate?: Participate;
 }
