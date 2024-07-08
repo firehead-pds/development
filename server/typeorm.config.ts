@@ -1,8 +1,9 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import * as path from 'node:path';
 import { config } from 'dotenv';
+import { registerAs } from '@nestjs/config';
 
-config({ path: path.join(__dirname, '.env.development') });
+config({ path: '.env.' + process.env.NODE_ENV });
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
@@ -18,4 +19,5 @@ export const dataSourceOptions: DataSourceOptions = {
   ssl: true,
 };
 
+export default registerAs('typeorm', () => dataSourceOptions);
 export const connectionSource = new DataSource(dataSourceOptions);
