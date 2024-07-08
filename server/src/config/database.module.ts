@@ -23,7 +23,7 @@ import { Friendship } from '../entities/friendships/friendship.entity';
         dropSchema: process.env.NODE_ENV === 'test',
         autoLoadEntities: true,
         entities: [User, Address, Measurements, Token, Friendship],
-        ssl: true,
+        ssl: false,
       }),
     }),
   ],

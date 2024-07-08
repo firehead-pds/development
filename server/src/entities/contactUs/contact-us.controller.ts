@@ -5,7 +5,9 @@ import {
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
+import { Public } from 'src/auth/decorators/is-public.decorator';
 
+@Public()
 @Controller('contact-us')
 export class ContactUsController {
   constructor(private readonly contactUsService: ContactUsService) {}
