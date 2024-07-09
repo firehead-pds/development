@@ -1,24 +1,25 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Wing } from '../wings/wing.entity';
+import { Role } from './enums/participate-role';
 
 @Entity({ name: 'participate' })
 export class Participate {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user)
+  @ManyToOne(() => User, (user) => user.participate)
   user: User;
 
-  @ManyToOne(() => Wing, (wing) => wing)
+  @ManyToOne(() => Wing, (wing) => wing.participate)
   wing: Wing;
 
-  @Column({ length: 9 })
-  role: string;
+  @Column({ type: 'enum', enum: Role })
+  role: Role;
 
   @Column({ type: 'integer' })
   rating: number;
 
   @Column({ type: 'timestamp' })
-  joined_in: Date;
+  joinedIn: Date;
 }

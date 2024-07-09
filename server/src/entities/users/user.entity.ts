@@ -10,6 +10,7 @@ import { Measurements } from '../measurements/measurements.entity';
 import Token from '../../auth/token.entity';
 import { Friendship } from '../friendships/friendship.entity';
 import { Participate } from '../participates/participate.entity';
+import { GridCell } from '../grid-cell/grid-cell.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -54,6 +55,9 @@ export class User {
   @OneToMany(() => Friendship, (friendship) => friendship.receiver)
   receivedFriendRequests: Friendship;
 
-  @OneToMany(() => Participate, (participate) => participate)
+  @OneToMany(() => Participate, (participate) => participate.user)
   participate?: Participate;
+
+  @OneToMany(() => GridCell, (gridCell) => gridCell.user)
+  gridCell?: GridCell;
 }
