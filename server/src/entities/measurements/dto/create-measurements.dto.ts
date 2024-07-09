@@ -1,5 +1,6 @@
 import { IsEnum, IsString, Length, Matches } from 'class-validator';
-import { PantsSize, ShirtSize } from '../enums/measurements.enum';
+import { ShirtSize } from '../enums/measurements-shirt-size';
+import { PantsSize } from '../enums/measurements-pants-size';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMeasurementsDto {

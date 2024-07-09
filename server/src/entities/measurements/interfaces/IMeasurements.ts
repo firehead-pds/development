@@ -1,4 +1,5 @@
-import { PantsSize, ShirtSize } from '../enums/measurements.enum';
+import { ShirtSize } from '../enums/measurements-shirt-size';
+import { PantsSize } from '../enums/measurements-pants-size';
 import IUser from '../../users/interfaces/IUser';
 
 export default interface IMeasurements {
