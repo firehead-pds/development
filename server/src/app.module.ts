@@ -14,12 +14,13 @@ import fastifyCookie from '@fastify/cookie';
 import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
 import AccessTokenGuard from './auth/guards/access-token.guard';
 import typeormConfig from '../typeorm.config';
+import emailConfiguration from './common/email/email.configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeormConfig],
+      load: [typeormConfig, emailConfiguration],
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     DatabaseModule,
