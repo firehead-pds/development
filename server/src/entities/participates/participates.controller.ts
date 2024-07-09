@@ -4,6 +4,3 @@ import { Controller } from '@nestjs/common';
 export class ParticipatesController {
   constructor() {}
 }
-
-/*@OneToMany(() => Participate, (participate) => participate)
-participate?: Participate;*/

@@ -1,30 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Participate } from './participate.entity';
+import { ParticipateInfo } from './interfaces/IParticipate';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../users/user.entity';
+import { WingsService } from '../wings/wings.service';
 
 @Injectable()
 export class ParticipatesService {
   constructor(
     @InjectRepository(Participate)
     private readonly repo: Repository<Participate>,
+    private wingsService: WingsService,
   ) {}
 
-  /*public async create(user: Partial<User>) {
-    await this.validator.validateCreateUser(user);
+  public async getAllWings(user: User) {
+    let userWing: ParticipateInfo = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      wingsInfo: null,
+    };
+    if (await this.repo.existsBy({ user: user })) {
+      const participates = await this.repo.findBy({ user: user });
+      let wingId = [];
+      participates.forEach((participates) => {
+        wingId.push(participates.wing);
+      });
 
-    user.password = await this.hashingService.hashData(user.password);
-    const newUser = this.repo.create(user);
-    await this.repo.save(newUser);
+      const wing = await this.wingsService.findManyByIds(wingId);
+      const wingInfo = [];
+      for (let i = 0; i < participates.length; ++i) {
+        wingInfo.push({
+          id: wing[i].id,
+          name: wing[i].name,
+          role: participates[i].role,
+        });
+      }
+      userWing.wingsInfo = wingInfo;
 
-    return 'user created successfully';
-  }*/
-
-  public async findOneById(id: number) {
-    return await this.repo.findOneBy({ id });
-  }
-
-  public async findManyByIds(ids: number[]) {
-    return this.repo.findBy({ id: In(ids) });
+      return userWing;
+    } else {
+      return userWing;
+    }
   }
 }
+/*
+
+*/

@@ -10,11 +10,13 @@ import Token from './token.entity';
 import { Tokens } from './types/tokens.type';
 import { v4 } from 'uuid';
 import { FastifyReply } from 'fastify';
+import { ParticipatesService } from '../entities/participates/participates.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
+    private participateService: ParticipatesService,
     private hashingService: HashingService,
     private jwtService: JwtService,
     private configService: ConfigService,
@@ -36,7 +38,8 @@ export class AuthService {
       throw new UnauthorizedException('invalid email and/or password');
     }
 
-    return { user, ...(await this.generateTokens(user)) };
+    const userWings = this.participateService.getAllWings(user);
+    return { userWings, ...(await this.generateTokens(user)) };
   }
 
   async refreshTokens(user: User, tokenId: string): Promise<Tokens> {
