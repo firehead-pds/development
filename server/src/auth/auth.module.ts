@@ -8,10 +8,12 @@ import AccessTokenStrategy from './strategies/access-token.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import Token from './token.entity';
 import RefreshTokenStrategy from './strategies/refresh-token.strategy';
+import { ParticipatesModule } from '../entities/participates/participates.module';
 
 @Module({
   imports: [
     UsersModule,
+    ParticipatesModule,
     HashingModule,
     JwtModule.register({}),
     TypeOrmModule.forFeature([Token]),
