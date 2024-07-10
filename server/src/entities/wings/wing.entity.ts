@@ -10,7 +10,7 @@ export class Wing {
   @Column({ length: 70 })
   name: string;
 
-  @OneToMany(() => Participate, (participate) => participate.wing)
+  @OneToMany(() => Participate, (participate) => participate.wingId)
   participate: Participate;
 
   @OneToMany(() => WingGrid, (wingGrid) => wingGrid.wing)

@@ -9,16 +9,16 @@ export class Participate {
   id: number;
 
   @ManyToOne(() => User, (user) => user.participate)
-  user: User;
+  userId: User;
 
   @ManyToOne(() => Wing, (wing) => wing.participate)
-  wing: Wing;
+  wingId: Wing;
 
   @Column({ type: 'enum', enum: Role })
   role: Role;
 
   @Column({ type: 'integer' })
-  rating: number;
+  rating?: number;
 
   @Column({ type: 'timestamp' })
   joinedIn: Date;

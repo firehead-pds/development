@@ -55,7 +55,7 @@ export class User {
   @OneToMany(() => Friendship, (friendship) => friendship.receiver)
   receivedFriendRequests: Friendship;
 
-  @OneToMany(() => Participate, (participate) => participate.user)
+  @OneToMany(() => Participate, (participate) => participate.userId)
   participate?: Participate;
 
   @OneToMany(() => GridCell, (gridCell) => gridCell.user)

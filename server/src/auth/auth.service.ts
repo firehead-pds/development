@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../entities/users/users.service';
+import { WingsService } from '../entities/wings/wings.service';
 import { HashingService } from '../common/hashing/hashing.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../entities/users/user.entity';
@@ -10,13 +11,12 @@ import Token from './token.entity';
 import { Tokens } from './types/tokens.type';
 import { v4 } from 'uuid';
 import { FastifyReply } from 'fastify';
-import { ParticipatesService } from '../entities/participates/participates.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
-    private participateService: ParticipatesService,
+    private wingService: WingsService,
     private hashingService: HashingService,
     private jwtService: JwtService,
     private configService: ConfigService,
@@ -38,7 +38,7 @@ export class AuthService {
       throw new UnauthorizedException('invalid email and/or password');
     }
 
-    const userWings = this.participateService.getAllWings(user);
+    const userWings = this.wingService.getAllWings(user);
     return { userWings, ...(await this.generateTokens(user)) };
   }
 
