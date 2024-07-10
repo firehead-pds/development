@@ -1,11 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit/react';
 import { RootState } from '../../app/store.ts';
 
+enum Roles {
+  Component = 'Component',
+  Harmony = 'Harmony',
+  WingChief = 'Wing Chief',
+}
+
+interface wings {
+  id: number;
+  name: string;
+  userRole: Roles;
+}
+
 export interface AuthState {
   user?: {
     firstName: string;
     lastName: string;
     email: string;
+    wingsInfo?: wings[];
   } | null;
 }
 
