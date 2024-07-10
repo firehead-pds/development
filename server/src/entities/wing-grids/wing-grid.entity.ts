@@ -23,7 +23,7 @@ export class WingGrid {
   cols: number;
 
   @ManyToOne(() => Wing, (wing) => wing.wingGrid)
-  wing: Wing;
+  wing?: Wing;
 
   @OneToMany(() => GridCell, (gridCell) => gridCell.wingGrid)
   gridCell?: GridCell;
