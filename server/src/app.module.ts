@@ -16,6 +16,7 @@ import fastifyCookie from '@fastify/cookie';
 import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
 import AccessTokenGuard from './auth/guards/access-token.guard';
 import typeormConfig from '../typeorm.config';
+import { WingGridModule } from './entities/wing-grids/wing-grid.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import typeormConfig from '../typeorm.config';
     AuthModule,
     ParticipatesModule,
     WingsModule,
+    WingGridModule,
   ],
   controllers: [AppController],
   providers: [
