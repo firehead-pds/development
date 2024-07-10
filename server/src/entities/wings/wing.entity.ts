@@ -11,7 +11,7 @@ export class Wing {
   name: string;
 
   @OneToMany(() => Participate, (participate) => participate.wing)
-  participate?: Participate;
+  participate: Participate;
 
   @OneToMany(() => WingGrid, (wingGrid) => wingGrid.wing)
   wingGrid?: WingGrid;
