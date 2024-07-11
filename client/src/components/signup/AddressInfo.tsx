@@ -15,8 +15,9 @@ import {
   FormLabel,
   Grid,
   Input,
+  useToast,
 } from '@chakra-ui/react';
-import { ChangeEventHandler, useEffect } from 'react';
+import { ChangeEventHandler } from 'react';
 import SignupFormFields from '../../interfaces/signup/SignupFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useLazyViaCepQuery } from '../../features/signup/viaCepApiSlice.ts';
@@ -36,6 +37,7 @@ interface AddressInfoProps {
 export default function AddressInfo({
   register,
   errors,
+  setError,
   setIsFetchingPostalCode,
   setValue,
   trigger,
@@ -49,38 +51,55 @@ export default function AddressInfo({
     keyPrefix: 'forms.validationErrors',
   });
 
+  const errorToast = useToast();
   const watchCheckBox = watch('address.noAddressNumber');
-  const [fetch, { data }] = useLazyViaCepQuery();
-
-  useEffect(() => {
-    setValue('address', {
-      postalCode: data?.cep,
-      addressLine: data?.logradouro,
-      district: data?.bairro,
-      city: data?.localidade,
-      state: data?.uf,
-    });
-  }, [data, setValue]);
+  const [fetch] = useLazyViaCepQuery();
 
   const postalCodeChangeHandler: ChangeEventHandler<HTMLInputElement> = async (
     e,
   ) => {
+    setValue('address', {
+      addressLine: '',
+      district: '',
+      city: '',
+      state: '',
+    });
+
+    const currentPostalCode = e.target.value;
+
+    if (!/^\d{5}-?\d{3}$/.test(currentPostalCode)) return;
+
     try {
       setIsFetchingPostalCode(true);
-      const currentPostalCode = e.target.value;
+      const data = await fetch(currentPostalCode).unwrap();
 
-      if (currentPostalCode.length < 8 || currentPostalCode.length > 9) {
+      if (data?.cep) {
         setValue('address', {
-          addressLine: '',
-          district: '',
-          city: '',
-          state: '',
+          postalCode: data?.cep,
+          addressLine: data?.logradouro,
+          district: data?.bairro,
+          city: data?.localidade,
+          state: data?.uf,
         });
+      }
+
+      if (data?.erro) {
+        setError('address.postalCode', {
+          type: 'custom',
+          message: tErrors('nonExistent', { field: t('postalCode.name') }),
+        });
+
         return;
       }
-      if (!/^\d{5}-?\d{3}$/.test(currentPostalCode)) return;
-
-      await fetch(currentPostalCode).unwrap();
+    } catch (e) {
+      errorToast({
+        title: 'There was an error connecting to the server.',
+        description: 'Try again later.',
+        status: 'error',
+        variant: 'left-accent',
+        duration: 8000,
+        isClosable: true,
+      });
     } finally {
       setIsFetchingPostalCode(false);
       await trigger('address.postalCode');

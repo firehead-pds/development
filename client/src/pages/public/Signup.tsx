@@ -64,7 +64,7 @@ export default function Signup() {
     try {
       await signup(data).unwrap();
       navigate('/');
-    } catch (error) {
+    } catch (error: any) {
       if (error.status === 409) {
         const data = error.data;
         if (data.message === 'cpf already in use') {

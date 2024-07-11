@@ -1,7 +1,7 @@
-import { postalCodeApiSlice } from '../api/postalCodeApiSlice.ts';
+import { apiSlice } from '../api/apiSlice.ts';
 
 interface ViaCep {
-  erro?: boolean;
+  erro?: string;
   cep: string;
   logradouro: string;
   complemento: string;
@@ -14,10 +14,13 @@ interface ViaCep {
   siafi: string;
 }
 
-export const viaCepApiSlice = postalCodeApiSlice.injectEndpoints({
+export const viaCepApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     viaCep: builder.query<ViaCep, string>({
-      query: (cep) => `${cep}/json`,
+      query: (cep) => ({
+        url: `https://viacep.com.br/ws/${cep}/json`,
+        credentials: 'omit',
+      }),
     }),
   }),
 });
