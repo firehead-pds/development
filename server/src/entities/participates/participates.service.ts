@@ -32,13 +32,13 @@ export class ParticipatesService {
     await this.repo.save(newParticipate);
   }
 
+  public async findByUser(user: User) {
+    return await this.repo.findBy({ userId: user });
+  }
+  public async findByWing(wing: Wing) {
+    return await this.repo.findBy({ wingId: wing });
+  }
   public async existsBy(id: number) {
     return await this.repo.existsBy({ id });
   }
-  public async findUserBy(user: User) {
-    return await this.repo.findBy({ userId: user });
-  }
 }
-/*
-findBy
-*/

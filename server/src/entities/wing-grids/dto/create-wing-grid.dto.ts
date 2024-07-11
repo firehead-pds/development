@@ -1,4 +1,4 @@
-import { IsString, IsInt, MaxLength, IsOptional } from 'class-validator';
+import { IsString, IsInt, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateWingGridDto {
@@ -16,7 +16,6 @@ export class CreateWingGridDto {
   cols: number;
 
   @ApiProperty()
-  @IsOptional()
   @IsInt()
   wingId: number;
 }

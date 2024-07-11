@@ -43,7 +43,7 @@ export class WingsService {
       wingsInfo: null,
     };
     if (await this.participateService.existsBy(user.id)) {
-      const participates = await this.participateService.findUserBy(user);
+      const participates = await this.participateService.findByUser(user);
       let wingId = [];
       participates.forEach((participates) => {
         wingId.push(participates.wingId);

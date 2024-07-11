@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { GridCellService } from './grid-cell.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { GridCell } from './grid-cell.entity';
 import { GridCellController } from './grid-cell.controller';
+import { GridCellService } from './grid-cell.service';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([GridCell])],
+  controllers: [GridCellController],
   providers: [GridCellService],
-  controllers: [GridCellController]
 })
 export class GridCellModule {}

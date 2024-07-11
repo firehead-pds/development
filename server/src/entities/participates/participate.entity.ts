@@ -8,7 +8,9 @@ export class Participate {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.participate)
+  @ManyToOne(() => User, (user) => user.participate, {
+    cascade: true,
+  })
   userId: User;
 
   @ManyToOne(() => Wing, (wing) => wing.participate)

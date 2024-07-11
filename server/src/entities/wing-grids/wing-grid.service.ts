@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { WingGrid } from './wing-grid.entity';
 import { WingGridValidator } from './validators/wing-grid.validator';
-import { WingsService } from '../wings/wings.service';
 import { CreateWingGridDto } from './dto/create-wing-grid.dto';
+import { WingsService } from '../wings/wings.service';
+import { GridCellService } from '../grid-cell/grid-cell.service';
+import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
+import { ParticipatesService } from '../participates/participates.service';
 
 @Injectable()
 export class WingGridService {
@@ -12,6 +16,9 @@ export class WingGridService {
     @InjectRepository(WingGrid) private readonly repo: Repository<WingGrid>,
     private readonly validator: WingGridValidator,
     private readonly wingService: WingsService,
+    private readonly gridCellsService: GridCellService,
+    private readonly userService: UsersService,
+    private readonly participateService: ParticipatesService,
   ) {}
 
   public async create(wingGridDto: CreateWingGridDto) {
@@ -26,13 +33,30 @@ export class WingGridService {
       cols: wingGridDto.cols,
       wing: currentWing,
     });
-
     await this.repo.save(newWingGrid);
 
-    return 'wing grid created successfully';
-  }
+    let participate = await this.participateService.findByWing(currentWing);
+    console.log(participate);
+    let participateUserId: User[] = [];
+    participate.forEach((participate) =>
+      participateUserId.push(participate.userId),
+    );
+    console.log(participateUserId);
+    /*const user = await this.userService.findManyByUsers(participateUserId);
 
-  public async findManyByIds(ids: number[]) {
-    return this.repo.findBy({ id: In(ids) });
+    let gridCell: CreateGridCellDto[] = [];
+    for (let i = 0; i < user.length; ++i) {
+      gridCell.push({
+        gridCellName: user[j].firstName + ' ' + user[j].lastName,
+        participate: participate[i],
+        wingGrid: newWingGrid,
+      });
+    }
+
+    for (const cell of gridCell) {
+      await this.gridCellsService.create(cell);
+    }*/
+
+    return 'wing grid created successfully';
   }
 }
