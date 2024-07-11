@@ -14,7 +14,7 @@ export class WingGrid {
   id: number;
 
   @Column({ length: 70 })
-  name: string;
+  wingGridName: string;
 
   @Column({ type: 'int' })
   rows: number;

@@ -12,7 +12,6 @@ export class WingGridController {
   @ApiCreatedResponse({ description: 'Wing Grid created successfully' })
   @Post('create')
   public async create(@Body() body: CreateWingGridDto) {
-    console.log('a');
     return this.wingGridService.create(body);
   }
 }

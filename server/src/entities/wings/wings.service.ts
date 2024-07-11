@@ -70,6 +70,10 @@ export class WingsService {
     }
   }
 
+  public async findOneById(id: number) {
+    return await this.repo.findOneBy({ id });
+  }
+
   public async findManyByIds(ids: number[]) {
     return this.repo.findBy({ id: In(ids) });
   }

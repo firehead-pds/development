@@ -5,7 +5,7 @@ export class CreateWingGridDto {
   @ApiProperty()
   @IsString()
   @MaxLength(70)
-  name: string;
+  wingGridName: string;
 
   @ApiProperty()
   @IsInt()
@@ -18,5 +18,5 @@ export class CreateWingGridDto {
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  wingId?: number;
+  wingId: number;
 }

@@ -8,14 +8,16 @@ export class WingGridValidator {
   constructor(@InjectRepository(WingGrid) private repo: Repository<WingGrid>) {}
 
   public async validateCreateWingGrid(newWingGrid: Partial<WingGrid>) {
-    const existsWithName = await this.checkExistingName(newWingGrid.name);
+    const existsWithName = await this.checkExistingName(
+      newWingGrid.wingGridName,
+    );
     if (existsWithName) {
       throw new ConflictException(`Grid name already in use`);
     }
   }
 
-  private async checkExistingName(name: string) {
-    const exists = await this.repo.findOneBy({ name });
+  private async checkExistingName(wingGridName: string) {
+    const exists = await this.repo.findOneBy({ wingGridName });
     return !!exists;
   }
 }
