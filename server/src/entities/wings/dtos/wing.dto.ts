@@ -6,8 +6,4 @@ export class WingDto {
   @IsString()
   @Length(1, 70)
   wingName: string;
-
-  @ApiProperty()
-  @IsInt()
-  userId: number;
 }

@@ -8,7 +8,7 @@ import { WingsService } from '../wings/wings.service';
 import { GridCellService } from '../grid-cell/grid-cell.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
-import { ParticipatesService } from '../participates/participates.service';
+import { WingMembershipService } from '../wings/wing-membership.service';
 
 @Injectable()
 export class WingGridService {
@@ -18,45 +18,49 @@ export class WingGridService {
     private readonly wingService: WingsService,
     private readonly gridCellsService: GridCellService,
     private readonly userService: UsersService,
-    private readonly participateService: ParticipatesService,
+    private readonly participateService: WingMembershipService,
   ) {}
 
-  public async create(wingGridDto: CreateWingGridDto) {
-    await this.validator.validateCreateWingGrid({
-      wingGridName: wingGridDto.wingGridName,
-    });
-    const currentWing = await this.wingService.findOneById(wingGridDto.wingId);
+  // Why fill the grid randomly with a bunch of users? It's supposed to be friendship based.
 
-    const newWingGrid = this.repo.create({
-      wingGridName: wingGridDto.wingGridName,
-      rows: wingGridDto.rows,
-      cols: wingGridDto.cols,
-      wing: currentWing,
-    });
-    await this.repo.save(newWingGrid);
+  // public async create(wingGridDto: CreateWingGridDto) {
+  //   await this.validator.validateCreateWingGrid({
+  //     wingGridName: wingGridDto.wingGridName,
+  //   });
+  //   const currentWing = await this.wingService.findOneById(wingGridDto.wingId);
+  //
+  //   const newWingGrid = this.repo.create({
+  //     wingGridName: wingGridDto.wingGridName,
+  //     rows: wingGridDto.rows,
+  //     cols: wingGridDto.cols,
+  //     wing: currentWing,
+  //   });
+  //
+  //   await this.repo.save(newWingGrid);
+  //
+  //   let participate = await this.participateService.findByWing(currentWing);
+  //   console.log(participate);
+  //   let participateUserId: User[] = [];
+  //   participate.forEach((participate) =>
+  //     participateUserId.push(participate.userId),
+  //   );
 
-    let participate = await this.participateService.findByWing(currentWing);
-    console.log(participate);
-    let participateUserId: User[] = [];
-    participate.forEach((participate) =>
-      participateUserId.push(participate.userId),
-    );
-    console.log(participateUserId);
-    /*const user = await this.userService.findManyByUsers(participateUserId);
-
-    let gridCell: CreateGridCellDto[] = [];
-    for (let i = 0; i < user.length; ++i) {
-      gridCell.push({
-        gridCellName: user[j].firstName + ' ' + user[j].lastName,
-        participate: participate[i],
-        wingGrid: newWingGrid,
-      });
-    }
-
-    for (const cell of gridCell) {
-      await this.gridCellsService.create(cell);
-    }*/
-
-    return 'wing grid created successfully';
-  }
+  //   console.log(participateUserId);
+  //   /*const user = await this.userService.findManyByUsers(participateUserId);
+  //
+  //   let gridCell: CreateGridCellDto[] = [];
+  //   for (let i = 0; i < user.length; ++i) {
+  //     gridCell.push({
+  //       gridCellName: user[j].firstName + ' ' + user[j].lastName,
+  //       participate: participate[i],
+  //       wingGrid: newWingGrid,
+  //     });
+  //   }
+  //
+  //   for (const cell of gridCell) {
+  //     await this.gridCellsService.create(cell);
+  //   }*/
+  //
+  //   return 'wing grid created successfully';
+  // }
 }

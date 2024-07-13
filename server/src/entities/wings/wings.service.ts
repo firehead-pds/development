@@ -1,80 +1,65 @@
 import { Injectable } from '@nestjs/common';
-import { In, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wing } from './wing.entity';
 import { WingsValidator } from './validators/wings.validator';
 import { WingDto } from './dtos/wing.dto';
+import { WingMembershipService } from './wing-membership.service';
+import { Role } from './enums/participate-role';
+import { RequestUser } from '../../auth/types/request-user.type';
 import { User } from '../users/user.entity';
-import { UsersService } from '../users/users.service';
-import { ParticipateInfo } from '../participates/interfaces/IParticipate';
-import { ParticipatesService } from '../participates/participates.service';
-import { Role } from '../participates/enums/participate-role';
 
 @Injectable()
+/**
+ * @class WingsService
+ * Manages the core details and configuration of a Wing, including its name, description, and associated settings.
+ * This class does not handle information related to the members of the Wing.
+ */
 export class WingsService {
   constructor(
     @InjectRepository(Wing) private readonly repo: Repository<Wing>,
     private readonly validator: WingsValidator,
-    private readonly userService: UsersService,
-    private readonly participateService: ParticipatesService,
+    private readonly wingMembershipService: WingMembershipService,
+    private readonly dataSource: DataSource,
   ) {}
 
-  public async create(wingDto: WingDto) {
+  /** Creates a new wing, setting passed user as the chief.
+   * @param wingDto The properties of the wing to create.
+   * @param user The user who is creating the wing and will be set as chief. Preferably use the currently logged-in user.
+   * @throws ConflictException if a wing with the given name already exists.
+   * */
+  public async create(wingDto: WingDto, user: User) {
+    // Validate wing data, check if fields are correct and do not already exist in the database
     await this.validator.validateCreateWing({ name: wingDto.wingName });
-    const newWing = this.repo.create({ name: wingDto.wingName });
-    await this.repo.save(newWing);
-    const currentUser = await this.userService.findOneById(wingDto.userId);
-    console.log(newWing);
-    console.log(currentUser);
-    await this.participateService.create(
-      { id: newWing.id },
-      { id: currentUser.id },
-      Role.WingChief,
-    );
 
-    return 'wing created successfully';
-  }
+    // Run this as a transaction. Prevent a wing from being created without a chief
+    // or a chief from being created without an existing wing.
+    const queryRunner = this.dataSource.createQueryRunner();
 
-  public async getAllWings(user: User) {
-    let userWing: ParticipateInfo = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      wingsInfo: null,
-    };
-    if (await this.participateService.existsBy(user.id)) {
-      const participates = await this.participateService.findByUser(user);
-      let wingId = [];
-      participates.forEach((participates) => {
-        wingId.push(participates.wingId);
-      });
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-      const wing = await this.findManyByIds(wingId);
-      const wingInfo = [];
-      for (let i = 0; i < wing.length; ++i) {
-        for (let j = 0; i < participates.length; ++j) {
-          if (wing[i].id === participates[j].id) {
-            wingInfo.push({
-              id: wing[i].id,
-              name: wing[i].name,
-              role: participates[j].role,
-            });
-          }
-        }
-      }
-      userWing.wingsInfo = wingInfo;
+    try {
+      // Save new wing to the database
+      const newWing = this.repo.create({ name: wingDto.wingName });
+      await this.repo.save(newWing);
 
-      return userWing;
-    } else {
-      return userWing;
+      // Create new member in the wing with the role of chief
+      await this.wingMembershipService.addUserToWing(
+        user,
+        newWing,
+        Role.WingChief,
+      );
+
+      return 'wing created successfully';
+    } catch (ex) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
   }
 
   public async findOneById(id: number) {
     return await this.repo.findOneBy({ id });
-  }
-
-  public async findManyByIds(ids: number[]) {
-    return this.repo.findBy({ id: In(ids) });
   }
 }

@@ -54,12 +54,14 @@ export class AuthController {
     @Body() body: LoginDto,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
-    const { userWings, accessToken, refreshToken } =
-      await this.authService.signInLocal(body.email, body.password);
+    const { accessToken, refreshToken } = await this.authService.signInLocal(
+      body.email,
+      body.password,
+    );
 
     this.authService.setTokenCookies(res, accessToken, refreshToken);
 
-    return userWings;
+    return;
   }
 
   @Public()

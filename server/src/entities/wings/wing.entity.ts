@@ -1,17 +1,17 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Participate } from '../participates/participate.entity';
+import { WingMembership } from './wing-membership.entity';
 import { WingGrid } from '../wing-grids/wing-grid.entity';
 
-@Entity({ name: 'wings' })
+@Entity()
 export class Wing {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 70 })
+  @Column({ length: 64 })
   name: string;
 
-  @OneToMany(() => Participate, (participate) => participate.wingId)
-  participate: Participate;
+  @OneToMany(() => WingMembership, (wingMembership) => wingMembership.wing)
+  wingMemberships: WingMembership[];
 
   @OneToMany(() => WingGrid, (wingGrid) => wingGrid.wing)
   wingGrid?: WingGrid;

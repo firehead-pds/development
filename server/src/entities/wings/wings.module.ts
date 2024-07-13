@@ -5,13 +5,18 @@ import { WingsService } from './wings.service';
 import { WingsController } from './wings.controller';
 import { WingsValidator } from './validators/wings.validator';
 import { UsersModule } from '../users/users.module';
-import { Participate } from '../participates/participate.entity';
-import { ParticipatesService } from '../participates/participates.service';
+import { WingMembership } from './wing-membership.entity';
+import { WingMembershipService } from './wing-membership.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Wing, Participate]), UsersModule],
+  imports: [TypeOrmModule.forFeature([Wing, WingMembership]), UsersModule],
   controllers: [WingsController],
-  providers: [WingsValidator, WingsService, ParticipatesService],
-  exports: [WingsService],
+  providers: [
+    WingsValidator,
+    WingsService,
+    WingMembershipService,
+    WingsController,
+  ],
+  exports: [WingsService, WingMembershipService],
 })
 export class WingsModule {}

@@ -1,6 +1,6 @@
 import { IsString, IsInt, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Participate } from '../../participates/participate.entity';
+import { WingMembership } from '../../wings/wing-membership.entity';
 import { WingGrid } from '../../wing-grids/wing-grid.entity';
 
 export class CreateGridCellDto {
@@ -11,7 +11,7 @@ export class CreateGridCellDto {
 
   @ApiProperty()
   @IsInt()
-  participate: Participate;
+  participate: WingMembership;
 
   @ApiProperty()
   @IsInt()

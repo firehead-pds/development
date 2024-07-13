@@ -10,7 +10,6 @@ import { ContactUsModule } from './entities/contactUs/contact-us.module';
 import * as process from 'node:process';
 import { DatabaseModule } from './config/database.module';
 import { AuthModule } from './auth/auth.module';
-import { ParticipatesModule } from './entities/participates/participates.module';
 import { WingsModule } from './entities/wings/wings.module';
 import fastifyCookie from '@fastify/cookie';
 import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
@@ -32,7 +31,6 @@ import { WingGridModule } from './entities/wing-grids/wing-grid.module';
     HashingModule,
     ContactUsModule,
     AuthModule,
-    ParticipatesModule,
     WingsModule,
     WingGridModule,
   ],

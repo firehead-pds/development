@@ -9,8 +9,9 @@ export class WingsValidator {
 
   public async validateCreateWing(newWing: Partial<Wing>) {
     const existsWithName = await this.checkExistingName(newWing.name);
+
     if (existsWithName) {
-      throw new ConflictException(`name already in use`);
+      throw new ConflictException('wing name already in use');
     }
   }
 

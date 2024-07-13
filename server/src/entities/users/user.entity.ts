@@ -9,7 +9,7 @@ import { Address } from '../address/address.entity';
 import { Measurements } from '../measurements/measurements.entity';
 import Token from '../../auth/token.entity';
 import { Friendship } from '../friendships/friendship.entity';
-import { Participate } from '../participates/participate.entity';
+import { WingMembership } from '../wings/wing-membership.entity';
 import { GridCell } from '../grid-cell/grid-cell.entity';
 
 @Entity({ name: 'users' })
@@ -55,8 +55,8 @@ export class User {
   @OneToMany(() => Friendship, (friendship) => friendship.receiver)
   receivedFriendRequests: Friendship;
 
-  @OneToMany(() => Participate, (participate) => participate.userId)
-  participate?: Participate;
+  @OneToMany(() => WingMembership, (wingMembership) => wingMembership.user)
+  wingMemberships?: WingMembership[];
 
   @OneToMany(() => GridCell, (gridCell) => gridCell.user)
   gridCell?: GridCell;
