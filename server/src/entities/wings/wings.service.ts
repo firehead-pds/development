@@ -5,9 +5,9 @@ import { Wing } from './wing.entity';
 import { WingsValidator } from './validators/wings.validator';
 import { WingDto } from './dtos/wing.dto';
 import { WingMembershipService } from './wing-membership.service';
-import { Role } from './enums/participate-role';
-import { RequestUser } from '../../auth/types/request-user.type';
 import { User } from '../users/user.entity';
+import { WingMembership } from './wing-membership.entity';
+import { Role } from './enums/participate-role';
 
 @Injectable()
 /**
@@ -18,6 +18,8 @@ import { User } from '../users/user.entity';
 export class WingsService {
   constructor(
     @InjectRepository(Wing) private readonly repo: Repository<Wing>,
+    @InjectRepository(WingMembership)
+    private readonly wingMembershipRepo: Repository<WingMembership>,
     private readonly validator: WingsValidator,
     private readonly wingMembershipService: WingMembershipService,
     private readonly dataSource: DataSource,
@@ -42,16 +44,17 @@ export class WingsService {
     try {
       // Save new wing to the database
       const newWing = this.repo.create({ name: wingDto.wingName });
-      await this.repo.save(newWing);
+      const newMembership = this.wingMembershipRepo.create({
+        user: user,
+        wing: newWing,
+        role: Role.WingChief,
+      });
 
-      // Create new member in the wing with the role of chief
-      await this.wingMembershipService.addUserToWing(
-        user,
-        newWing,
-        Role.WingChief,
-      );
+      await queryRunner.manager.save(newWing);
+      await queryRunner.manager.save(newMembership);
 
-      return 'wing created successfully';
+      await queryRunner.commitTransaction();
+      return { id: newWing.id };
     } catch (ex) {
       await queryRunner.rollbackTransaction();
     } finally {
