@@ -19,7 +19,7 @@
     "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json",
     "typeorm": "cross-env NODE_ENV=development ts-node ./node_modules/typeorm/cli",
     "migration:run": "npm run typeorm migration:run -- -d ./typeorm.config.ts",
-    "migration:generate": "npm run typeorm -- -d ./typeorm.config.ts migration:generate ./src/migrations/$npm_config_name",
+    "migration:generate": "npm run typeorm -- -d ./typeorm.config.ts migration:generate ./migrations/%npm_config_name%",
     "migration:create": "npm run typeorm -- migration:create ./src/migrations/$npm_config_name",
     "migration:revert": "npm run typeorm -- -d ./typeorm.config.ts migration:revert"
   },
