@@ -7,10 +7,8 @@ import { WingGridValidator } from './validators/wing-grid.validator';
 import { Wing } from '../wings/wing.entity';
 import { WingsModule } from '../wings/wings.module';
 import { WingMembership } from '../wings/wing-membership.entity';
-import { WingMembershipService } from '../wings/wing-membership.service';
 import { GridCell } from '../grid-cell/grid-cell.entity';
 import { GridCellService } from '../grid-cell/grid-cell.service';
-import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
 import { User } from '../users/user.entity';
 import { UsersValidator } from '../users/validators/users.validator';
@@ -27,9 +25,7 @@ import { HashingModule } from '../../common/hashing/hashing.module';
   providers: [
     WingGridService,
     GridCellService,
-    WingMembershipService,
     WingGridValidator,
-    UsersService,
     UsersValidator,
   ],
   exports: [WingGridService],
