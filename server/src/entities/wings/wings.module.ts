@@ -7,9 +7,14 @@ import { WingsValidator } from './validators/wings.validator';
 import { UsersModule } from '../users/users.module';
 import { WingMembership } from './wing-membership.entity';
 import { WingMembershipService } from './wing-membership.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Wing, WingMembership]), UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([Wing, WingMembership]),
+    UsersModule,
+    ConfigModule,
+  ],
   controllers: [WingsController],
   providers: [
     WingsValidator,

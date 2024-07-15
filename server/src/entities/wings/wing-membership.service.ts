@@ -1,10 +1,19 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { WingMembership } from './wing-membership.entity';
 import { Role } from './enums/participate-role';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
 import { Wing } from './wing.entity';
+import { RequestUser } from '../../auth/types/request-user.type';
+import { WingsService } from './wings.service';
+import { CreateInviteCodeDto } from './dtos/create-invite-code.dto';
+import { v4 as uuid4 } from 'uuid';
+import { Invite } from './invite.entity';
 
 /**
  * @class WingMembershipService
@@ -15,7 +24,10 @@ import { Wing } from './wing.entity';
 export class WingMembershipService {
   constructor(
     @InjectRepository(WingMembership)
-    private readonly repo: Repository<WingMembership>,
+    private readonly wingMembershipRepository: Repository<WingMembership>,
+    @InjectRepository(Invite)
+    private readonly inviteRepository: Repository<Invite>,
+    private readonly wingService: WingsService,
   ) {}
 
   /**
@@ -49,8 +61,8 @@ export class WingMembershipService {
       rating: 0,
     };
 
-    const newMembership = this.repo.create(membership);
-    await this.repo.save(newMembership);
+    const newMembership = this.wingMembershipRepository.create(membership);
+    await this.wingMembershipRepository.save(newMembership);
   }
 
   /**
@@ -60,7 +72,7 @@ export class WingMembershipService {
    * @returns A Promise resolving to an array of Wing entities that the user is a member of.
    */
   public async getWingsForUser(user: User) {
-    return this.repo
+    return this.wingMembershipRepository
       .createQueryBuilder('membership')
       .leftJoinAndSelect('membership.wing', 'wing')
       .where('membership.user = :user', { user })
@@ -75,7 +87,7 @@ export class WingMembershipService {
    * @returns A Promise resolving to `true` if the user is already a member of the wing, `false` otherwise.
    */
   private async validateUserAlreadyInWing(user: User, wing: Wing) {
-    return await this.repo.existsBy({ user, wing });
+    return await this.wingMembershipRepository.existsBy({ user, wing });
   }
 
   /**
@@ -85,6 +97,44 @@ export class WingMembershipService {
    * @returns A Promise resolving to `true` if the wing already has a chief, `false` otherwise.
    */
   private async validateWingAlreadyHasChief(wing: Wing) {
-    return await this.repo.existsBy({ wing, role: Role.WingChief });
+    return await this.wingMembershipRepository.existsBy({
+      wing,
+      role: Role.WingChief,
+    });
+  }
+
+  public async generateInviteCode(body: CreateInviteCodeDto) {
+    const wing = await this.wingService.findOneById(body.wingId);
+
+    if (!wing) throw new NotFoundException('Wing not found.');
+
+    const token = uuid4();
+
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24);
+
+    const invite = this.inviteRepository.create({
+      token,
+      wing,
+      expiresAt,
+    });
+
+    await this.inviteRepository.save(invite);
+
+    return token;
+  }
+
+  public async joinInvite(token: string, user: RequestUser) {
+    const invite = await this.inviteRepository.findOne({
+      where: { token },
+      relations: ['wing'],
+    });
+
+    if (!invite || invite.expiresAt < new Date())
+      throw new NotFoundException('Invite not found or expired.');
+
+    const { wing } = invite;
+
+    await this.addUserToWing(user, wing, Role.Component);
   }
 }
