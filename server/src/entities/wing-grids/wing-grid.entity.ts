@@ -8,13 +8,13 @@ import {
 import { Wing } from '../wings/wing.entity';
 import { GridCell } from '../grid-cell/grid-cell.entity';
 
-@Entity({ name: 'wingGrid' })
+@Entity()
 export class WingGrid {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ length: 70 })
-  wingGridName: string;
+  name: string;
 
   @Column({ type: 'int' })
   rows: number;
@@ -23,8 +23,8 @@ export class WingGrid {
   cols: number;
 
   @ManyToOne(() => Wing, (wing) => wing.wingGrid)
-  wing?: Wing;
+  wing: Wing;
 
   @OneToMany(() => GridCell, (gridCell) => gridCell.wingGrid)
-  gridCell?: GridCell;
+  gridCell: GridCell;
 }

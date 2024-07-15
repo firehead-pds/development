@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
 import { Wing } from './wing.entity';
 import { RequestUser } from '../../auth/types/request-user.type';
-import { WingsService } from './wings.service';
 import { CreateInviteCodeDto } from './dtos/create-invite-code.dto';
 import { v4 as uuid4 } from 'uuid';
 import { Invite } from './invite.entity';
@@ -23,11 +22,12 @@ import { Invite } from './invite.entity';
 @Injectable()
 export class WingMembershipService {
   constructor(
+    @InjectRepository(Wing)
+    private readonly wingRepository: Repository<Wing>,
     @InjectRepository(WingMembership)
     private readonly wingMembershipRepository: Repository<WingMembership>,
     @InjectRepository(Invite)
     private readonly inviteRepository: Repository<Invite>,
-    private readonly wingService: WingsService,
   ) {}
 
   /**
@@ -104,7 +104,7 @@ export class WingMembershipService {
   }
 
   public async generateInviteCode(body: CreateInviteCodeDto) {
-    const wing = await this.wingService.findOneById(body.wingId);
+    const wing = await this.wingRepository.findOneBy({ id: body.wingId });
 
     if (!wing) throw new NotFoundException('Wing not found.');
 
