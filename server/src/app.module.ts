@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -38,22 +38,21 @@ import { WingGridModule } from './entities/wing-grids/wing-grid.module';
   providers: [
     AppService,
     {
-      provide: 'FASTIFY_COOKIE',
-      useFactory: async (
-        httpAdapterHost: HttpAdapterHost,
-        config: ConfigService,
-      ) => {
-        const app = httpAdapterHost.httpAdapter.getInstance();
-        await app.register(fastifyCookie, {
-          secret: config.get<string>('COOKIE_SECRET'),
-        });
-      },
-      inject: [HttpAdapterHost, ConfigService],
-    },
-    {
       provide: APP_GUARD,
       useClass: AccessTokenGuard,
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+    private readonly configService: ConfigService,
+  ) {}
+
+  async onModuleInit() {
+    const app = this.httpAdapterHost.httpAdapter.getInstance();
+    await app.register(fastifyCookie, {
+      secret: this.configService.get<string>('COOKIE_SECRET'),
+    });
+  }
+}
