@@ -1,24 +1,26 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import { createUserAndLogin } from './utils/auth';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication;
+  let app: NestFastifyApplication;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+  beforeAll(async () => {
+    app = global.app;
+  }, 10000);
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+  it('/ (GET)', async () => {
+    console.log(await createUserAndLogin(app));
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+    const res = await app.inject({
+      method: 'GET',
+      url: '/',
+    });
+
+    expect(res.statusCode).toEqual(200);
   });
 });

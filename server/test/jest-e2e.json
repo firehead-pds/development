@@ -1,4 +1,5 @@
 {
+  "globalSetup": "<rootDir>/global-setup.ts",
   "moduleFileExtensions": [
     "js",
     "json",
@@ -8,6 +9,6 @@
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.ts$": "ts-jest"
   }
 }
