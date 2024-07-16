@@ -14,6 +14,7 @@ export class UsersService {
   ) {}
 
   public async create(user: Partial<User>) {
+    console.log(__dirname);
     await this.validator.validateCreateUser(user);
 
     user.password = await this.hashingService.hashData(user.password);

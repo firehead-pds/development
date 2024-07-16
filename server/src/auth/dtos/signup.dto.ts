@@ -56,6 +56,7 @@ export class SignupDto {
   @Matches(/^\d+$/)
   phoneNumber: string;
 
+  @ApiProperty()
   @IsString()
   @Length(11, 11)
   @IsCpf()

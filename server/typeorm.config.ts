@@ -13,7 +13,10 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.DB_PASSWORD,
   synchronize: process.env.NODE_ENV !== 'production',
   dropSchema: process.env.NODE_ENV === 'test',
-  entities: ['dist/**/*.entity{.ts,.js}'],
+  entities:
+    process.env.NODE_ENV === 'test'
+      ? ['src/**/*.entity{.js,.ts}']
+      : ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   ssl: true,
 };

@@ -4,7 +4,7 @@ import { Cookie } from 'nodemailer/lib/fetch/cookies';
 export async function createUserAndLogin(
   app: NestFastifyApplication,
 ): Promise<Array<Cookie>> {
-  await app.inject({
+  const signUpResponse = await app.inject({
     url: '/auth/local/signup',
     method: 'POST',
     payload: {
@@ -13,7 +13,8 @@ export async function createUserAndLogin(
       birthdate: '1990-01-01',
       email: 'john.doe@example.com',
       password: 'password123',
-      phoneNumber: '1234567890',
+      phoneNumber: '11920409045',
+      cpf: '39214946051',
       measurements: {
         shoeSize: '9',
         shirtSize: 'M',
@@ -31,6 +32,8 @@ export async function createUserAndLogin(
     },
   });
 
+  console.log(JSON.stringify(signUpResponse.payload));
+
   const loginResponse = await app.inject({
     url: 'auth/local/login',
     method: 'POST',
@@ -39,6 +42,8 @@ export async function createUserAndLogin(
       password: 'password123',
     },
   });
+
+  console.log(JSON.stringify(loginResponse.payload));
 
   const { cookies } = loginResponse;
   return cookies;

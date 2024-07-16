@@ -1,4 +1,5 @@
 export enum PantsSize {
+  S32 = '32',
   S34 = '34',
   S36 = '36',
   S38 = '38',

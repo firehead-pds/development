@@ -15,6 +15,7 @@ module.exports = async () => {
   const app = moduleFixture.createNestApplication<NestFastifyApplication>(
     new FastifyAdapter(),
   );
+
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
 
