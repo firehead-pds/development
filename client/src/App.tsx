@@ -1,16 +1,17 @@
+import PublicRoute from './guards/PublicRoute.tsx';
 import Signup from './pages/public/Signup.tsx';
 import ContactUs from './pages/public/ContactUs.tsx';
 import Login from './pages/public/Login.tsx';
+import WelcomePage from './pages/public/WelcomePage.tsx';
+import PageLoader from './components/UI/PageLoader.tsx';
+import ProtectedRoute from './guards/ProtectedRoute.tsx';
+import Dashboard from './pages/app/Dashboard.tsx';
+import Wing from './pages/app/Wing.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useAppDispatch } from './app/hook.ts';
 import { logOut, setCredentials } from './features/auth/authSlice.ts';
 import { useRefreshQuery } from './features/auth/authApiSlice.ts';
 import { useEffect } from 'react';
-import WelcomePage from './pages/public/WelcomePage.tsx';
-import ProtectedRoute from './guards/ProtectedRoute.tsx';
-import Dashboard from './pages/app/Dashboard.tsx';
-import PublicRoute from './guards/PublicRoute.tsx';
-import PageLoader from './components/UI/PageLoader.tsx';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -54,6 +55,10 @@ export default function App() {
         {
           path: 'dashboard',
           element: <Dashboard />,
+        },
+        {
+          path: 'wing',
+          element: <Wing />,
         },
       ],
     },
