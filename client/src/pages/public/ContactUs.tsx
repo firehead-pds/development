@@ -10,7 +10,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import useApiMutate from '../../hooks/fetching/useApiMutation.tsx';
+import { useContactusMutation } from '../../features/contactus/contactusApiSlice.ts';
 
 export interface ContactUsInputs {
   userEmail: string;
@@ -30,30 +30,25 @@ export default function ContactUs() {
   const { t } = useTranslation('contact-us');
 
   const toast = useToast();
+  const [contactus] = useContactusMutation();
 
-  const { mutateAsync } = useApiMutate({
-    mutationKey: ['contactData'],
-    endpoint: 'contact-us',
-    method: 'POST',
-    onSuccess: (_res) => {
+  const onSubmit: SubmitHandler<ContactUsInputs> = async (data) => {
+    try {
+      await contactus(data).unwrap();
       reset();
       toast({
         title: t('toasts.sent.title'),
         description: t('toasts.sent.description'),
         status: 'success',
       });
-    },
-    onError: (_error) => {
+    } catch (e) {
+      console.log(e);
       toast({
         title: tCommon('toasts.serverError.title'),
         description: tCommon('toasts.serverError.description'),
         status: 'error',
       });
-    },
-  });
-
-  const onSubmit: SubmitHandler<ContactUsInputs> = async (data) => {
-    await mutateAsync(data);
+    }
   };
 
   return (
