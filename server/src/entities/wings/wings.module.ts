@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Wing } from './wing.entity';
 import { WingsService } from './wings.service';
@@ -17,7 +17,7 @@ import { Invite } from './invite.entity';
     ConfigModule,
   ],
   controllers: [WingsController],
-  providers: [WingsValidator, WingsService, WingMembershipService],
+  providers: [WingsValidator, WingsService, WingMembershipService, Logger],
   exports: [WingsService, WingMembershipService],
 })
 export class WingsModule {}

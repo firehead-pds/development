@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wing } from './wing.entity';
@@ -23,6 +23,7 @@ export class WingsService {
     private readonly validator: WingsValidator,
     private readonly wingMembershipService: WingMembershipService,
     private readonly dataSource: DataSource,
+    private readonly logger: Logger,
   ) {}
 
   /** Creates a new wing, setting passed user as the chief.
@@ -43,19 +44,25 @@ export class WingsService {
 
     try {
       // Save new wing to the database
-      const newWing = this.repo.create({ name: wingDto.wingName });
-      const newMembership = this.wingMembershipRepo.create({
+      let newWing = this.repo.create({ name: wingDto.wingName });
+      newWing = await queryRunner.manager.save(newWing);
+
+      let newMembership = this.wingMembershipRepo.create({
         user: user,
         wing: newWing,
         role: Role.WingChief,
+        rating: 0,
       });
 
-      await queryRunner.manager.save(newWing);
-      await queryRunner.manager.save(newMembership);
+      newMembership = await queryRunner.manager.save(newMembership);
+
+      this.logger.debug(JSON.stringify(newWing));
+      this.logger.debug(JSON.stringify(newMembership));
 
       await queryRunner.commitTransaction();
       return { id: newWing.id };
     } catch (ex) {
+      this.logger.error(ex);
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
