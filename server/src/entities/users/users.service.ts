@@ -14,7 +14,6 @@ export class UsersService {
   ) {}
 
   public async create(user: Partial<User>) {
-    console.log(__dirname);
     await this.validator.validateCreateUser(user);
 
     user.password = await this.hashingService.hashData(user.password);
@@ -31,8 +30,11 @@ export class UsersService {
     });
   }
 
-  public async findByEmail(email: string) {
-    return await this.repo.findOneBy({ email });
+  public async findOneByEmail(email: string) {
+    return await this.repo.findOne({
+      where: { email },
+      relations: ['wingMemberships'],
+    });
   }
 
   public async findManyByIds(ids: number[]) {

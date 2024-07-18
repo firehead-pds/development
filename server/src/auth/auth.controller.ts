@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Post,
   Res,
   UseGuards,
@@ -25,6 +23,8 @@ import { RequestUser } from './types/request-user.type';
 import { Public } from './decorators/is-public.decorator';
 import { UsersService } from '../entities/users/users.service';
 import { SignupDto } from './dtos/signup.dto';
+import { plainToInstance } from 'class-transformer';
+import LoginResponseDto from './dtos/login-response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -47,21 +47,31 @@ export class AuthController {
 
   @ApiOkResponse()
   @ApiUnauthorizedResponse()
-  @HttpCode(HttpStatus.OK)
   @Post('local/login')
   @Public()
   async login(
     @Body() body: LoginDto,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
-    const { accessToken, refreshToken } = await this.authService.signInLocal(
+    const { user, tokens } = await this.authService.signInLocal(
       body.email,
       body.password,
     );
 
-    this.authService.setTokenCookies(res, accessToken, refreshToken);
+    this.authService.setTokenCookies(
+      res,
+      tokens.accessToken,
+      tokens.refreshToken,
+    );
 
-    return;
+    const userData = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      wingsInfo: user.wingMemberships,
+    };
+
+    return plainToInstance(LoginResponseDto, userData);
   }
 
   @Public()
