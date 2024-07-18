@@ -10,36 +10,36 @@ export class GridService {
     this.grid = [];
   }
 
-  organizarUsuarios(usuarios: User[], amizades: Friendship[]): number[][] {
-    const amigosPorUsuario = new Map<number, number>();
-    amizades.forEach((amizade) => {
-      if (amigosPorUsuario.has(amizade.creator.id)) {
-        amigosPorUsuario.set(
-          amizade.creator.id,
-          amigosPorUsuario.get(amizade.creator.id) + 1,
+  organizeUsers(users: User[], friendships: Friendship[]): number[][] {
+    const friendsByUser = new Map<number, number>();
+    friendships.forEach((friendship) => {
+      if (friendsByUser.has(friendship.creator.id)) {
+        friendsByUser.set(
+          friendship.creator.id,
+          friendsByUser.get(friendship.creator.id) + 1,
         );
       } else {
-        amigosPorUsuario.set(amizade.creator.id, 1);
+        friendsByUser.set(friendship.creator.id, 1);
       }
-      if (amigosPorUsuario.has(amizade.receiver.id)) {
-        amigosPorUsuario.set(
-          amizade.receiver.id,
-          amigosPorUsuario.get(amizade.receiver.id) + 1,
+      if (friendsByUser.has(friendship.receiver.id)) {
+        friendsByUser.set(
+          friendship.receiver.id,
+          friendsByUser.get(friendship.receiver.id) + 1,
         );
       } else {
-        amigosPorUsuario.set(amizade.receiver.id, 1);
+        friendsByUser.set(friendship.receiver.id, 1);
       }
     });
 
-    usuarios.sort((a, b) => {
-      const amigosA = amigosPorUsuario.get(a.id) || 0;
-      const amigosB = amigosPorUsuario.get(b.id) || 0;
-      return amigosB - amigosA;
+    users.sort((a, b) => {
+      const friendsA = friendsByUser.get(a.id) || 0;
+      const friendsB = friendsByUser.get(b.id) || 0;
+      return friendsB - friendsA;
     });
 
     this.grid = Array.from({ length: 7 }, () => Array(11).fill(0));
 
-    usuarios.forEach((usuario, index) => {
+    users.forEach((usuario, index) => {
       let positionFound = false;
       for (let row = 0; row < 7; row++) {
         for (let col = 0; col < 11; col++) {
