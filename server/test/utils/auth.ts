@@ -32,8 +32,6 @@ export async function createUserAndLogin(
     },
   });
 
-  console.log(JSON.stringify(signUpResponse.payload));
-
   const loginResponse = await app.inject({
     url: 'auth/local/login',
     method: 'POST',
@@ -42,8 +40,6 @@ export async function createUserAndLogin(
       password: 'password123',
     },
   });
-
-  console.log(JSON.stringify(loginResponse.payload));
 
   const { cookies } = loginResponse;
   return cookies;
