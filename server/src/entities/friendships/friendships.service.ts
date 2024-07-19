@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -11,6 +12,11 @@ import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { FriendRequestStatus } from './enums/friend-request-status';
 
+/**
+ * @class FriendshipsService
+ * Manages friendship-related actions, including friend requests and responses, and
+ * a user's friends list.
+ * */
 @Injectable()
 export class FriendshipsService {
   constructor(
@@ -19,10 +25,25 @@ export class FriendshipsService {
     private usersService: UsersService,
   ) {}
 
+  /**
+   * Finds a friend request by ID.
+   *
+   * @param id The friendship primary ID.
+   * @returns A friend request with the ID provided by the parameter.
+   */
   private async findFriendRequestById(id: number) {
     return await this.friendshipRepo.findOneBy({ id });
   }
 
+  /**
+   * Creates a friend request, sending a friend request to a specific user.
+   *
+   * @param receiverId The ID of the friend request receiver.
+   * @param creator The information of the friend request creator.
+   * @throws BadRequestException If the user tried to send a friend request to themselves.
+   * @throws ConflictException If the user has already sent a friend request to the specified user.
+   * @returns The new friend request ID.
+   */
   public async sendFriendRequest(receiverId: number, creator: User) {
     if (receiverId === creator.id) {
       throw new BadRequestException(
@@ -45,11 +66,23 @@ export class FriendshipsService {
       receiver,
       status: FriendRequestStatus.PENDING,
     });
+    await this.friendshipRepo.save(friendRequest);
 
-    return this.friendshipRepo.save(friendRequest);
+    //Friendship ID being returned
+    return { id: friendRequest.id };
   }
 
-  public async acceptFriendRequest(friendRequestId: number) {
+  /**
+   * Accepts a friend request received by a specific user.
+   *
+   * @param friendRequestId The friend request ID.
+   * @param receiver The information of the friend request receiver.
+   * @throws NotFoundException If friend request with the provided ID does not exist.
+   * @throws ConflictException If the user has already accepted a friend request with the provided ID.
+   * @throws ForbiddenException If the user trying to accept the friend request is not the same as the user who received the friend request.
+   * @returns The friend request with ACCEPTED status.
+   */
+  public async acceptFriendRequest(friendRequestId: number, receiver: User) {
     const friendRequest = await this.findFriendRequestById(friendRequestId);
 
     if (!friendRequest) {
@@ -59,6 +92,12 @@ export class FriendshipsService {
     if (friendRequest.status === FriendRequestStatus.ACCEPTED) {
       throw new ConflictException(
         'this friend request has already been accepted',
+      );
+    }
+
+    if (friendRequest.receiver.id != receiver.id) {
+      throw new ForbiddenException(
+        'the user trying to accept and the user who received the friend request are not the same',
       );
     }
 
@@ -98,6 +137,17 @@ export class FriendshipsService {
         {
           receiver: user,
           status: FriendRequestStatus.ACCEPTED,
+        },
+      ],
+    });
+  }
+
+  public async getAllPendingReceivedRequests(user: User) {
+    return await this.friendshipRepo.find({
+      where: [
+        {
+          receiver: user,
+          status: FriendRequestStatus.PENDING,
         },
       ],
     });
