@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import AccessTokenStrategy from './strategies/access-token.strategy';
 import Token from './token.entity';
 import RefreshTokenStrategy from './strategies/refresh-token.strategy';
+import { RolesGuard } from './guards/roles.guard';
 
 @Module({
   imports: [
@@ -18,7 +19,12 @@ import RefreshTokenStrategy from './strategies/refresh-token.strategy';
     JwtModule.register({}),
     TypeOrmModule.forFeature([Token]),
   ],
-  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
+  providers: [
+    AuthService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+    RolesGuard,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
