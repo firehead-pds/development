@@ -1,18 +1,41 @@
-import { Button, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react';
-import { useCreateWingMutation } from '../../features/wing/wingApiSlice.ts';
+import {
+  Button,
+  Flex,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  useClipboard,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useGenerateInviteMutation } from '../../features/wing/wingApiSlice.ts';
+import { useParams } from 'react-router-dom';
 
-interface CreateWingFormFields {
-  wingName: string;
+interface GenerateInviteFormFields {
+  wingId: number;
 }
 
 export default function Wing() {
-  const { register, handleSubmit } = useForm<CreateWingFormFields>();
+  const { handleSubmit } = useForm<GenerateInviteFormFields>();
+  const [invite, { isLoading }] = useGenerateInviteMutation();
 
-  const [wing] = useCreateWingMutation();
-  const onSubmit: SubmitHandler<CreateWingFormFields> = async (data) => {
+  const { onCopy, value, setValue, hasCopied } = useClipboard('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { id } = useParams();
+
+  const onSubmit: SubmitHandler<GenerateInviteFormFields> = async () => {
     try {
-      await wing(data).unwrap();
+      if (id === undefined) {
+        console.log('UndefineD');
+        return;
+      }
+      const wingId: GenerateInviteFormFields = { wingId: +id };
+      const inviteCode = await invite(wingId).unwrap();
+      setValue(inviteCode);
     } catch (error) {
       console.log(error);
     }
@@ -26,22 +49,33 @@ export default function Wing() {
         className={'w-screen my-6'}
       >
         <form
-          id={'createWingForm'}
+          id={'generateInvite'}
           onSubmit={handleSubmit(onSubmit)}
           className={'p-4 border rounded-lg mx-2 w-[500px]'}
           noValidate
         >
-          <FormControl isRequired>
-            <FormLabel htmlFor="wingName">Wing Name:</FormLabel>
-            <Input id="wingName" type="text" {...register('wingName')}></Input>
-          </FormControl>
           <Button
-            isLoading={wing.isLoading}
             type={'submit'}
-            form={'createWingForm'}
+            isLoading={isLoading}
+            form={'generateInvite'}
+            onClick={isLoading ? () => {} : onOpen}
           >
-            Create
+            Generate Invite
           </Button>
+
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Invite Code Link</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Input value={value} readOnly mr={2} mb={5} />
+                <Button onClick={onCopy} mb={2}>
+                  {hasCopied ? 'Copied!' : 'Copy Link'}
+                </Button>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
         </form>
       </Flex>
     </>

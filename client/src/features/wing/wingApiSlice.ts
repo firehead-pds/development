@@ -4,6 +4,10 @@ interface WingBody {
   wingName: string;
 }
 
+interface InviteBody {
+  wingId: number;
+}
+
 export const wingApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createWing: builder.mutation<void, WingBody>({
@@ -13,7 +17,21 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
+    generateInvite: builder.mutation<string, InviteBody>({
+      query: (body) => ({
+        url: '/wing-membership/generate-invite',
+        method: 'POST',
+        body: body,
+      }),
+    }),
+    getWing: builder.query<void, void>({
+      query: () => ({
+        url: 'wing-membership/user-wing',
+        method: 'GET',
+      }),
+    }),
   }),
 });
-
-export const { useCreateWingMutation } = wingApiSlice;
+//pq tu quer cria uma branch? eu já dei o pull já
+export const { useCreateWingMutation, useGenerateInviteMutation } =
+  wingApiSlice;
