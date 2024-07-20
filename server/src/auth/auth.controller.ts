@@ -90,11 +90,14 @@ export class AuthController {
       throw e;
     }
 
-    return {
+    const userData = {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      wingsInfo: user.wingMemberships,
     };
+
+    return plainToInstance(LoginResponseDto, userData);
   }
 
   @UseGuards(RefreshTokenGuard)

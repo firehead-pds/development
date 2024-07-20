@@ -57,7 +57,7 @@ export default function App() {
           element: <Dashboard />,
         },
         {
-          path: 'wing',
+          path: 'wing/:id',
           element: <Wing />,
         },
       ],
