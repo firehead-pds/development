@@ -68,7 +68,9 @@ export class FriendshipsService {
     });
     await this.friendshipRepo.save(friendRequest);
 
-    //Friendship ID being returned
+    /*
+    Friendship ID being returned.
+    */
     return { id: friendRequest.id };
   }
 
@@ -105,14 +107,22 @@ export class FriendshipsService {
     return await this.friendshipRepo.save(friendRequest);
   }
 
+  /**
+   * Get all friends of a specific user.
+   *
+   * @param currentUser The user who is trying to see all their friends.
+   * @returns A list of all the user's friends.
+   */
   public async getAllFriends(currentUser: User) {
     const friendships = await this.getAllFriendshipRecords(currentUser);
 
     let friendIds: number[] = [];
 
-    // Check if the current user created or received the friend request
-    // If they are the creator, add the ID of the receiver as the friend
-    // Otherwise, add the ID of the creator as the friend
+    /*
+    Check if the current user created or received the friend request.
+    If they are the creator, add the ID of the receiver as the friend.
+    Otherwise, add the ID of the creator as the friend.
+    */
 
     friendships.forEach((friend) => {
       if (friend.creator.id === currentUser.id) {
@@ -125,11 +135,19 @@ export class FriendshipsService {
     return this.usersService.findManyByIds(friendIds);
   }
 
+  /**
+   * Get all friendships for a specific user.
+   *
+   * @param user The user who is trying to see all their friendships.
+   * @returns A list of all friendships of the user.
+   */
   private async getAllFriendshipRecords(user: User) {
     return await this.friendshipRepo.find({
       where: [
-        // The user can be the one who created or the one who received the friend request
-        // Either way, it is still a friend if it has been accepted, so we need to check for both
+        /*
+        The user can be the one who created or the one who received the friend request.
+        Either way, it is still a friend if it has been accepted, so we need to check for both.
+        */
         {
           creator: user,
           status: FriendRequestStatus.ACCEPTED,
@@ -142,6 +160,12 @@ export class FriendshipsService {
     });
   }
 
+  /**
+   * Get all pending received friend requests for a specific user.
+   *
+   * @param user The user who is trying to see all their pending friend requests.
+   * @returns A list of all the user's pending friend requests.
+   */
   public async getAllPendingReceivedRequests(user: User) {
     return await this.friendshipRepo.find({
       where: [
@@ -153,10 +177,19 @@ export class FriendshipsService {
     });
   }
 
+  /**
+   * Check if there is already a friend request between two users.
+   *
+   * @param creator The user who created the friend request.
+   * @param receiver The user who received the friend request.
+   * @returns 1 if there is already a friend request between the two users, nothing otherwise.
+   */
   private async requestAlreadyExists(creator: User, receiver: User) {
     const friendRequest = await this.friendshipRepo.find({
       where: [
-        // Check if it has been either received or created
+        /*
+        Check if it has been either received or created.
+        */
         { creator, receiver },
         { creator: receiver, receiver: creator },
       ],
