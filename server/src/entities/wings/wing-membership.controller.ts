@@ -4,7 +4,6 @@ import { AllowedRole } from '../../auth/decorators/allowed-role.decorator';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { WingMembershipService } from './wing-membership.service';
 import { CreateInviteCodeDto } from './dtos/create-invite-code.dto';
-import { ConfigService } from '@nestjs/config';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import { RequestUser } from '../../auth/types/request-user.type';
 
