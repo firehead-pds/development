@@ -26,14 +26,22 @@ export class UsersService {
   public async findOneById(id: number) {
     return await this.repo.findOne({
       where: { id },
-      relations: ['wingMemberships'],
+      relations: {
+        wingMemberships: {
+          wing: true,
+        },
+      },
     });
   }
 
   public async findOneByEmail(email: string) {
     return await this.repo.findOne({
       where: { email },
-      relations: ['wingMemberships'],
+      relations: {
+        wingMemberships: {
+          wing: true,
+        },
+      },
     });
   }
 

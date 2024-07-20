@@ -9,8 +9,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { Role } from '../../entities/wings/enums/participate-role';
-import { RequestUser } from '../types/request-user.type';
 import { AllowedRole } from '../decorators/allowed-role.decorator';
+import { User } from '../../entities/users/user.entity';
 
 /** @class RolesGuard
  * Manages permission control in the route by checkin the user's roles and
@@ -35,7 +35,7 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const user = request.user as RequestUser;
+    const user = request.user as User;
 
     if (!user) {
       throw new UnauthorizedException();
@@ -47,8 +47,10 @@ export class RolesGuard implements CanActivate {
     }
 
     const wingMembership = user.wingMemberships.find(
-      (wm) => wm.wing.id == wingId,
+      (wm) => wm.wing && wm.wing.id == wingId,
     );
+
+    if (!wingMembership) return false;
 
     const roleInWing = wingMembership.role;
 

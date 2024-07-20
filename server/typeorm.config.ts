@@ -1,6 +1,7 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
 import { registerAs } from '@nestjs/config';
+import * as process from 'node:process';
 
 config({ path: '.env.' + process.env.NODE_ENV });
 
@@ -18,7 +19,7 @@ export const dataSourceOptions: DataSourceOptions = {
       ? ['src/**/*.entity{.js,.ts}']
       : ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
-  ssl: true,
+  ssl: process.env.NODE_ENV !== 'test',
 };
 
 export default registerAs('typeorm', () => dataSourceOptions);
