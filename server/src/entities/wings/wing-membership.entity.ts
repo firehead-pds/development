@@ -17,11 +17,9 @@ export class WingMembership {
   id: number;
 
   @ManyToOne(() => User, (user) => user.wingMemberships)
-  @JoinColumn()
   user: User;
 
   @ManyToOne(() => Wing, (wing) => wing.wingMemberships)
-  @JoinColumn()
   wing: Wing;
 
   @Column({ type: 'enum', enum: Role })
