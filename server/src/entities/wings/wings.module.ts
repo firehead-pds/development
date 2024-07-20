@@ -9,6 +9,7 @@ import { WingMembership } from './wing-membership.entity';
 import { WingMembershipService } from './wing-membership.service';
 import { ConfigModule } from '@nestjs/config';
 import { Invite } from './invite.entity';
+import { WingMembershipController } from './wing-membership.controller';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { Invite } from './invite.entity';
     UsersModule,
     ConfigModule,
   ],
-  controllers: [WingsController],
+  controllers: [WingsController, WingMembershipController],
   providers: [WingsValidator, WingsService, WingMembershipService, Logger],
   exports: [WingsService, WingMembershipService],
 })
