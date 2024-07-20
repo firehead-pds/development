@@ -1,9 +1,7 @@
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Cookie } from 'nodemailer/lib/fetch/cookies';
 
-export async function createUserAndLogin(
-  app: NestFastifyApplication,
-): Promise<Array<Cookie>> {
+export async function createUserAndLogin(app: NestFastifyApplication) {
   const signUpResponse = await app.inject({
     url: '/auth/local/signup',
     method: 'POST',
@@ -42,5 +40,5 @@ export async function createUserAndLogin(
   });
 
   const { cookies } = loginResponse;
-  return cookies;
+  return cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join('; ');
 }
