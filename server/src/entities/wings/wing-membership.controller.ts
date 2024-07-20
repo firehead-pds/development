@@ -24,9 +24,7 @@ export class WingMembershipController {
   public async generateInvite(@Body() body: CreateInviteCodeDto) {
     const token = await this.wingMembershipService.generateInviteCode(body);
 
-    const baseUrl = this.configService.get<string>('FRONTEND_ORIGIN');
-
-    return `${baseUrl}/app/join/${token}`;
+    return { token };
   }
 
   @Get('join-invite')
