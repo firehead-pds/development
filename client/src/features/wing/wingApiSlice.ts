@@ -17,7 +17,7 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
-    generateInvite: builder.mutation<string, InviteBody>({
+    generateInvite: builder.mutation<{ token: string }, InviteBody>({
       query: (body) => ({
         url: '/wing-membership/generate-invite',
         method: 'POST',

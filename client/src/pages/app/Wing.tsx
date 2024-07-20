@@ -34,8 +34,14 @@ export default function Wing() {
         return;
       }
       const wingId: GenerateInviteFormFields = { wingId: +id };
-      const inviteCode = await invite(wingId).unwrap();
-      setValue(inviteCode);
+      const res = await invite(wingId).unwrap();
+      const inviteCode = res.token;
+
+      const currentUrl = window.location.origin;
+
+      const inviteLink = `${currentUrl}/app/join-wing/${inviteCode}`;
+
+      setValue(inviteLink);
     } catch (error) {
       console.log(error);
     }
