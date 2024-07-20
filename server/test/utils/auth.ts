@@ -1,8 +1,7 @@
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Cookie } from 'nodemailer/lib/fetch/cookies';
 
 export async function createUserAndLogin(app: NestFastifyApplication) {
-  const signUpResponse = await app.inject({
+  await app.inject({
     url: '/auth/local/signup',
     method: 'POST',
     payload: {

@@ -13,10 +13,7 @@ export class WingMembershipController {
   // TODO Leave wing
   // TODO Change user permission in the wing
 
-  constructor(
-    private readonly wingMembershipService: WingMembershipService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly wingMembershipService: WingMembershipService) {}
 
   @Post('generate-invite')
   @AllowedRole(Role.Harmony)
