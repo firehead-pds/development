@@ -25,16 +25,17 @@ export default function Wing() {
 
   const { onCopy, value, setValue, hasCopied } = useClipboard('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { id } = useParams();
+  const { wingId } = useParams();
 
   const onSubmit: SubmitHandler<GenerateInviteFormFields> = async () => {
     try {
-      if (id === undefined) {
-        console.log('UndefineD');
+      if (!wingId) {
+        console.error('Could not get id for the current accessed wing');
         return;
       }
-      const wingId: GenerateInviteFormFields = { wingId: +id };
-      const res = await invite(wingId).unwrap();
+      const payload = { wingId: +wingId };
+
+      const res = await invite(payload).unwrap();
       const inviteCode = res.token;
 
       const currentUrl = window.location.origin;

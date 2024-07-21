@@ -55,7 +55,7 @@ export default function Dashboard() {
             <Link as={ReactRouterLink} to={`/app/wing/${wing.id}`}>
               {wing.id}
             </Link>
-            {wing.userRole}
+            {wing.role}
           </Box>
         );
       })}

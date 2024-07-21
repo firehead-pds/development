@@ -12,6 +12,7 @@ import { useAppDispatch } from './app/hook.ts';
 import { logOut, setCredentials } from './features/auth/authSlice.ts';
 import { useRefreshQuery } from './features/auth/authApiSlice.ts';
 import { useEffect } from 'react';
+import MembershipProtectedRoute from './guards/MembershipProtectedRoute.tsx';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -57,8 +58,14 @@ export default function App() {
           element: <Dashboard />,
         },
         {
-          path: 'wing/:id',
-          element: <Wing />,
+          path: 'wing/:wingId',
+          element: <MembershipProtectedRoute />,
+          children: [
+            {
+              path: '',
+              element: <Wing />,
+            },
+          ],
         },
       ],
     },

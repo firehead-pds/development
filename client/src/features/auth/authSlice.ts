@@ -6,10 +6,10 @@ enum Roles {
   WingChief = 'Wing Chief',
 }
 
-interface wings {
+interface wing {
   id: number;
   name: string;
-  userRole: Roles;
+  role: Roles;
 }
 
 export interface AuthState {
@@ -17,7 +17,7 @@ export interface AuthState {
     firstName: string;
     lastName: string;
     email: string;
-    wingsInfo?: wings[];
+    wingsInfo?: wing[];
   } | null;
 }
 
@@ -38,18 +38,19 @@ export const authSlice = createSlice({
   },
   selectors: {
     selectCurrentUser: (state) => state.user,
-    selectUserRoleForWing: (state, wingId: number) => {
+    selectUserIsPartOfWing: (state, wingId) => {
       const { user } = state;
 
       if (!user || !user.wingsInfo) return null;
 
       const wing = user.wingsInfo.find((w) => w.id === wingId);
-      return wing ? wing.userRole : null;
+      return wing ? wing : null;
     },
   },
 });
 
 export const { setCredentials, logOut } = authSlice.actions;
-export const { selectCurrentUser, selectUserRoleForWing } = authSlice.selectors;
+export const { selectCurrentUser, selectUserIsPartOfWing } =
+  authSlice.selectors;
 
 export default authSlice.reducer;
