@@ -46,11 +46,25 @@ export const authSlice = createSlice({
       const wing = user.wingsInfo.find((w) => w.id === wingId);
       return wing ? wing : null;
     },
+    selectHasAdminPermissionForWing: (state, wingId) => {
+      const { user } = state;
+
+      if (!user || !user.wingsInfo) return null;
+
+      const wing = user.wingsInfo.find((w) => w.id === wingId);
+      console.log(wing);
+      return (
+        wing && (wing.role === Roles.Harmony || wing.role === Roles.WingChief)
+      );
+    },
   },
 });
 
 export const { setCredentials, logOut } = authSlice.actions;
-export const { selectCurrentUser, selectUserIsPartOfWing } =
-  authSlice.selectors;
+export const {
+  selectCurrentUser,
+  selectUserIsPartOfWing,
+  selectHasAdminPermissionForWing,
+} = authSlice.selectors;
 
 export default authSlice.reducer;

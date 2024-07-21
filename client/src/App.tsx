@@ -5,9 +5,13 @@ import Login from './pages/public/Login.tsx';
 import WelcomePage from './pages/public/WelcomePage.tsx';
 import PageLoader from './components/UI/PageLoader.tsx';
 import ProtectedRoute from './guards/ProtectedRoute.tsx';
-import Dashboard from './pages/app/Dashboard.tsx';
-import Wing from './pages/app/Wing.tsx';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Dashboard from './pages/app/dashboard/Dashboard.tsx';
+import Wing from './pages/app/wing-index/Wing.tsx';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom';
 import { useAppDispatch } from './app/hook.ts';
 import { logOut, setCredentials } from './features/auth/authSlice.ts';
 import { useRefreshQuery } from './features/auth/authApiSlice.ts';
@@ -53,6 +57,10 @@ export default function App() {
       path: '/app',
       element: <ProtectedRoute />,
       children: [
+        {
+          path: '',
+          element: <Navigate to={'dashboard'} />,
+        },
         {
           path: 'dashboard',
           element: <Dashboard />,

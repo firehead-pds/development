@@ -1,5 +1,5 @@
-import { useAppSelector } from '../../app/hook.ts';
-import { selectCurrentUser } from '../../features/auth/authSlice.ts';
+import { useAppSelector } from '../../../app/hook.ts';
+import { selectCurrentUser } from '../../../features/auth/authSlice.ts';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import {
   Box,
@@ -9,9 +9,8 @@ import {
   Input,
   Link,
 } from '@chakra-ui/react';
-import { useCreateWingMutation } from '../../features/wing/wingApiSlice.ts';
+import { useCreateWingMutation } from '../../../features/wing/wingApiSlice.ts';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 interface CreateWingFormFields {
   wingName: string;
 }
@@ -31,9 +30,6 @@ export default function Dashboard() {
 
   return (
     <>
-      {user?.firstName + ' ' + user?.lastName}
-      <br />
-      <br />
       <form
         id={'createWingForm'}
         onSubmit={handleSubmit(onSubmit)}

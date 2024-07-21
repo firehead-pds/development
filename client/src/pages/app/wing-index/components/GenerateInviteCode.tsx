@@ -1,3 +1,5 @@
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useGenerateInviteMutation } from '../../../../features/wing/wingApiSlice.ts';
 import {
   Button,
   Flex,
@@ -11,15 +13,13 @@ import {
   useClipboard,
   useDisclosure,
 } from '@chakra-ui/react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useGenerateInviteMutation } from '../../features/wing/wingApiSlice.ts';
 import { useParams } from 'react-router-dom';
 
 interface GenerateInviteFormFields {
   wingId: number;
 }
 
-export default function Wing() {
+export default function GenerateInviteCode() {
   const { handleSubmit } = useForm<GenerateInviteFormFields>();
   const [invite, { isLoading }] = useGenerateInviteMutation();
 
@@ -41,8 +41,9 @@ export default function Wing() {
       const currentUrl = window.location.origin;
 
       const inviteLink = `${currentUrl}/app/join-wing/${inviteCode}`;
-
       setValue(inviteLink);
+
+      onOpen();
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +51,22 @@ export default function Wing() {
 
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Invite Link</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex>
+              <Input value={value} readOnly mr={2} mb={5} />
+              <Button onClick={onCopy} mb={2}>
+                {hasCopied ? 'Copied!' : 'Copy'}
+              </Button>
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
       <Flex
         alignItems={'center'}
         justifyContent={'center'}
@@ -61,28 +78,9 @@ export default function Wing() {
           className={'p-4 border rounded-lg mx-2 w-[500px]'}
           noValidate
         >
-          <Button
-            type={'submit'}
-            isLoading={isLoading}
-            form={'generateInvite'}
-            onClick={isLoading ? () => {} : onOpen}
-          >
-            Generate Invite
+          <Button type={'submit'} isLoading={isLoading} form={'generateInvite'}>
+            Create Invite
           </Button>
-
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Invite Code Link</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Input value={value} readOnly mr={2} mb={5} />
-                <Button onClick={onCopy} mb={2}>
-                  {hasCopied ? 'Copied!' : 'Copy Link'}
-                </Button>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
         </form>
       </Flex>
     </>
