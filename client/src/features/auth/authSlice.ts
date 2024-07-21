@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit/react';
-import { RootState } from '../../app/store.ts';
 
 enum Roles {
   Component = 'Component',
@@ -31,16 +30,26 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      // const { user } = action.payload;
       state.user = action.payload;
     },
     logOut: (state) => {
       state.user = null;
     },
   },
+  selectors: {
+    selectCurrentUser: (state) => state.user,
+    selectUserRoleForWing: (state, wingId: number) => {
+      const { user } = state;
+
+      if (!user || !user.wingsInfo) return null;
+
+      const wing = user.wingsInfo.find((w) => w.id === wingId);
+      return wing ? wing.userRole : null;
+    },
+  },
 });
 
 export const { setCredentials, logOut } = authSlice.actions;
+export const { selectCurrentUser, selectUserRoleForWing } = authSlice.selectors;
 
 export default authSlice.reducer;
-export const selectCurrentUser = (state: RootState) => state.auth.user;
