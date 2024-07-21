@@ -14,6 +14,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
+import { RWebShare } from 'react-web-share';
 
 interface GenerateInviteFormFields {
   wingId: number;
@@ -63,6 +64,13 @@ export default function GenerateInviteCode() {
                 {hasCopied ? 'Copied!' : 'Copy'}
               </Button>
             </Flex>
+            <RWebShare
+              data={{
+                url: value,
+              }}
+            >
+              <Button>Share</Button>
+            </RWebShare>
           </ModalBody>
         </ModalContent>
       </Modal>
