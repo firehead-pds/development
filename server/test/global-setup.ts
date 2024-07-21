@@ -5,14 +5,14 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 
-global.app = undefined;
+let app: NestFastifyApplication;
 
-module.exports = async () => {
+export default async () => {
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
 
-  const app = moduleFixture.createNestApplication<NestFastifyApplication>(
+  app = moduleFixture.createNestApplication<NestFastifyApplication>(
     new FastifyAdapter(),
   );
 
@@ -21,3 +21,7 @@ module.exports = async () => {
 
   global.app = app;
 };
+
+export async function teardown() {
+  await global.app.close();
+}

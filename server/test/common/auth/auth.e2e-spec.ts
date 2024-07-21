@@ -1,25 +1,7 @@
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../../../src/app.module';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
 
 describe('AuthController (e2e)', () => {
-  let app: NestFastifyApplication;
-
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication<NestFastifyApplication>(
-      new FastifyAdapter(),
-    );
-
-    await app.init();
-    await app.getHttpAdapter().getInstance().ready();
-  }, 20000);
+  const app = global.app as NestFastifyApplication;
 
   it('/auth/local/login (POST)', async () => {
     const firstName = 'John';
@@ -27,7 +9,7 @@ describe('AuthController (e2e)', () => {
     const email = 'john.doe@example.com';
     const password = 'password123';
 
-    const signUpResponse = await app.inject({
+    await app.inject({
       url: '/auth/local/signup',
       method: 'POST',
       payload: {

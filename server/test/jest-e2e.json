@@ -1,5 +1,6 @@
 {
   "globalSetup": "<rootDir>/global-setup.ts",
+  "globalTeardown": "<rootDir>/global-setup.ts",
   "moduleFileExtensions": [
     "js",
     "json",
