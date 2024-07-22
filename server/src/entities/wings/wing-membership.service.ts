@@ -137,4 +137,14 @@ export class WingMembershipService {
 
     await this.addUserToWing(user, wing, Role.Component);
   }
+
+  public async getAllUsersForWing(wingId: number) {
+    const wingMemberships = await this.wingMembershipRepository.find({
+      relations: ['wing', 'user'],
+      where: { wing: { id: wingId } },
+      select: ['user'],
+    });
+
+    return wingMemberships.map((w) => w.user);
+  }
 }
