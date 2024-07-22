@@ -3,6 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateWingGridDto {
   @ApiProperty()
+  @IsInt()
+  wingId: number;
+
+  @ApiProperty()
   @IsString()
   @MaxLength(70)
   wingGridName: string;
@@ -14,8 +18,4 @@ export class CreateWingGridDto {
   @ApiProperty()
   @IsInt()
   cols: number;
-
-  @ApiProperty()
-  @IsInt()
-  wingId: number;
 }

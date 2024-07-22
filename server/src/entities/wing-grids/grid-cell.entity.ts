@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsOptional } from 'class-validator';
-import { WingGrid } from '../wing-grids/wing-grid.entity';
+import { WingGrid } from './wing-grid.entity';
 import { User } from '../users/user.entity';
 
-@Entity({ name: 'gridCell' })
+@Entity()
 export class GridCell {
   @PrimaryGeneratedColumn()
   id: number;
@@ -12,12 +12,12 @@ export class GridCell {
   name: string;
 
   @IsOptional()
-  @Column({ type: 'int' })
-  row?: number;
+  @Column()
+  row: number;
 
   @IsOptional()
-  @Column({ type: 'int' })
-  col?: number;
+  @Column()
+  col: number;
 
   @ManyToOne(() => WingGrid, (wingGrid) => wingGrid.gridCell)
   wingGrid: WingGrid;

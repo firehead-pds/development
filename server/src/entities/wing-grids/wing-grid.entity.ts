@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Wing } from '../wings/wing.entity';
-import { GridCell } from '../grid-cell/grid-cell.entity';
+import { GridCell } from './grid-cell.entity';
 
 @Entity()
 export class WingGrid {
@@ -16,10 +16,10 @@ export class WingGrid {
   @Column({ length: 70 })
   name: string;
 
-  @Column({ type: 'int' })
+  @Column()
   rows: number;
 
-  @Column({ type: 'int' })
+  @Column()
   cols: number;
 
   @ManyToOne(() => Wing, (wing) => wing.wingGrid)

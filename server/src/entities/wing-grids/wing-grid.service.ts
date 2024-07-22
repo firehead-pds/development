@@ -3,10 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WingGrid } from './wing-grid.entity';
 import { WingGridValidator } from './validators/wing-grid.validator';
-import { CreateWingGridDto } from './dto/create-wing-grid.dto';
 import { WingsService } from '../wings/wings.service';
-import { GridCellService } from '../grid-cell/grid-cell.service';
-import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { WingMembershipService } from '../wings/wing-membership.service';
 
@@ -16,7 +13,6 @@ export class WingGridService {
     @InjectRepository(WingGrid) private readonly repo: Repository<WingGrid>,
     private readonly validator: WingGridValidator,
     private readonly wingService: WingsService,
-    private readonly gridCellsService: GridCellService,
     private readonly userService: UsersService,
     private readonly participateService: WingMembershipService,
   ) {}

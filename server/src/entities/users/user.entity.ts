@@ -10,7 +10,7 @@ import { Measurements } from '../measurements/measurements.entity';
 import Token from '../../auth/token.entity';
 import { Friendship } from '../friendships/friendship.entity';
 import { WingMembership } from '../wings/wing-membership.entity';
-import { GridCell } from '../grid-cell/grid-cell.entity';
+import { GridCell } from '../wing-grids/grid-cell.entity';
 
 @Entity({ name: 'users' })
 export class User {
