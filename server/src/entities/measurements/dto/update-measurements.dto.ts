@@ -1,5 +1,6 @@
 import { IsEnum, IsOptional, IsString, Length, Matches } from 'class-validator';
-import { PantsSize, ShirtSize } from '../enums/measurements.enum';
+import { ShirtSize } from '../enums/measurements-shirt-size';
+import { PantsSize } from '../enums/measurements-pants-size';
 
 export class UpdateMeasurementsDto {
   @IsOptional()

@@ -23,7 +23,7 @@ export default function Signup() {
     keyPrefix: 'forms',
   });
 
-  // const errorToast = useToast();
+  const errorToast = useToast();
   const navigate = useNavigate();
 
   const [isFetchingPostalCode, setIsFetchingPostalCode] = useState(false);
@@ -51,58 +51,6 @@ export default function Signup() {
   });
 
   const [signup] = useSignupMutation();
-  /*const { mutateAsync } = useApiMutate({
-    mutationKey: ['signup'],
-    endpoint: 'users',
-    method: 'POST',
-    onSuccess: (_res) => {
-      if (Object.keys(errors).length === 0) {
-        navigate('/');
-      }
-    },
-    onError: async (error) => {
-      if (error instanceof Response) {
-        if (error.status === 409) {
-          const data = (await error.json()) as ErrorResponse;
-          if (data.message === 'cpf already in use') {
-            setError(
-              'cpf',
-              {
-                type: 'custom',
-                message: tCommon('validationErrors.alreadyInUse', {
-                  field: t('fields.personalInfo.cpf.name'),
-                }),
-              },
-              { shouldFocus: true },
-            );
-            return;
-          }
-
-          if (data.message === 'email already in use') {
-            setError(
-              'email',
-              {
-                type: 'custom',
-                message: tCommon('validationErrors.alreadyInUse', {
-                  field: t('fields.accessCredentials.email.name'),
-                }),
-              },
-              { shouldFocus: true },
-            );
-            return;
-          }
-        }
-      }
-      errorToast({
-        title: 'There was an error connecting to the server.',
-        description: 'Try again later.',
-        status: 'error',
-        variant: 'left-accent',
-        duration: 8000,
-        isClosable: true,
-      });
-    },
-  });*/
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     delete data.confirmPassword;
@@ -116,7 +64,7 @@ export default function Signup() {
     try {
       await signup(data).unwrap();
       navigate('/');
-    } catch (error) {
+    } catch (error: any) {
       if (error.status === 409) {
         const data = error.data;
         if (data.message === 'cpf already in use') {
@@ -147,9 +95,15 @@ export default function Signup() {
           return;
         }
       }
+      errorToast({
+        title: 'There was an error connecting to the server.',
+        description: 'Try again later.',
+        status: 'error',
+        variant: 'left-accent',
+        duration: 8000,
+        isClosable: true,
+      });
     }
-
-    //await mutateAsync(data);
   };
 
   return (

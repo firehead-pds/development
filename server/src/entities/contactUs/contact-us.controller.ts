@@ -5,7 +5,7 @@ import {
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
-import { Public } from 'src/auth/decorators/is-public.decorator';
+import { Public } from '../../auth/decorators/is-public.decorator';
 
 @Public()
 @Controller('contact-us')
@@ -21,6 +21,6 @@ export class ContactUsController {
   async sendEmail(@Body() emailData: SendMessageDto) {
     const { userEmail, title, message } = emailData;
     await this.contactUsService.sendContactEmail(userEmail, title, message);
-    return 'message sent successfully';
+    return { message: 'message sent successfully' };
   }
 }

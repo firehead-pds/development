@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit/react';
+import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import { apiSlice } from '../features/api/apiSlice.ts';
 

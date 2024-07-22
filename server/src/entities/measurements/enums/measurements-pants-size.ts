@@ -1,14 +1,5 @@
-export enum ShirtSize {
-  PP = 'PP',
-  P = 'P',
-  M = 'M',
-  G = 'G',
-  GG = 'GG',
-  GGX = 'GGX',
-  GGXE = 'GGXE',
-}
-
 export enum PantsSize {
+  S32 = '32',
   S34 = '34',
   S36 = '36',
   S38 = '38',

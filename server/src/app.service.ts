@@ -15,6 +15,11 @@ export class AppService {
           github: 'https://github.com/AguiarIgor',
           role: 'Front End',
         },
+        {
+          developer: 'Gabriel Tavares',
+          github: 'https://github.com/Tavares194',
+          role: 'Back End',
+        },
       ],
       description:
         'This project serves as the backend REST API to a brazilian carnival school organization app',

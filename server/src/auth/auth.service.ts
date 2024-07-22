@@ -22,7 +22,7 @@ export class AuthService {
   ) {}
 
   async signInLocal(email: string, password: string) {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.userService.findOneByEmail(email);
     if (!user) {
       throw new UnauthorizedException('invalid email and/or password');
     }
@@ -36,7 +36,8 @@ export class AuthService {
       throw new UnauthorizedException('invalid email and/or password');
     }
 
-    return { user, ...(await this.generateTokens(user)) };
+    const tokens = await this.generateTokens(user);
+    return { user, tokens };
   }
 
   async refreshTokens(user: User, tokenId: string): Promise<Tokens> {

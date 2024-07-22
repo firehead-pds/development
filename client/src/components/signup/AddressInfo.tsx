@@ -15,10 +15,12 @@ import {
   FormLabel,
   Grid,
   Input,
+  useToast,
 } from '@chakra-ui/react';
 import { ChangeEventHandler } from 'react';
 import SignupFormFields from '../../interfaces/signup/SignupFormFields.ts';
 import { useTranslation } from 'react-i18next';
+import { useLazyViaCepQuery } from '../../features/signup/viaCepApiSlice.ts';
 
 interface AddressInfoProps {
   register: UseFormRegister<SignupFormFields>;
@@ -32,27 +34,12 @@ interface AddressInfoProps {
   resetField: UseFormResetField<SignupFormFields>;
 }
 
-interface ViacepApiResponse {
-  erro?: boolean;
-  cep: string;
-  logradouro: string;
-  complemento: string;
-  bairro: string;
-  localidade: string;
-  uf: string;
-  ibge: string;
-  gia: string;
-  ddd: string;
-  siafi: string;
-}
-
 export default function AddressInfo({
   register,
   errors,
-  setIsFetchingPostalCode,
   setError,
+  setIsFetchingPostalCode,
   setValue,
-  getValues,
   trigger,
   watch,
   resetField,
@@ -64,69 +51,54 @@ export default function AddressInfo({
     keyPrefix: 'forms.validationErrors',
   });
 
+  const errorToast = useToast();
   const watchCheckBox = watch('address.noAddressNumber');
-
-  let controller: AbortController | null = null;
+  const [fetch] = useLazyViaCepQuery();
 
   const postalCodeChangeHandler: ChangeEventHandler<HTMLInputElement> = async (
     e,
   ) => {
+    setValue('address', {
+      addressLine: '',
+      district: '',
+      city: '',
+      state: '',
+    });
+
+    const currentPostalCode = e.target.value;
+
+    if (!/^\d{5}-?\d{3}$/.test(currentPostalCode)) return;
+
     try {
       setIsFetchingPostalCode(true);
+      const data = await fetch(currentPostalCode).unwrap();
 
-      if (controller) {
-        controller.abort();
+      if (data?.cep) {
+        setValue('address', {
+          postalCode: data?.cep,
+          addressLine: data?.logradouro,
+          district: data?.bairro,
+          city: data?.localidade,
+          state: data?.uf,
+        });
       }
 
-      const currentValues = getValues('address');
-
-      setValue('address', {
-        addressNumber: currentValues.addressNumber,
-        addressLine: '',
-        district: '',
-        city: '',
-        state: '',
-      });
-
-      const currentPostalCode = e.target.value;
-
-      if (
-        currentPostalCode.length < 8 ||
-        currentPostalCode.length > 9 ||
-        !/^\d{5}-?\d{3}$/.test(currentPostalCode)
-      ) {
-        return;
-      }
-
-      controller = new AbortController();
-      const req = await fetch(
-        'https://viacep.com.br/ws/' + currentPostalCode + '/json',
-        { signal: controller.signal },
-      );
-
-      if (!req.ok) {
-        throw new Error(
-          `Fetch request failed: ${req.status} ${req.statusText}`,
-        );
-      }
-
-      const res = (await req.json()) as ViacepApiResponse;
-
-      if (res.erro) {
+      if (data?.erro) {
         setError('address.postalCode', {
           type: 'custom',
           message: tErrors('nonExistent', { field: t('postalCode.name') }),
         });
+
         return;
       }
-
-      setValue('address', {
-        addressNumber: currentValues.addressNumber,
-        postalCode: res.cep,
-        addressLine: res.logradouro,
-        district: res.bairro,
-        city: res.localidade,
-        state: res.uf,
+    } catch (e) {
+      errorToast({
+        title: 'There was an error connecting to the server.',
+        description: 'Try again later.',
+        status: 'error',
+        variant: 'left-accent',
+        duration: 8000,
+        isClosable: true,
       });
     } finally {
       setIsFetchingPostalCode(false);

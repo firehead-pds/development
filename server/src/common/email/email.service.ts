@@ -75,8 +75,9 @@ export class EmailService implements OnModuleInit {
         html: html,
       });
     } catch (err) {
+      console.error(err);
       throw new InternalServerErrorException(
-        'There was an error connecting to the email service',
+        'there was an error connecting to the email service',
       );
     }
   }
@@ -84,7 +85,7 @@ export class EmailService implements OnModuleInit {
   private async renderEmailTemplate<T extends keyof emailTemplates>(
     templateName: T,
     body: emailTemplates[T],
-  ): Promise<string> {
+  ) {
     const templatePath = path.join(
       process.cwd(),
       'resources',

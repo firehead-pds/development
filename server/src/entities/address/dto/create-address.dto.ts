@@ -8,12 +8,14 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAddressDto {
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @Length(8)
   @IsPostalCode('BR')
   postalCode: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @Length(1, 70)

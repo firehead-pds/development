@@ -24,7 +24,7 @@ export class Address {
   @Column({ nullable: true })
   complement?: string;
 
-  @Column({ length: 30 })
+  @Column({ length: 50 })
   district: string;
 
   @Column({ length: 30 })

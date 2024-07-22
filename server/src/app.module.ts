@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +10,7 @@ import { ContactUsModule } from './entities/contactUs/contact-us.module';
 import * as process from 'node:process';
 import { DatabaseModule } from './config/database.module';
 import { AuthModule } from './auth/auth.module';
+import { WingsModule } from './entities/wings/wings.module';
 import fastifyCookie from '@fastify/cookie';
 import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
 import AccessTokenGuard from './auth/guards/access-token.guard';
@@ -30,27 +31,27 @@ import emailConfiguration from './common/email/email.configuration';
     HashingModule,
     ContactUsModule,
     AuthModule,
+    WingsModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: 'FASTIFY_COOKIE',
-      useFactory: async (
-        httpAdapterHost: HttpAdapterHost,
-        config: ConfigService,
-      ) => {
-        const app = httpAdapterHost.httpAdapter.getInstance();
-        await app.register(fastifyCookie, {
-          secret: config.get<string>('COOKIE_SECRET'),
-        });
-      },
-      inject: [HttpAdapterHost, ConfigService],
-    },
     {
       provide: APP_GUARD,
       useClass: AccessTokenGuard,
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+    private readonly configService: ConfigService,
+  ) {}
+
+  async onModuleInit() {
+    const app = this.httpAdapterHost.httpAdapter.getInstance();
+    await app.register(fastifyCookie, {
+      secret: this.configService.get<string>('COOKIE_SECRET'),
+    });
+  }
+}
