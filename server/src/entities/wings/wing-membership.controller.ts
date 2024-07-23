@@ -24,11 +24,24 @@ export class WingMembershipController {
     return { token };
   }
 
-  @Get('join-invite')
+  @Post('join-invite')
   public async joinInvite(
     @Param() token: string,
     @CurrentUser() currentUser: RequestUser,
-  ) {}
+  ) {
+    const wing = await this.wingMembershipService.validateInvite(token);
+    return await this.wingMembershipService.addUserToWing(
+      currentUser,
+      wing,
+      Role.Component,
+    );
+  }
+
+  @Get('validate-invite')
+  public async validateInvite(@Param() token: string) {
+    const wing = await this.wingMembershipService.validateInvite(token);
+    return { wingId: wing.id, wingName: wing.name };
+  }
 
   @Get('wing-users')
   public async getUsers(@Body() body: UsersFromWingDto) {

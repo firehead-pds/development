@@ -124,7 +124,7 @@ export class WingMembershipService {
     return token;
   }
 
-  public async joinInvite(token: string, user: RequestUser) {
+  public async validateInvite(token: string) {
     const invite = await this.inviteRepository.findOne({
       where: { token },
       relations: ['wing'],
@@ -133,9 +133,7 @@ export class WingMembershipService {
     if (!invite || invite.expiresAt < new Date())
       throw new NotFoundException('Invite not found or expired.');
 
-    const { wing } = invite;
-
-    await this.addUserToWing(user, wing, Role.Component);
+    return invite.wing;
   }
 
   public async getAllUsersForWing(wingId: number) {

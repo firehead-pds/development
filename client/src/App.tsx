@@ -9,6 +9,7 @@ import Dashboard from './pages/app/dashboard/Dashboard.tsx';
 import MembershipProtectedRoute from './guards/MembershipProtectedRoute.tsx';
 import Wing from './pages/app/wing-index/Wing.tsx';
 import Friendship from './pages/app/friends/Friends.tsx';
+import JoinWing from './pages/app/invite-code/JoinWing.tsx';
 import {
   createBrowserRouter,
   Navigate,
@@ -79,6 +80,10 @@ export default function App() {
               element: <Friendship />,
             },
           ],
+        },
+        {
+          path: 'join-wing/:token',
+          element: <JoinWing />,
         },
       ],
     },
