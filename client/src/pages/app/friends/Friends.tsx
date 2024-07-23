@@ -9,8 +9,19 @@ import {
   Text,
   UnorderedList,
 } from '@chakra-ui/react';
+import { useGetUsersQuery } from '../../../features/wing/wingApiSlice.ts';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function Friendship() {
+  const { wingId } = useParams();
+  const navigate = useNavigate();
+
+  if (!wingId) {
+    console.error('Could not load wing id.');
+    navigate('/app/dashboard');
+    return;
+  }
+  const { data } = useGetUsersQuery({ wingId: +wingId });
   return (
     <>
       <Flex

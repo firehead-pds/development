@@ -1,10 +1,20 @@
 import { apiSlice } from '../api/apiSlice.ts';
+import { Roles } from '../auth/authSlice.ts';
 
 interface WingBody {
   wingName: string;
 }
 
 interface InviteBody {
+  wingId: number;
+}
+
+interface GetUsersReturn {
+  name: string;
+  role: Roles;
+}
+
+interface GetUsersBody {
   wingId: number;
 }
 
@@ -24,14 +34,17 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
-    getWing: builder.query<void, void>({
+    getUsers: builder.query<GetUsersReturn[], GetUsersBody>({
       query: () => ({
-        url: 'wing-membership/user-wing',
+        url: 'wing-membership/wing-users',
         method: 'GET',
       }),
     }),
   }),
 });
-//pq tu quer cria uma branch? eu já dei o pull já
-export const { useCreateWingMutation, useGenerateInviteMutation } =
-  wingApiSlice;
+
+export const {
+  useCreateWingMutation,
+  useGenerateInviteMutation,
+  useGetUsersQuery,
+} = wingApiSlice;

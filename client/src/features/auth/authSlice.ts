@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit/react';
 
-enum Roles {
+export enum Roles {
   Component = 'Component',
   Harmony = 'Harmony',
   WingChief = 'Wing Chief',

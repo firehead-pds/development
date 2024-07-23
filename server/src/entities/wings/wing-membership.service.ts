@@ -139,12 +139,14 @@ export class WingMembershipService {
   }
 
   public async getAllUsersForWing(wingId: number) {
-    const wingMemberships = await this.wingMembershipRepository.find({
-      relations: ['wing', 'user'],
-      where: { wing: { id: wingId } },
-      select: ['user'],
+    const wing = await this.wingRepository.findOneBy({
+      id: wingId,
     });
 
-    return wingMemberships.map((w) => w.user);
+    return this.wingMembershipRepository
+      .createQueryBuilder('membership')
+      .leftJoinAndSelect('membership.user', 'user')
+      .where('membership.wing = :wing', { wing })
+      .getMany();
   }
 }
