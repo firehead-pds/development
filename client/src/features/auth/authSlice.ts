@@ -6,10 +6,15 @@ export enum Roles {
   WingChief = 'Wing Chief',
 }
 
-interface wing {
+interface Wing {
   id: number;
   name: string;
+}
+
+interface WingMember {
+  id: number;
   role: Roles;
+  wing: Wing;
 }
 
 export interface AuthState {
@@ -17,7 +22,7 @@ export interface AuthState {
     firstName: string;
     lastName: string;
     email: string;
-    wingsInfo?: wing[];
+    wingsInfo?: WingMember[];
   } | null;
 }
 

@@ -4,6 +4,17 @@ import { Role } from '../../entities/wings/enums/participate-role';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
+class WingDetails {
+  @Expose()
+  @IsNumber()
+  id: number;
+
+  @Expose()
+  @IsString()
+  name: string;
+}
+
+@Exclude()
 class WingsInfo {
   @Expose()
   @ApiProperty()
@@ -14,6 +25,10 @@ class WingsInfo {
   @ApiProperty()
   @IsString()
   userRole: Role;
+
+  @Expose()
+  @ApiProperty()
+  wing: WingDetails;
 }
 
 @Exclude()
