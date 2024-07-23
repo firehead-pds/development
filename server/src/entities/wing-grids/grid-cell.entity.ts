@@ -6,16 +6,11 @@ import { User } from '../users/user.entity';
 @Entity()
 export class GridCell {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
-  @Column({ length: 70 })
-  name: string;
-
-  @IsOptional()
   @Column()
   row: number;
 
-  @IsOptional()
   @Column()
   col: number;
 
@@ -23,5 +18,5 @@ export class GridCell {
   wingGrid: WingGrid;
 
   @ManyToOne(() => User, (user) => user.gridCell)
-  user: User;
+  user?: User;
 }

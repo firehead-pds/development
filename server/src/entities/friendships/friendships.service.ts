@@ -110,7 +110,7 @@ export class FriendshipsService {
   /**
    * Get all friends of a specific user.
    *
-   * @param currentUser The user who is trying to see all their friends.
+   * @param currentUser The user to get the friends for.
    * @returns A list of all the user's friends.
    */
   public async getAllFriends(currentUser: User) {

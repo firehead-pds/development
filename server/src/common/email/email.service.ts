@@ -37,21 +37,21 @@ export class EmailService implements OnModuleInit {
       refresh_token: emailConfig.googleOAuthRefreshToken,
     });
 
-    const accessToken = await new Promise((resolve, reject) => {
-      oAuth2Client.getAccessToken((err, token) => {
-        if (err) {
-          reject(`Failed to create access token :( ${err}`);
-        }
-        resolve(token);
-      });
-    });
+    // const accessToken = await new Promise((resolve, reject) => {
+    //   oAuth2Client.getAccessToken((err, token) => {
+    //     if (err) {
+    //       reject(`Failed to create access token :( ${err}`);
+    //     }
+    //     resolve(token);
+    //   });
+    // });
 
     this.transporter = createTransport({
       service: 'gmail',
       auth: {
         type: 'OAuth2',
         user: emailConfig.emailUser,
-        accessToken: accessToken as string,
+        // accessToken: accessToken as string,
         clientId: emailConfig.googleOAuthClientId,
         clientSecret: emailConfig.googleOAuthClientSecret,
         refreshToken: emailConfig.googleOAuthRefreshToken,
