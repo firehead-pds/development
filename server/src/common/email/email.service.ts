@@ -1,6 +1,7 @@
 import {
   Injectable,
   InternalServerErrorException,
+  Logger,
   OnModuleInit,
 } from '@nestjs/common';
 import { createTransport, Transporter } from 'nodemailer';
@@ -24,39 +25,47 @@ export class EmailService implements OnModuleInit {
   }
 
   private async initializeTransporter() {
-    const emailConfig =
-      this.configService.getOrThrow<EmailConfiguration>('email');
+    try {
+      const emailConfig =
+        this.configService.getOrThrow<EmailConfiguration>('email');
 
-    const oAuth2Client = new google.auth.OAuth2(
-      emailConfig.googleOAuthClientId,
-      emailConfig.googleOAuthClientSecret,
-      'https://developers.google.com/oauthplayground',
-    );
+      const oAuth2Client = new google.auth.OAuth2(
+        emailConfig.googleOAuthClientId,
+        emailConfig.googleOAuthClientSecret,
+        'https://developers.google.com/oauthplayground',
+      );
 
-    oAuth2Client.setCredentials({
-      refresh_token: emailConfig.googleOAuthRefreshToken,
-    });
+      oAuth2Client.setCredentials({
+        refresh_token: emailConfig.googleOAuthRefreshToken,
+      });
 
-    // const accessToken = await new Promise((resolve, reject) => {
-    //   oAuth2Client.getAccessToken((err, token) => {
-    //     if (err) {
-    //       reject(`Failed to create access token :( ${err}`);
-    //     }
-    //     resolve(token);
-    //   });
-    // });
+      const accessToken = await new Promise((resolve, reject) => {
+        oAuth2Client.getAccessToken((err, token) => {
+          if (err) {
+            reject(`Failed to create access token :( ${JSON.stringify(err)}`);
+          }
+          resolve(token);
+        });
+      });
 
-    this.transporter = createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: emailConfig.emailUser,
-        // accessToken: accessToken as string,
-        clientId: emailConfig.googleOAuthClientId,
-        clientSecret: emailConfig.googleOAuthClientSecret,
-        refreshToken: emailConfig.googleOAuthRefreshToken,
-      },
-    });
+      this.transporter = createTransport({
+        service: 'gmail',
+        auth: {
+          type: 'OAuth2',
+          user: emailConfig.emailUser,
+          accessToken: accessToken as string,
+          clientId: emailConfig.googleOAuthClientId,
+          clientSecret: emailConfig.googleOAuthClientSecret,
+          refreshToken: emailConfig.googleOAuthRefreshToken,
+        },
+      });
+    } catch (e) {
+      Logger.error(e);
+
+      throw new InternalServerErrorException(
+        'Failed to initialize email transporter due to OAuth2 token issues',
+      );
+    }
   }
 
   async sendEmail<T extends keyof emailTemplates>(
