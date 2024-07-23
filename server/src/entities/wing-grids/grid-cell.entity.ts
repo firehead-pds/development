@@ -1,5 +1,4 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { IsOptional } from 'class-validator';
 import { WingGrid } from './wing-grid.entity';
 import { User } from '../users/user.entity';
 

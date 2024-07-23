@@ -5,13 +5,13 @@ import { WingGrid } from '../wing-grids/wing-grid.entity';
 @Entity()
 export class Wing {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ length: 64 })
   name: string;
 
   @OneToMany(() => WingMembership, (wingMembership) => wingMembership.wing)
-  wingMemberships: WingMembership[];
+  wingMemberships?: WingMembership[];
 
   @OneToMany(() => WingGrid, (wingGrid) => wingGrid.wing)
   wingGrid?: WingGrid;

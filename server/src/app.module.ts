@@ -16,6 +16,7 @@ import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
 import AccessTokenGuard from './auth/guards/access-token.guard';
 import typeormConfig from '../typeorm.config';
 import emailConfiguration from './common/email/email.configuration';
+import { WingGridModule } from './entities/wing-grids/wing-grid.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import emailConfiguration from './common/email/email.configuration';
     ContactUsModule,
     AuthModule,
     WingsModule,
+    WingGridModule,
   ],
   controllers: [AppController],
   providers: [

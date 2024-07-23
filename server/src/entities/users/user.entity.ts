@@ -15,7 +15,7 @@ import { GridCell } from '../wing-grids/grid-cell.entity';
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ length: 25 })
   firstName: string;
@@ -50,10 +50,10 @@ export class User {
   refreshTokens?: Token;
 
   @OneToMany(() => Friendship, (friendship) => friendship.creator)
-  sentFriendRequests: Friendship;
+  sentFriendRequests?: Friendship;
 
   @OneToMany(() => Friendship, (friendship) => friendship.receiver)
-  receivedFriendRequests: Friendship;
+  receivedFriendRequests?: Friendship;
 
   @OneToMany(() => WingMembership, (wingMembership) => wingMembership.user)
   wingMemberships?: WingMembership[];
