@@ -20,7 +20,7 @@ export class UsersService {
     const newUser = this.repo.create(user);
     await this.repo.save(newUser);
 
-    return 'user created successfully';
+    return { message: 'user created successfully' };
   }
 
   public async findOneById(id: number) {

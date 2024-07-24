@@ -95,6 +95,7 @@ export default function Signup() {
           return;
         }
       }
+
       errorToast({
         title: 'There was an error connecting to the server.',
         description: 'Try again later.',
