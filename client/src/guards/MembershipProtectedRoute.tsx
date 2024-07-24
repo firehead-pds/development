@@ -15,8 +15,6 @@ export default function MembershipProtectedRoute() {
       selectUserIsPartOfWing(state, +wingId),
     );
 
-    console.log(wing);
-
     return wing ? <Outlet /> : <Navigate to={'/app/dashboard'} />;
   }
 }

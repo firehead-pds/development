@@ -25,6 +25,11 @@ export default function Wing() {
   return (
     <>
       {hasAdminPermission && <GenerateInviteCode />}{' '}
+      {hasAdminPermission && (
+        <Link as={ReactRouterLink} to={'grids'}>
+          Grids
+        </Link>
+      )}
       <Link as={ReactRouterLink} to={`friends`}>
         Friends
       </Link>

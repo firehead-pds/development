@@ -19,6 +19,9 @@ import { useAppDispatch } from './app/hook.ts';
 import { logOut, setCredentials } from './features/auth/authSlice.ts';
 import { useRefreshQuery } from './features/auth/authApiSlice.ts';
 import { useEffect } from 'react';
+import WingsGridsIndex from './pages/app/wing-grid/WingsGridsIndex.tsx';
+import CreateWingGrid from './pages/app/wing-grid/CreateWingGrid.tsx';
+import WingGrid from './pages/app/wing-grid/WingGrid.tsx';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -78,6 +81,18 @@ export default function App() {
             {
               path: 'friends',
               element: <Friendship />,
+            },
+            {
+              path: 'grids',
+              element: <WingsGridsIndex />,
+            },
+            {
+              path: 'grids/create',
+              element: <CreateWingGrid />,
+            },
+            {
+              path: 'grids/:gridId',
+              element: <WingGrid />,
             },
           ],
         },

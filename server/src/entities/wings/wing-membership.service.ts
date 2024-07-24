@@ -151,12 +151,15 @@ export class WingMembershipService {
   }
 
   public async getAllUsersForWing(wingId: number) {
-    return (await this.wingMembershipRepository
-      .createQueryBuilder()
+    let memberships = await this.wingMembershipRepository
+      .createQueryBuilder('wingMembership')
       .leftJoinAndSelect('wingMembership.user', 'user')
       .leftJoinAndSelect('wingMembership.wing', 'wing')
-      .select('user')
       .where('wing.id = :id', { id: wingId })
-      .getRawMany()) as User[];
+      .where('wing.id = :id', { id: wingId })
+      .getMany();
+
+    memberships = memberships.filter((wm) => wm.role === Role.Component);
+    return memberships.map((wm) => wm.user);
   }
 }

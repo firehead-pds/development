@@ -22,6 +22,7 @@ export class WingGridService {
   ) {}
 
   public async create(wingGridDto: CreateWingGridDto) {
+    const queryRunner = this.dataSource.createQueryRunner();
     const { rows, cols, wingGridName, wingId } = wingGridDto;
 
     const wing = await this.wingService.findOneById(wingId);
@@ -30,25 +31,24 @@ export class WingGridService {
       throw new NotFoundException('Could not find wing with given ID');
     }
 
-    const usersInWing = await this.wingMembershipService.getAllUsersForWing(
+    let usersInWing = await this.wingMembershipService.getAllUsersForWing(
       wing.id,
     );
 
-    const grid = this.wingGridRepository.create({
+    let grid = this.wingGridRepository.create({
       wing,
       name: wingGridName,
       rows,
       cols,
     });
 
+    grid = await queryRunner.manager.save(grid);
+
     const cells: GridCell[] = [];
 
-    const middle = Math.ceil(rows / 2);
+    const middle = Math.floor(rows / 2);
 
-    for (let currentRow = 0; currentRow < rows; currentRow++) {
-      let hasLeft = true;
-      let hasRight = true;
-
+    for (let currentRow = 1; currentRow <= rows; currentRow++) {
       const middleUser = usersInWing.shift() || null;
 
       const middleGridCell = this.gridCellRepository.create({
@@ -63,24 +63,41 @@ export class WingGridService {
       let currentLeft = middle - 1;
       let currentRight = middle + 1;
 
-      while (hasLeft && hasRight) {
-        // Fill left
+      let hasLeft = currentLeft >= 1;
+      let hasRight = currentRight <= cols;
+
+      while (hasLeft || hasRight) {
         if (hasLeft) {
           let leftUserToAdd = null;
 
-          const friendCloseToLeft = cells.find(
-            (c) => c.row === currentRow && c.col == currentLeft + 1,
-          ).user;
+          const friendCell = cells.find(
+            (c) => c.row === currentRow && c.col === currentLeft + 1,
+          );
+
+          let friendCloseToLeft = friendCell ? friendCell.user : null;
+
+          Logger.debug(
+            friendCloseToLeft ? friendCloseToLeft.firstName : 'No one',
+          );
 
           if (friendCloseToLeft) {
             const leftUserFriends =
               await this.friendshipsService.getAllFriends(friendCloseToLeft);
 
-            for (const friend of leftUserFriends) {
-              leftUserToAdd = cells.find((c) => c.user.id === friend.id);
-              if (leftUserToAdd) {
-                usersInWing.filter((u) => u.id === leftUserToAdd.id);
-                break;
+            Logger.debug(`Found ${leftUserFriends.length} friends`);
+
+            if (leftUserFriends.length > 0) {
+              for (const friend of leftUserFriends) {
+                const friendIsInGrid = cells.find(
+                  (c) => c.user.id === friend.id,
+                );
+                if (!friendIsInGrid) {
+                  leftUserToAdd = friend;
+                  usersInWing = usersInWing.filter(
+                    (u) => u.id !== leftUserToAdd.id,
+                  );
+                  break;
+                }
               }
             }
           }
@@ -99,55 +116,67 @@ export class WingGridService {
           cells.push(leftGridCell);
 
           --currentLeft;
-          hasLeft = currentLeft >= grid.cols;
+          hasLeft = currentLeft >= 1;
         }
 
         if (hasRight) {
           let rightUserToAdd = null;
 
-          const friendCloseToRight = cells.find(
+          const friendCell = cells.find(
             (c) => c.row === currentRow && c.col == currentRight - 1,
-          ).user;
+          );
+
+          let friendCloseToRight = friendCell ? friendCell.user : null;
+
+          Logger.debug(
+            friendCloseToRight ? friendCloseToRight.firstName : 'No one',
+          );
 
           if (friendCloseToRight) {
             const rightUserFriends =
               await this.friendshipsService.getAllFriends(friendCloseToRight);
 
-            for (const friend of rightUserFriends) {
-              rightUserToAdd = cells.find((c) => c.user.id === friend.id);
-              if (rightUserToAdd) {
-                usersInWing.filter((u) => u.id === rightUserToAdd.id);
-                break;
+            Logger.debug(`Found ${rightUserFriends.length} friends`);
+
+            if (rightUserFriends.length > 0) {
+              for (const friend of rightUserFriends) {
+                const friendIsInGrid = cells.find(
+                  (c) => c.user.id === friend.id,
+                );
+                if (!friendIsInGrid) {
+                  rightUserToAdd = friend;
+                  usersInWing = usersInWing.filter(
+                    (u) => u.id !== rightUserToAdd.id,
+                  );
+                  break;
+                }
               }
             }
+
+            if (!rightUserToAdd) {
+              rightUserToAdd = usersInWing.shift();
+            }
+
+            const rightGridCell = this.gridCellRepository.create({
+              row: currentRow,
+              col: currentRight,
+              user: rightUserToAdd,
+              wingGrid: grid,
+            });
+
+            cells.push(rightGridCell);
+
+            ++currentRight;
+            hasRight = currentRight <= grid.cols;
           }
-
-          if (!rightUserToAdd) {
-            rightUserToAdd = usersInWing.shift();
-          }
-
-          const rightGridCell = this.gridCellRepository.create({
-            row: currentRow,
-            col: currentRight,
-            user: rightUserToAdd,
-            wingGrid: grid,
-          });
-
-          cells.push(rightGridCell);
-
-          --currentRight;
-          hasLeft = currentRight >= grid.cols;
         }
       }
     }
-
-    const queryRunner = this.dataSource.createQueryRunner();
 
     try {
       await queryRunner.connect();
       await queryRunner.startTransaction();
 
-      await queryRunner.manager.save(grid);
       await queryRunner.manager.save(cells);
 
       await queryRunner.commitTransaction();

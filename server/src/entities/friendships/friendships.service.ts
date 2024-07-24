@@ -3,6 +3,7 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -132,7 +133,9 @@ export class FriendshipsService {
       }
     });
 
-    return this.usersService.findManyByIds(friendIds);
+    const friends = await this.usersService.findManyByIds(friendIds);
+    Logger.log(`The found friends:${friends}`);
+    return friends;
   }
 
   /**
@@ -143,6 +146,10 @@ export class FriendshipsService {
    */
   private async getAllFriendshipRecords(user: User) {
     return await this.friendshipRepo.find({
+      relations: {
+        creator: true,
+        receiver: true,
+      },
       where: [
         /*
         The user can be the one who created or the one who received the friend request.
