@@ -43,7 +43,7 @@ export default function Login() {
       const res = await login(data).unwrap();
       dispatch(setCredentials(res));
       navigate('/app/dashboard');
-    } catch (e) {
+    } catch (e: any) {
       if (e.status === 401) {
         setError('invalidCredentialsError', tError('invalidCredentialsError'));
       }

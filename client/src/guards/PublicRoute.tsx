@@ -6,11 +6,15 @@ import Layout from '../pages/public/Layout.tsx';
 export default function PublicRoute() {
   const user = useAppSelector(selectCurrentUser);
 
-  return user ? (
-    <Navigate to={'/app/dashboard'} />
-  ) : (
-    <Layout>
-      <Outlet />
-    </Layout>
+  return (
+    <div>
+      {user ? (
+        <Navigate to={'/app/dashboard'} />
+      ) : (
+        <Layout>
+          <Outlet />
+        </Layout>
+      )}
+    </div>
   );
 }

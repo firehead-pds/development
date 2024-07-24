@@ -7,7 +7,7 @@ import { Box, Center, Grid } from '@chakra-ui/react';
 
 export default function WingGrid() {
   const { gridId } = useParams();
-  const { data, isLoading } = useGetWingGridQuery({ id: +gridId! });
+  const { data } = useGetWingGridQuery({ id: +gridId! });
 
   if (data) {
     console.log(data);
@@ -29,7 +29,7 @@ export default function WingGrid() {
       >
         <Center>
           <Grid templateColumns={`repeat(${data.cols}, 1fr)`} gap={4}>
-            {orderedGrid.map((row, rowIndex) =>
+            {orderedGrid.map((row) =>
               row.map((cell, columnIndex) => (
                 <Box
                   key={columnIndex}
