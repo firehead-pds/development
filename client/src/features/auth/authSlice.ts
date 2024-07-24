@@ -47,8 +47,8 @@ export const authSlice = createSlice({
       const { user } = state;
 
       if (!user || !user.wingsInfo) return null;
-
-      const wing = user.wingsInfo.find((w) => w.id === wingId);
+      console.log(user);
+      const wing = user.wingsInfo.find((w) => w.wing.id === wingId);
       return wing ? wing : null;
     },
     selectHasAdminPermissionForWing: (state, wingId) => {
