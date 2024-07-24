@@ -56,7 +56,7 @@ export const authSlice = createSlice({
 
       if (!user || !user.wingsInfo) return null;
 
-      const wing = user.wingsInfo.find((w) => w.id === wingId);
+      const wing = user.wingsInfo.find((wm) => wm.wing.id === wingId);
       console.log(wing);
       return (
         wing && (wing.role === Roles.Harmony || wing.role === Roles.WingChief)
