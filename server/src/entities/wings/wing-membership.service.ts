@@ -156,7 +156,7 @@ export class WingMembershipService {
       .leftJoinAndSelect('wingMembership.user', 'user')
       .leftJoinAndSelect('wingMembership.wing', 'wing')
       .where('wing.id = :id', { id: wingId })
-      .where('wing.id = :id', { id: wingId })
+      .where('wingMembership.role = :role', { role: Role.Component })
       .getMany();
 
     memberships = memberships.filter((wm) => wm.role === Role.Component);

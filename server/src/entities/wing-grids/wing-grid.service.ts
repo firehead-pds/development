@@ -156,19 +156,19 @@ export class WingGridService {
             if (!rightUserToAdd) {
               rightUserToAdd = usersInWing.shift();
             }
-
-            const rightGridCell = this.gridCellRepository.create({
-              row: currentRow,
-              col: currentRight,
-              user: rightUserToAdd,
-              wingGrid: grid,
-            });
-
-            cells.push(rightGridCell);
-
-            ++currentRight;
-            hasRight = currentRight <= grid.cols;
           }
+
+          const rightGridCell = this.gridCellRepository.create({
+            row: currentRow,
+            col: currentRight,
+            user: rightUserToAdd,
+            wingGrid: grid,
+          });
+
+          cells.push(rightGridCell);
+
+          ++currentRight;
+          hasRight = currentRight <= grid.cols;
         }
       }
     }
