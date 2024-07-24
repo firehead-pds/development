@@ -22,7 +22,7 @@ export default function JoinWing() {
   } = useForm();
   const onSubmit = async () => {
     try {
-      joinWing({ token: token }).unwrap();
+      joinWing({ token: token });
     } catch (error) {
       console.log(error);
     } finally {

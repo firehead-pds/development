@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   ListItem,
+  Tag,
   Text,
   UnorderedList,
 } from '@chakra-ui/react';
@@ -22,6 +23,7 @@ export default function Friendship() {
     return;
   }
   const { data } = useGetUsersQuery({ wingId: +wingId });
+  console.log(data);
   return (
     <>
       <Flex
@@ -31,7 +33,7 @@ export default function Friendship() {
         className={'w-screen my-6'}
       >
         <UnorderedList styleType={''}>
-          {/*{data?.map((friend) => (
+          {data?.map((friend) => (
             <>
               <ListItem>
                 <Card>
@@ -46,12 +48,13 @@ export default function Friendship() {
                     </GridItem>
                     <GridItem rowSpan={2} colSpan={3}>
                       <Text fontSize={'xl'}>{friend.name}</Text>
+                      <Tag size={'xl'}>{friend.role}</Tag>
                     </GridItem>
                   </Grid>
                 </Card>
               </ListItem>
             </>
-          ))}*/}
+          ))}
 
           <ListItem>
             <Card>

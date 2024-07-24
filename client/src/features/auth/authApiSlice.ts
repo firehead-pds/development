@@ -7,14 +7,14 @@ interface LoginBody {
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<void, LoginBody>({
+    login: builder.mutation<any, LoginBody>({
       query: (credentials) => ({
         url: '/auth/local/login',
         method: 'POST',
         body: { ...credentials },
       }),
     }),
-    refresh: builder.query<void, void>({
+    refresh: builder.query<any, void>({
       query: () => '/auth/refresh',
     }),
   }),
