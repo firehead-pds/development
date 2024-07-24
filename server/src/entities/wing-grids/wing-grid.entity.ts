@@ -26,5 +26,5 @@ export class WingGrid {
   wing: Wing;
 
   @OneToMany(() => GridCell, (gridCell) => gridCell.wingGrid)
-  gridCell: GridCell;
+  gridCells: GridCell[];
 }

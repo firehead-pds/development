@@ -103,31 +103,40 @@ export class WingGridService {
         }
 
         if (hasRight) {
-          const friendCloseToRight = cells.find(
-            (c) => c.row === currentRow && c.col == currentRight + 1,
-          ).user;
-
-          const rightUserFriends =
-            await this.friendshipsService.getAllFriends(friendCloseToRight);
-
           let rightUserToAdd = null;
 
-          for (const friend of rightUserFriends) {
-            rightUserToAdd = cells.find((c) => c.user.id === friend.id);
-            if (rightUserToAdd) break;
+          const friendCloseToRight = cells.find(
+            (c) => c.row === currentRow && c.col == currentRight - 1,
+          ).user;
+
+          if (friendCloseToRight) {
+            const rightUserFriends =
+              await this.friendshipsService.getAllFriends(friendCloseToRight);
+
+            for (const friend of rightUserFriends) {
+              rightUserToAdd = cells.find((c) => c.user.id === friend.id);
+              if (rightUserToAdd) {
+                usersInWing.filter((u) => u.id === rightUserToAdd.id);
+                break;
+              }
+            }
+          }
+
+          if (!rightUserToAdd) {
+            rightUserToAdd = usersInWing.shift();
           }
 
           const rightGridCell = this.gridCellRepository.create({
             row: currentRow,
-            col: currentLeft,
-            user: rightUserToAdd || usersInWing.shift(),
+            col: currentRight,
+            user: rightUserToAdd,
             wingGrid: grid,
           });
 
           cells.push(rightGridCell);
 
           --currentRight;
-          hasRight = currentRight >= grid.cols;
+          hasLeft = currentRight >= grid.cols;
         }
       }
     }
@@ -150,5 +159,30 @@ export class WingGridService {
     }
 
     return { id: grid.id };
+  }
+
+  public async getWingGrid(id: number) {
+    const wingGrid = await this.wingGridRepository.findOne({
+      where: { id },
+      relations: {
+        gridCells: {
+          user: true,
+        },
+      },
+    });
+
+    if (!wingGrid) {
+      throw new NotFoundException('No wing grid found for the given ID');
+    }
+
+    // const grid = Array.from({ length: wingGrid.rows }, () =>
+    //   Array.from({ length: wingGrid.cols }, () => null),
+    // );
+    //
+    // wingGrid.gridCells.forEach((cell) => {
+    //   grid[cell.row][cell.col] = cell;
+    // });
+
+    return wingGrid;
   }
 }

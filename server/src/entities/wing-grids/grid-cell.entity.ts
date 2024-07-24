@@ -13,7 +13,7 @@ export class GridCell {
   @Column()
   col: number;
 
-  @ManyToOne(() => WingGrid, (wingGrid) => wingGrid.gridCell)
+  @ManyToOne(() => WingGrid, (wingGrid) => wingGrid.gridCells)
   wingGrid: WingGrid;
 
   @ManyToOne(() => User, (user) => user.gridCell)
