@@ -1,0 +1,297 @@
+{
+  "group1": [
+    {
+      "firstName": "Maria",
+      "lastName": "Eduarda Andrade da Silva",
+      "birthdate": "1990-01-01",
+      "email": "maria.eduarda@example.com",
+      "password": "M@ri@Eduard@",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Beatriz",
+      "lastName": "Galvão Verçosa",
+      "birthdate": "1990-01-01",
+      "email": "beatriz.galvao@example.com",
+      "password": "B3@trizG!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Caetano",
+      "lastName": "Gonçalves de Ávila Costa",
+      "birthdate": "1990-01-01",
+      "email": "caetano.avila@example.com",
+      "password": "C@et@no!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Gustavo",
+      "lastName": "Henrique de Moraes",
+      "birthdate": "1990-01-01",
+      "email": "gustavo.henrique@example.com",
+      "password": "Gust@voH!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Gustavo",
+      "lastName": "Lemos dos Reis Silva",
+      "birthdate": "1990-01-01",
+      "email": "gustavo.lemos@example.com",
+      "password": "Gust@voL!",
+      "phoneNumber": "11988315322"
+    }
+  ],
+  "group2": [
+    {
+      "firstName": "Igor",
+      "lastName": "de Almeida Aguiar",
+      "birthdate": "1990-01-01",
+      "email": "igor.almeida@example.com",
+      "password": "1gorAlm3id@!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Davi",
+      "lastName": "de Jesus Duarte",
+      "birthdate": "1990-01-01",
+      "email": "davi.jesus@example.com",
+      "password": "D@viJ3sus!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Pedro",
+      "lastName": "Henrique Barbosa Bolgheroni",
+      "birthdate": "1990-01-01",
+      "email": "pedro.henrique@example.com",
+      "password": "P3dr0H3nrique!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Alexsandro",
+      "lastName": "Leite Machado Junior",
+      "birthdate": "1990-01-01",
+      "email": "alexsandro.leite@example.com",
+      "password": "Al3xS@ndro!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Gabriel",
+      "lastName": "Tavares Martins de Oliveira",
+      "birthdate": "1990-01-01",
+      "email": "gabriel.tavares@example.com",
+      "password": "G@bri3l!",
+      "phoneNumber": "11988315322"
+    }
+  ],
+  "group3": [
+    {
+      "firstName": "Humberto",
+      "lastName": "da Torre Murad",
+      "birthdate": "1990-01-01",
+      "email": "humberto.torre@example.com",
+      "password": "Humb3rt0!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Hugo",
+      "lastName": "Feltran Wirth",
+      "birthdate": "1990-01-01",
+      "email": "hugo.feltran@example.com",
+      "password": "Hug0F@ltran!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Guilherme",
+      "lastName": "Frias de Oliveira Tavares",
+      "birthdate": "1990-01-01",
+      "email": "guilherme.frias@example.com",
+      "password": "Guilh3rm3!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "João",
+      "lastName": "Guilherme Carvalho Novaes",
+      "birthdate": "1990-01-01",
+      "email": "joao.guilherme@example.com",
+      "password": "J0@oGuilherme!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Beatriz",
+      "lastName": "Rossi Duarte",
+      "birthdate": "1990-01-01",
+      "email": "beatriz.rossi@example.com",
+      "password": "B3@trizRd!",
+      "phoneNumber": "11988315322"
+    }
+  ],
+  "group4": [
+    {
+      "firstName": "Matheus",
+      "lastName": "Augusto Preto Santana",
+      "birthdate": "1990-01-01",
+      "email": "matheus.augusto@example.com",
+      "password": "M@th3us!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Laís",
+      "lastName": "Higuti Leite",
+      "birthdate": "1990-01-01",
+      "email": "lais.higuti@example.com",
+      "password": "L@1s!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Lie",
+      "lastName": "Higuti Leite",
+      "birthdate": "1990-01-01",
+      "email": "lie.higuti@example.com",
+      "password": "Li3!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Izadora",
+      "lastName": "Martins da Silva",
+      "birthdate": "1990-01-01",
+      "email": "izadora.martins@example.com",
+      "password": "1z@dor@!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Kauanne",
+      "lastName": "Paula de Oliveira",
+      "birthdate": "1990-01-01",
+      "email": "kauanne.paula@example.com",
+      "password": "K@u@nne!",
+      "phoneNumber": "11988315322"
+    }
+  ],
+  "group5": [
+    {
+      "firstName": "Grazielle",
+      "lastName": "Aparecida Fernandes Almeida",
+      "birthdate": "1990-01-01",
+      "email": "grazielle.aparecida@example.com",
+      "password": "Gr@zi3ll3!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Lorrany",
+      "lastName": "Boschesi Nascimento",
+      "birthdate": "1990-01-01",
+      "email": "lorrany.boschesi@example.com",
+      "password": "L0rr@ny!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Camila",
+      "lastName": "Cristina de Melo Campos",
+      "birthdate": "1990-01-01",
+      "email": "camila.cristina@example.com",
+      "password": "C@mil4!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Nicoly",
+      "lastName": "Ferreira da Silva",
+      "birthdate": "1990-01-01",
+      "email": "nicoly.ferreira@example.com",
+      "password": "Nic0ly!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Erick",
+      "lastName": "Santos Brito",
+      "birthdate": "1990-01-01",
+      "email": "erick.santos@example.com",
+      "password": "3rickS@ntos!",
+      "phoneNumber": "11988315322"
+    }
+  ],
+  "group6": [
+    {
+      "firstName": "Victor",
+      "lastName": "de Abreu Cavalcante Nakanishi",
+      "birthdate": "1990-01-01",
+      "email": "victor.abreu@example.com",
+      "password": "Vict0rAbreu!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Maria",
+      "lastName": "Helena Baldan Lemes",
+      "birthdate": "1990-01-01",
+      "email": "maria.helena@example.com",
+      "password": "M@ri@H3lena!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Julio",
+      "lastName": "Rodrigues Soares",
+      "birthdate": "1990-01-01",
+      "email": "julio.rodrigues@example.com",
+      "password": "Juli0R0drigues!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Raissa",
+      "lastName": "Sousa Nunes",
+      "birthdate": "1990-01-01",
+      "email": "raissa.sousa@example.com",
+      "password": "R@iss@!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Vitoria",
+      "lastName": "Souza Medeiros",
+      "birthdate": "1990-01-01",
+      "email": "vitoria.souza@example.com",
+      "password": "Vit0ri@!",
+      "phoneNumber": "11988315322"
+    }
+  ],
+  "group7": [
+    {
+      "firstName": "Ana",
+      "lastName": "Beatriz Pires de Oliveira Lima",
+      "birthdate": "1990-01-01",
+      "email": "ana.beatriz@example.com",
+      "password": "An4B3@triz!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Felipe",
+      "lastName": "Cardoso Serikyaku",
+      "birthdate": "1990-01-01",
+      "email": "felipe.cardoso@example.com",
+      "password": "F3lip3C@rdoso!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Fernanda",
+      "lastName": "dos Santos Felix de Jesus",
+      "birthdate": "1990-01-01",
+      "email": "fernanda.santos@example.com",
+      "password": "F3rn@nd4!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Cleiciane",
+      "lastName": "Silva Sousa",
+      "birthdate": "1990-01-01",
+      "email": "cleiciane.silva@example.com",
+      "password": "Cl3ici@n3!",
+      "phoneNumber": "11988315322"
+    },
+    {
+      "firstName": "Luiza",
+      "lastName": "Vieira Silva",
+      "birthdate": "1990-01-01",
+      "email": "luiza.vieira@example.com",
+      "password": "Luiz@!23",
+      "phoneNumber": "11988315322"
+    }
+  ],
+  "code": "async test() {\n  const userRepository = this.dataSource.getRepository(User);\n  const wingRepository = this.dataSource.getRepository(Wing);\n  const wingMembershipRepository =\n  this.dataSource.getRepository(WingMembership);\n  const friendshipRepository = this.dataSource.getRepository(Friendship);\n\n  let chief: User = {\n  birthdate: new Date('1930-11-11'),\n  cpf: cpf.generate(),\n  email: 'daniela.santana@gmail.com',\n  password: await this.hashingService.hashData('Daniela123%'),\n  phoneNumber: '11965187231',\n  firstName: 'Daniela',\n  lastName: 'Santana',\n};\n\nchief = await userRepository.save(chief);\n\nlet wing: Wing = {\nname: '431',\n};\n\nwing = await wingRepository.save(wing);\n\nconst membershipChief: Partial<WingMembership> = {\nuser: chief,\nwing,\nrole: Role.WingChief,\njoinedIn: new Date(),\nrating: 0,\n};\n\nawait wingMembershipRepository.save(membershipChief);\n\nconst groups = JSON.parse(\nfsReadFile('C:\\\\Users\\\\davij\\\\Programming\\\\firehead\\\\server\\\\test.json'),\n) as {\ngroup1: User[];\ngroup2: User[];\ngroup3: User[];\ngroup4: User[];\ngroup5: User[];\ngroup6: User[];\ngroup7: User[];\n};\n\nfor (const group in groups) {\nlet users = groups[group] as User[];\n\nusers = await Promise.all(\nusers.map(async (u) => ({\n...u,\ncpf: cpf.generate(),\npassword: await this.hashingService.hashData(u.password),\n})),\n);\n\nlet userEntities = userRepository.create(users);\nuserEntities = await userRepository.save(userEntities);\n\nfor (let i = 0; i < userEntities.length; i++) {\nconst membership: Partial<WingMembership> = {\nuser: userEntities[i],\nwing,\nrole: Role.Component,\njoinedIn: new Date(),\nrating: 0,\n};\n\nawait wingMembershipRepository.save(membership);\n}\n\nfor (let i = 0; i < userEntities.length - 1; i++) {\nfor (let j = i + 1; j < userEntities.length; j++) {\nconst friendship = friendshipRepository.create({\ncreator: userEntities[i],\nreceiver: userEntities[j],\nstatus: FriendRequestStatus.ACCEPTED,\n});\n\nawait friendshipRepository.save(friendship);\n}\n}\n}\n} "
+}
