@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   useJoinWingMutation,
-  useValidateInviteQuery,
+  useLazyValidateInviteQuery,
 } from '../../../features/wing/wingApiSlice.ts';
 import { Button, Spinner } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -9,24 +9,25 @@ import { useForm } from 'react-hook-form';
 export default function JoinWing() {
   const navigate = useNavigate();
   const { token } = useParams();
+  const [validate, { isLoading }] = useLazyValidateInviteQuery();
   if (!token) {
     console.error('Could not load token');
     navigate('app/dashboard');
     return;
   }
-  const { data } = useValidateInviteQuery({ token: token });
+
+  const wing = validate(token).unwrap();
+  console.log(wing);
   const [joinWing] = useJoinWingMutation();
   const {
     handleSubmit,
-    formState: { isLoading },
+    formState: { isLoading: formLoading },
   } = useForm();
   const onSubmit = async () => {
     try {
-      joinWing({ token: token });
+      joinWing(token);
     } catch (error) {
       console.log(error);
-    } finally {
-      navigate('/app/dashboard');
     }
   };
   if (isLoading) {
@@ -40,7 +41,12 @@ export default function JoinWing() {
         className={'p-4 border rounded-lg mx-2 w-[500px]'}
         noValidate
       >
-        <Button type={'submit'} size={'xl'} form={'createWingForm'}>
+        <Button
+          type={'submit'}
+          isLoading={formLoading}
+          size={'xl'}
+          form={'joinWing'}
+        >
           Join
         </Button>
       </form>

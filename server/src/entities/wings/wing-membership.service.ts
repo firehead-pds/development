@@ -126,7 +126,7 @@ export class WingMembershipService {
 
   public async validateInvite(token: string) {
     const invite = await this.inviteRepository.findOne({
-      where: { token },
+      where: { token: token },
       relations: ['wing'],
     });
 
