@@ -1,37 +1,67 @@
 import { apiSlice } from '../api/apiSlice.ts';
+import { Roles } from '../auth/authSlice.ts';
 
-interface WingBody {
+interface WingName {
   wingName: string;
 }
 
-interface InviteBody {
+interface WingId {
   wingId: number;
+}
+
+interface Wing extends WingName, WingId {}
+
+interface InviteToken {
+  token: string;
+}
+
+interface GetUsersReturn {
+  name: string;
+  role: Roles;
 }
 
 export const wingApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createWing: builder.mutation<void, WingBody>({
+    createWing: builder.mutation<void, WingName>({
       query: (body) => ({
         url: '/wing/create',
         method: 'POST',
         body: body,
       }),
     }),
-    generateInvite: builder.mutation<{ token: string }, InviteBody>({
+    generateInvite: builder.mutation<InviteToken, WingId>({
       query: (body) => ({
         url: '/wing-membership/generate-invite',
         method: 'POST',
         body: body,
       }),
     }),
-    getWing: builder.query<void, void>({
+    validateInvite: builder.query<Wing, InviteToken>({
       query: () => ({
-        url: 'wing-membership/user-wing',
+        url: 'wing-membership/validate-invite',
+        method: 'GET',
+      }),
+    }),
+    joinWing: builder.mutation<string, InviteToken>({
+      query: (body) => ({
+        url: '/wing-membership/join-invite',
+        method: 'POST',
+        body: body,
+      }),
+    }),
+    getUsers: builder.query<GetUsersReturn[], WingId>({
+      query: () => ({
+        url: 'wing-membership/wing-users',
         method: 'GET',
       }),
     }),
   }),
 });
-//pq tu quer cria uma branch? eu já dei o pull já
-export const { useCreateWingMutation, useGenerateInviteMutation } =
-  wingApiSlice;
+
+export const {
+  useCreateWingMutation,
+  useGenerateInviteMutation,
+  useJoinWingMutation,
+  useValidateInviteQuery,
+  useGetUsersQuery,
+} = wingApiSlice;

@@ -6,7 +6,10 @@ import WelcomePage from './pages/public/WelcomePage.tsx';
 import PageLoader from './components/UI/PageLoader.tsx';
 import ProtectedRoute from './guards/ProtectedRoute.tsx';
 import Dashboard from './pages/app/dashboard/Dashboard.tsx';
+import MembershipProtectedRoute from './guards/MembershipProtectedRoute.tsx';
 import Wing from './pages/app/wing-index/Wing.tsx';
+import Friendship from './pages/app/friends/Friends.tsx';
+import JoinWing from './pages/app/invite-code/JoinWing.tsx';
 import {
   createBrowserRouter,
   Navigate,
@@ -16,7 +19,6 @@ import { useAppDispatch } from './app/hook.ts';
 import { logOut, setCredentials } from './features/auth/authSlice.ts';
 import { useRefreshQuery } from './features/auth/authApiSlice.ts';
 import { useEffect } from 'react';
-import MembershipProtectedRoute from './guards/MembershipProtectedRoute.tsx';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -73,7 +75,15 @@ export default function App() {
               path: '',
               element: <Wing />,
             },
+            {
+              path: 'friends',
+              element: <Friendship />,
+            },
           ],
+        },
+        {
+          path: 'join-wing/:token',
+          element: <JoinWing />,
         },
       ],
     },

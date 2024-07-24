@@ -1,7 +1,12 @@
 import { useAppSelector } from '../../../app/hook.ts';
 import { selectHasAdminPermissionForWing } from '../../../features/auth/authSlice.ts';
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Link as ReactRouterLink,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import GenerateInviteCode from './components/GenerateInviteCode.tsx';
+import { Link } from '@chakra-ui/react';
 
 export default function Wing() {
   const { wingId } = useParams();
@@ -17,5 +22,12 @@ export default function Wing() {
     selectHasAdminPermissionForWing(state, +wingId),
   );
 
-  return <>{hasAdminPermission && <GenerateInviteCode />}</>;
+  return (
+    <>
+      {hasAdminPermission && <GenerateInviteCode />}{' '}
+      <Link as={ReactRouterLink} to={`friends`}>
+        Friends
+      </Link>
+    </>
+  );
 }

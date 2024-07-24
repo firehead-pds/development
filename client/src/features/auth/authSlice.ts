@@ -1,15 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit/react';
 
-enum Roles {
+export enum Roles {
   Component = 'Component',
   Harmony = 'Harmony',
   WingChief = 'Wing Chief',
 }
 
-interface wing {
+interface Wing {
   id: number;
   name: string;
+}
+
+interface WingMember {
+  id: number;
   role: Roles;
+  wing: Wing;
 }
 
 export interface AuthState {
@@ -17,7 +22,7 @@ export interface AuthState {
     firstName: string;
     lastName: string;
     email: string;
-    wingsInfo?: wing[];
+    wingsInfo?: WingMember[];
   } | null;
 }
 
@@ -42,8 +47,8 @@ export const authSlice = createSlice({
       const { user } = state;
 
       if (!user || !user.wingsInfo) return null;
-
-      const wing = user.wingsInfo.find((w) => w.id === wingId);
+      console.log(user);
+      const wing = user.wingsInfo.find((w) => w.wing.id === wingId);
       return wing ? wing : null;
     },
     selectHasAdminPermissionForWing: (state, wingId) => {
