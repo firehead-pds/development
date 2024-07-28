@@ -25,10 +25,10 @@ export class WingMembershipController {
 
   @Post('join-invite')
   public async joinInvite(
-    @Param() token: string,
+    @Body() body: { token: string },
     @CurrentUser() currentUser: RequestUser,
   ) {
-    const wing = await this.wingMembershipService.validateInvite(token);
+    const wing = await this.wingMembershipService.validateInvite(body.token);
     return await this.wingMembershipService.addUserToWing(
       currentUser,
       wing,
@@ -36,9 +36,10 @@ export class WingMembershipController {
     );
   }
 
-  @Get('validate-invite')
-  public async validateInvite(@Param() token: string) {
+  @Get('validate-invite/:token')
+  public async validateInvite(@Param('token') token: string) {
     const wing = await this.wingMembershipService.validateInvite(token);
+    console.log({ wingId: wing.id, wingName: wing.name });
     return { wingId: wing.id, wingName: wing.name };
   }
   //

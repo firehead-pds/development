@@ -40,7 +40,6 @@ export const authSlice = createSlice({
     logOut: (state) => {
       state.user = null;
     },
-    getWings: (state, action) => {},
   },
   selectors: {
     selectCurrentUser: (state) => state.user,
@@ -56,7 +55,8 @@ export const authSlice = createSlice({
 
       if (!user || !user.wingsInfo) return null;
 
-      const wing = user.wingsInfo.find((w) => w.wing.id === wingId);
+      const wing = user.wingsInfo.find((wm) => wm.wing.id === wingId);
+      console.log(wing);
       return (
         wing && (wing.role === Roles.Harmony || wing.role === Roles.WingChief)
       );

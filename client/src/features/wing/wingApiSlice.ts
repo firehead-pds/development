@@ -9,7 +9,10 @@ interface WingId {
   wingId: number;
 }
 
-interface Wing extends WingName, WingId {}
+interface Wing {
+  wingId: number;
+  wingName: string;
+}
 
 interface InviteToken {
   token: string;
@@ -36,9 +39,9 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
-    validateInvite: builder.query<Wing, InviteToken>({
-      query: () => ({
-        url: 'wing-membership/validate-invite',
+    validateInvite: builder.query<Wing, string>({
+      query: (params) => ({
+        url: `wing-membership/validate-invite/${params}`,
         method: 'GET',
       }),
     }),
@@ -62,6 +65,6 @@ export const {
   useCreateWingMutation,
   useGenerateInviteMutation,
   useJoinWingMutation,
-  useValidateInviteQuery,
+  useLazyValidateInviteQuery,
   useGetUsersQuery,
 } = wingApiSlice;
