@@ -17,4 +17,5 @@ export class WingsController {
   ) {
     return this.wingService.create(body, currentUser);
   }
+
 }

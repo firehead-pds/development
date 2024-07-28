@@ -58,6 +58,12 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getWings: builder.query<number, void>({
+      query: () => ({
+        url: 'wing-membership/get-wings',
+        method: 'GET',
+      })
+    })
   }),
 });
 
@@ -67,4 +73,5 @@ export const {
   useJoinWingMutation,
   useLazyValidateInviteQuery,
   useGetUsersQuery,
+  useGetWingsQuery,
 } = wingApiSlice;

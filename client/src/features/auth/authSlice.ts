@@ -40,6 +40,11 @@ export const authSlice = createSlice({
     logOut: (state) => {
       state.user = null;
     },
+    getWing: (state, action) => {
+      if(state.user){
+        state.user.wingsInfo = action.payload;
+      }
+    }
   },
   selectors: {
     selectCurrentUser: (state) => state.user,
@@ -64,7 +69,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, logOut, getWing } = authSlice.actions;
 export const {
   selectCurrentUser,
   selectUserIsPartOfWing,

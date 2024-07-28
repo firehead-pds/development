@@ -42,6 +42,13 @@ export class WingMembershipController {
     console.log({ wingId: wing.id, wingName: wing.name });
     return { wingId: wing.id, wingName: wing.name };
   }
+
+  @Get('get-wings')
+  public async getWings(@CurrentUser() currentUser: RequestUser) {
+    const wingInfo = this.wingMembershipService.getWingsForUser(currentUser);
+    console.log(wingInfo);
+    return wingInfo;
+  }
   //
   // @Get('wing-users')
   // public async getUsers(@Body() body: UsersFromWingDto) {
