@@ -40,6 +40,7 @@ export const authSlice = createSlice({
     logOut: (state) => {
       state.user = null;
     },
+    getWings: (state, action) => {},
   },
   selectors: {
     selectCurrentUser: (state) => state.user,

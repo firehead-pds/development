@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [wing, { isLoading }] = useCreateWingMutation();
 
   const { register, handleSubmit } = useForm<CreateWingFormFields>();
+
   const onSubmit: SubmitHandler<CreateWingFormFields> = async (data) => {
     try {
       await wing(data).unwrap();
@@ -45,9 +46,9 @@ export default function Dashboard() {
         </Button>
       </form>
       <br />
-      {user?.wingsInfo?.map((wingMember) => {
+      {user?.wingsInfo?.map((wingMember, i) => {
         return (
-          <Box className={'p-4 border rounded-lg mx-2 w-[500px]'}>
+          <Box key={i} className={'p-4 border rounded-lg mx-2 w-[500px]'}>
             <Link as={ReactRouterLink} to={`/app/wing/${wingMember.wing.id}`}>
               {wingMember.wing.name + ' - ' + wingMember.wing.id}
             </Link>
