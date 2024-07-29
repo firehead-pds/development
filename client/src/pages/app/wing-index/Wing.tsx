@@ -7,8 +7,12 @@ import {
 } from 'react-router-dom';
 import GenerateInviteCode from './components/GenerateInviteCode.tsx';
 import { Link } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 export default function Wing() {
+  const { t: tSimpleText } = useTranslation('common', {
+    keyPrefix: 'simpleText',
+  });
   const { wingId } = useParams();
   const navigate = useNavigate();
 
@@ -31,7 +35,7 @@ export default function Wing() {
         </Link>
       )}
       <Link as={ReactRouterLink} to={`friends`}>
-        Friends
+        {tSimpleText('friends')}
       </Link>
     </>
   );

@@ -20,5 +20,22 @@
       "title": "Error",
       "description": "There an error connecting to the server. Try again later."
     }
+  },
+  "roles": {
+    "show": "Your Role:",
+    "Component": "Component",
+    "Harmony": "Harmony",
+    "Wing Chief": "Wing Chief"
+  },
+  "simpleText": {
+    "signup": "Sign-up",
+    "login": "Log-in",
+    "logout": "Log-Out",
+    "contact-us": "Contact-Us",
+    "friends": "Wing Members",
+    "createWing": {
+      "label": "Wing Name:",
+      "button": "Create Wing"
+    }
   }
 }

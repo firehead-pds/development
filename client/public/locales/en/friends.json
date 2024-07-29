@@ -1,5 +1,14 @@
 {
-  "labels": {
-    "pageTitle": "Find your friends!"
+  "invite": {
+    "create": "Generate Invite",
+    "modal-label": "Invite Link",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "share": "Share"
+  },
+  "status": {
+    "sendRequest": "Send Request",
+    "pending": "Pending...",
+    "accepted": "Accepted"
   }
 }

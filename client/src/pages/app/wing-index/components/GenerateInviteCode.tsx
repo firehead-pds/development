@@ -15,12 +15,16 @@ import {
 } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { RWebShare } from 'react-web-share';
+import { useTranslation } from 'react-i18next';
 
 interface GenerateInviteFormFields {
   wingId: number;
 }
 
 export default function GenerateInviteCode() {
+  const { t: tFriends } = useTranslation('friends', {
+    keyPrefix: 'invite',
+  });
   const { handleSubmit } = useForm<GenerateInviteFormFields>();
   const [invite, { isLoading }] = useGenerateInviteMutation();
 
@@ -55,13 +59,13 @@ export default function GenerateInviteCode() {
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Invite Link</ModalHeader>
+          <ModalHeader>{tFriends('modal-label')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex>
               <Input value={value} readOnly mr={2} mb={5} />
               <Button onClick={onCopy} mb={2}>
-                {hasCopied ? 'Copied!' : 'Copy'}
+                {hasCopied ? tFriends('copied') : tFriends('copy')}
               </Button>
             </Flex>
             <RWebShare
@@ -69,7 +73,7 @@ export default function GenerateInviteCode() {
                 url: value,
               }}
             >
-              <Button>Share</Button>
+              <Button>{tFriends('share')}</Button>
             </RWebShare>
           </ModalBody>
         </ModalContent>
@@ -87,7 +91,7 @@ export default function GenerateInviteCode() {
           noValidate
         >
           <Button type={'submit'} isLoading={isLoading} form={'generateInvite'}>
-            Create Invite
+            {tFriends('create')}
           </Button>
         </form>
       </Flex>

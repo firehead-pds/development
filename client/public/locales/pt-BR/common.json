@@ -20,5 +20,22 @@
       "title": "Erro",
       "description": "Houve um erro ao conectar ao servidor. Tente novamente mais tarde."
     }
+  },
+  "roles": {
+    "show": "Seu Papel:",
+    "Component": "Componente",
+    "Harmony": "Harmonia",
+    "Wing Chief": "Chefe de Ala"
+  },
+  "simpleText": {
+    "signup": "Cadastrar",
+    "login": "Login",
+    "logout": "Sair",
+    "contact-us": "SAC",
+    "friends": "Participantes da Ala",
+    "createWing": {
+      "label": "Nome da Ala:",
+      "button": "Criar Ala"
+    }
   }
 }
