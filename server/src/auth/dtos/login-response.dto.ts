@@ -15,7 +15,7 @@ class WingDetails {
 }
 
 @Exclude()
-class WingsInfo {
+class WingMembershipsDto {
   @Expose()
   @ApiProperty()
   @IsNumber()
@@ -51,5 +51,5 @@ export default class LoginResponseDto {
   @Expose()
   @ApiProperty()
   @IsArray()
-  wingsInfo: WingsInfo[];
+  wingMemberships: WingMembershipsDto[];
 }

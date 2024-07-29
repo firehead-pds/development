@@ -1,17 +1,15 @@
 import {
-  AbsoluteCenter,
-  Avatar,
+  Avatar, Box,
   Card,
   Flex,
-  Grid,
-  GridItem,
   ListItem,
   Tag,
   Text,
   UnorderedList,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import { useGetUsersQuery } from '../../../features/wing/wingApiSlice.ts';
 import { useNavigate, useParams } from 'react-router-dom';
+import {Roles} from "../../../features/auth/authSlice.ts";
 
 export default function Friendship() {
   const { wingId } = useParams();
@@ -22,8 +20,8 @@ export default function Friendship() {
     navigate('/app/dashboard');
     return;
   }
-  const { data } = useGetUsersQuery({ wingId: +wingId });
-  console.log(data);
+  const { data } = useGetUsersQuery(+wingId);
+
   return (
     <>
       <Flex
@@ -33,48 +31,31 @@ export default function Friendship() {
         className={'w-screen my-6'}
       >
         <UnorderedList styleType={''}>
-          {data?.map((friend) => (
-            <>
-              <ListItem>
-                <Card>
-                  <Grid
-                    templateRows="repeat(2, 1fr)"
-                    templateColumns="repeat(4, 1fr)"
-                    h={'150px'}
-                    w={'500px'}
-                  >
-                    <GridItem rowSpan={2} colSpan={1}>
-                      <Avatar size={'lg'} name={`${friend.name}`} />
-                    </GridItem>
-                    <GridItem rowSpan={2} colSpan={3}>
-                      <Text fontSize={'xl'}>{friend.name}</Text>
-                      <Tag size={'xl'}>{friend.role}</Tag>
-                    </GridItem>
-                  </Grid>
-                </Card>
-              </ListItem>
-            </>
-          ))}
+          {data?.map((friend, i) => {
+            let color = "gray";
 
-          <ListItem>
-            <Card>
-              <Grid
-                templateRows="repeat(2, 1fr)"
-                templateColumns="repeat(4, 1fr)"
-                h={'200px'}
-                w={'550px'}
-              >
-                <GridItem rowSpan={2} colSpan={1} position={'relative'}>
-                  <AbsoluteCenter>
-                    <Avatar size={'lg'} name={`Igor`} />
-                  </AbsoluteCenter>
-                </GridItem>
-                <GridItem rowSpan={2} colSpan={3} pt={5}>
-                  <Text fontSize={'xl'}>Igor Aguiar</Text>
-                </GridItem>
-              </Grid>
-            </Card>
-          </ListItem>
+            switch(friend.role){
+              case Roles.WingChief: color = "red"; break;
+              case Roles.Harmony: color = "blue"; break;
+              case Roles.Component: color = "green"; break;
+            }
+
+            return (
+                <ListItem key={i} mb={5}>
+                  <Card>
+                    <Flex p={3}>
+                        <Avatar mr={5} size={"lg"} name={`${friend.name}`}/>
+                      <Box>
+                        <Text mb={1} fontSize={"xl"}>{friend.name}</Text>
+                        <Tag size={"md"} colorScheme={color}
+                        >{friend.role}</Tag>
+                      </Box>
+                      <Text>{friend.status}</Text>
+                    </Flex>
+                  </Card>
+                </ListItem>
+            );
+          })}
         </UnorderedList>
       </Flex>
     </>

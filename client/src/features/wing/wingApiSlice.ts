@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice.ts';
-import { Roles } from '../auth/authSlice.ts';
+import {Roles, WingMembership} from "../auth/authSlice.ts";
 
 interface WingName {
   wingName: string;
@@ -10,8 +10,8 @@ interface WingId {
 }
 
 interface Wing {
-  wingId: number;
-  wingName: string;
+  id: number;
+  name: string;
 }
 
 interface InviteToken {
@@ -19,8 +19,11 @@ interface InviteToken {
 }
 
 interface GetUsersReturn {
+  id: number;
   name: string;
   role: Roles;
+  // TODO Enum
+  status: string;
 }
 
 export const wingApiSlice = apiSlice.injectEndpoints({
@@ -52,13 +55,13 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
-    getUsers: builder.query<GetUsersReturn[], WingId>({
-      query: () => ({
-        url: 'wing-membership/wing-users',
+    getUsers: builder.query<GetUsersReturn[], number>({
+      query: (id) => ({
+        url: `wing-membership/wing-users/${id}`,
         method: 'GET',
       }),
     }),
-    getWings: builder.query<number, void>({
+    getWings: builder.query<WingMembership[], void>({
       query: () => ({
         url: 'wing-membership/get-wings',
         method: 'GET',
@@ -73,5 +76,5 @@ export const {
   useJoinWingMutation,
   useLazyValidateInviteQuery,
   useGetUsersQuery,
-  useGetWingsQuery,
+  useLazyGetWingsQuery,
 } = wingApiSlice;

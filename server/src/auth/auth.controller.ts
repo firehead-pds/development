@@ -68,7 +68,7 @@ export class AuthController {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      wingsInfo: user.wingMemberships,
+      wingMemberships: user.wingMemberships,
     };
 
     return plainToInstance(LoginResponseDto, userData);
@@ -94,7 +94,7 @@ export class AuthController {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      wingsInfo: user.wingMemberships,
+      wingMemberships: user.wingMemberships,
     };
 
     return plainToInstance(LoginResponseDto, userData);

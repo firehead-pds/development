@@ -20,4 +20,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRefreshQuery } = authApiSlice;
+export const { useLoginMutation, useLazyRefreshQuery } = authApiSlice;

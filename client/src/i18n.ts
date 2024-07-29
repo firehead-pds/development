@@ -8,8 +8,7 @@ i18next
   .use(I18nextBrowserLanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
-    debug: true,
+    fallbackLng: 'en'
   })
   .then();
 

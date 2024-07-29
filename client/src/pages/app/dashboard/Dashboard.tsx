@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../../app/hook.ts';
-import {getWing, selectCurrentUser} from "../../../features/auth/authSlice.ts";
+import {setWings, selectCurrentUser} from "../../../features/auth/authSlice.ts";
 import { Link as ReactRouterLink } from 'react-router-dom';
 import {useAppDispatch} from "../../../app/hook.ts";
 import {
@@ -10,7 +10,7 @@ import {
   Input,
   Link,
 } from '@chakra-ui/react';
-import {useCreateWingMutation, useGetWingsQuery} from "../../../features/wing/wingApiSlice.ts";
+import {useCreateWingMutation, useLazyGetWingsQuery} from "../../../features/wing/wingApiSlice.ts";
 import { SubmitHandler, useForm } from 'react-hook-form';
 interface CreateWingFormFields {
   wingName: string;
@@ -19,14 +19,17 @@ interface CreateWingFormFields {
 export default function Dashboard() {
   const user = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
-  const [wing, { isLoading }] = useCreateWingMutation();
-  const { data } = useGetWingsQuery();
+
+  const [createWing, { isLoading }] = useCreateWingMutation();
+  const [getWings] = useLazyGetWingsQuery();
+
   const { register, handleSubmit } = useForm<CreateWingFormFields>();
 
   const onSubmit: SubmitHandler<CreateWingFormFields> = async (formData) => {
     try {
-      await wing(formData).unwrap();
-      dispatch(getWing(data));
+      await createWing(formData).unwrap();
+      const allWings = await getWings().unwrap();
+      dispatch(setWings(allWings));
     } catch (error) {
       console.log(error);
     }
@@ -49,14 +52,14 @@ export default function Dashboard() {
         </Button>
       </form>
       <br />
-      {user?.wingsInfo?.map((wingMember, i) => {
+      {user?.wingMemberships?.map((wingMembership, i) => {
         return (
           <Box key={i} className={'p-4 border rounded-lg mx-2 w-[500px]'}>
-            <Link as={ReactRouterLink} to={`/app/wing/${wingMember.wing.id}`}>
-              {wingMember.wing.name + ' - ' + wingMember.wing.id}
+            <Link as={ReactRouterLink} to={`/app/wing/${wingMembership.wing.id}`}>
+              {wingMembership.wing.name + ' - ' + wingMembership.wing.id}
             </Link>
             <br />
-            {wingMember.role}
+            {wingMembership.role}
           </Box>
         );
       })}

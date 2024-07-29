@@ -3,38 +3,69 @@ import {
   useJoinWingMutation,
   useLazyValidateInviteQuery,
 } from '../../../features/wing/wingApiSlice.ts';
-import { Button, Spinner } from '@chakra-ui/react';
+import {Button, Spinner, useToast} from "@chakra-ui/react";
 import { useForm } from 'react-hook-form';
+import {useEffect, useState} from "react";
+import {Wing} from "../../../features/auth/authSlice.ts";
 
 export default function JoinWing() {
+  const toast = useToast();
+
   const navigate = useNavigate();
   const { token } = useParams();
   const [validate, { isLoading }] = useLazyValidateInviteQuery();
+  const [wing, setWing] = useState<Wing>();
+  const [joinWing] = useJoinWingMutation();
+
+
   if (!token) {
     console.error('Could not load token');
-    navigate('app/dashboard');
+    navigate('/app/dashboard');
     return;
   }
 
-  const wing = validate(token).unwrap();
-  console.log(wing);
-  const [joinWing] = useJoinWingMutation();
+  useEffect(() => {
+    validate(token)
+        .unwrap()
+        .then((res) => {
+          setWing(res);
+        })
+        .catch((e) => {
+          console.error('invite invalid');
+          console.error(e);
+          navigate('/app/dashboard');
+        });
+  }, [token]);
+
   const {
     handleSubmit,
     formState: { isLoading: formLoading },
   } = useForm();
+
   const onSubmit = async () => {
     try {
-      joinWing({ token: token});
+      await joinWing({ token: token}).unwrap();
+      navigate(`/app/wing/${wing?.id}`);
     } catch (error) {
-      console.log(error);
+      toast({
+        title: 'Unable to Join',
+        description: 'You are already a member of this wing',
+        status: 'error',
+        variant: 'left-accent',
+        duration: 8000,
+        isClosable: true,
+      });
+      navigate('/app/dashboard');
     }
   };
+
   if (isLoading) {
     return <Spinner />;
   }
+
   return (
     <>
+      <p>{wing && wing.name}</p>
       <form
         id={'joinWing'}
         onSubmit={handleSubmit(onSubmit)}

@@ -6,12 +6,12 @@ export enum Roles {
   WingChief = 'Wing Chief',
 }
 
-interface Wing {
+export interface Wing {
   id: number;
   name: string;
 }
 
-interface WingMember {
+export interface WingMembership {
   id: number;
   role: Roles;
   wing: Wing;
@@ -22,7 +22,7 @@ export interface AuthState {
     firstName: string;
     lastName: string;
     email: string;
-    wingsInfo?: WingMember[];
+    wingMemberships?: WingMembership[];
   } | null;
 }
 
@@ -40,9 +40,9 @@ export const authSlice = createSlice({
     logOut: (state) => {
       state.user = null;
     },
-    getWing: (state, action) => {
+    setWings: (state, action) => {
       if(state.user){
-        state.user.wingsInfo = action.payload;
+        state.user.wingMemberships = action.payload;
       }
     }
   },
@@ -51,17 +51,16 @@ export const authSlice = createSlice({
     selectUserIsPartOfWing: (state, wingId) => {
       const { user } = state;
 
-      if (!user || !user.wingsInfo) return null;
-      const wing = user.wingsInfo.find((w) => w.wing.id === wingId);
+      if (!user || !user.wingMemberships) return null;
+      const wing = user.wingMemberships.find((w) => w.wing.id === wingId);
       return wing ? wing : null;
     },
     selectHasAdminPermissionForWing: (state, wingId) => {
       const { user } = state;
 
-      if (!user || !user.wingsInfo) return null;
+      if (!user || !user.wingMemberships) return null;
 
-      const wing = user.wingsInfo.find((wm) => wm.wing.id === wingId);
-      console.log(wing);
+      const wing = user.wingMemberships.find((wm) => wm.wing.id === wingId);
       return (
         wing && (wing.role === Roles.Harmony || wing.role === Roles.WingChief)
       );
@@ -69,7 +68,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logOut, getWing } = authSlice.actions;
+export const { setCredentials, logOut, setWings } = authSlice.actions;
 export const {
   selectCurrentUser,
   selectUserIsPartOfWing,
