@@ -175,7 +175,7 @@ export class WingMembershipService {
                 friendship."creatorId" = $1 AS sentByCurrentUser
             FROM 
                 wing_membership
-            LEFT JOIN users 
+            JOIN users 
                 ON wing_membership."userId" = users.id
             LEFT JOIN friendship
                 ON (friendship."receiverId" = users.id OR friendship."creatorId" = users.id)
