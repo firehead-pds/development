@@ -1,11 +1,30 @@
-import { Avatar, Box, Card, Flex, ListItem, Tag, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Flex,
+  ListItem,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { CommonFriendProps } from '../../pages/app/friends/Friends.tsx';
 import { Roles } from '../../features/auth/authSlice.ts';
 
-export default function OldFriend({ friend, count }: CommonFriendProps) {
+interface OldFriendProps extends CommonFriendProps {
+  deleteFriend: (id: number) => void;
+}
+
+export default function OldFriend({
+  friend,
+  isLoading,
+}: OldFriendProps) {
   const { t: tCommon } = useTranslation('common', {
     keyPrefix: 'roles',
+  });
+  const { t: tFriends } = useTranslation('friends', {
+    keyPrefix: 'friend.status',
   });
   let color = 'gray';
   switch (friend.role) {
@@ -21,7 +40,7 @@ export default function OldFriend({ friend, count }: CommonFriendProps) {
   }
   return (
     <>
-      <ListItem key={count} mb={5}>
+      <ListItem mb={5}>
         <Card>
           <Flex p={3} alignItems={'center'}>
             <Avatar ml={3} mr={5} size={'lg'} name={`${friend.name}`} />
@@ -34,6 +53,12 @@ export default function OldFriend({ friend, count }: CommonFriendProps) {
                   {tCommon(friend.role)}
                 </Tag>
               </Box>
+              <Button
+                mt={2}
+                colorScheme={'red'}
+                isLoading={isLoading === friend.id}
+              >
+              </Button>
             </Flex>
           </Flex>
         </Card>

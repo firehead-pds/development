@@ -18,7 +18,7 @@ interface PendingFriendProps extends CommonFriendProps {
 
 export default function PendingFriend({
   friend,
-  count,
+  isLoading,
   acceptFriend,
 }: PendingFriendProps) {
   const { t: tCommon } = useTranslation('common', {
@@ -41,7 +41,7 @@ export default function PendingFriend({
   }
   return (
     <>
-      <ListItem key={count} mb={5}>
+      <ListItem mb={5}>
         <Card>
           <Flex p={3} alignItems={'center'}>
             <Avatar ml={3} mr={5} size={'lg'} name={`${friend.name}`} />
@@ -58,6 +58,7 @@ export default function PendingFriend({
                 mt={2}
                 colorScheme={'teal'}
                 onClick={() => acceptFriend(friend.id)}
+                isLoading={isLoading === friend.id}
               >
                 {tFriends('accept')}
               </Button>

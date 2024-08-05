@@ -18,7 +18,7 @@ interface NewFriendProps extends CommonFriendProps {
 
 export default function NewFriend({
   friend,
-  count,
+  isLoading,
   addFriend,
 }: NewFriendProps) {
   const { t: tCommon } = useTranslation('common', {
@@ -41,7 +41,7 @@ export default function NewFriend({
   }
   return (
     <>
-      <ListItem key={count} mb={5}>
+      <ListItem mb={5}>
         <Card>
           <Flex p={3} alignItems={'center'}>
             <Avatar ml={3} mr={5} size={'lg'} name={`${friend.name}`} />
@@ -60,9 +60,10 @@ export default function NewFriend({
                 </Button>
               ) : (
                 <Button
-                  onClick={() => addFriend(friend.id)}
                   mt={2}
                   colorScheme={'blue'}
+                  onClick={() => addFriend(friend.id)}
+                  isLoading={isLoading === friend.id}
                 >
                   {tFriends('sendRequest')}
                 </Button>

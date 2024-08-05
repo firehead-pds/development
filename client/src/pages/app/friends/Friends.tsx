@@ -19,10 +19,11 @@ import NewFriend from '../../../components/friends/NewFriend.tsx';
 import OldFriend from '../../../components/friends/OldFriend.tsx';
 import PendingFriend from '../../../components/friends/PendingFriend.tsx';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 export interface CommonFriendProps {
   friend: GetUsersReturn;
-  count: number;
+  isLoading: number;
 }
 
 export default function Friendship() {
@@ -33,12 +34,15 @@ export default function Friendship() {
   const [friendRequest] = useCreateFriendRequestMutation();
   const [acceptRequest] = useAcceptFriendRequestMutation();
   const { data: wingMemberData, refetch } = useGetUsersQuery(Number(wingId));
-  const oldFriends: GetUsersReturn[] = [],
-    pendingFriends: GetUsersReturn[] = [],
-    newFriends: GetUsersReturn[] = [];
+  const [isLoading, setIsLoading] = useState(0);
+
+  const oldFriends: GetUsersReturn[] = [];
+  const pendingFriends: GetUsersReturn[] = [];
+  const newFriends: GetUsersReturn[] = [];
 
   const addFriend = async (id: number) => {
     try {
+      setIsLoading(id);
       await friendRequest({ receiverId: id }).unwrap();
       refetch();
     } catch (error) {
@@ -48,12 +52,15 @@ export default function Friendship() {
 
   const acceptFriend = async (id: number) => {
     try {
+      setIsLoading(id);
       await acceptRequest({ requestId: id }).unwrap();
       refetch();
+      setIsLoading(0);
     } catch (error) {
       console.log(error);
     }
   };
+
 
   wingMemberData?.forEach((friend) => {
     if (
@@ -63,7 +70,6 @@ export default function Friendship() {
       newFriends.push(friend);
     }
     if (!friend.sentByCurrentUser && friend.status === Status.PENDING) {
-      console.log(friend);
       pendingFriends.push(friend);
     }
     if (friend.status === Status.ACCEPTED) {
@@ -91,8 +97,9 @@ export default function Friendship() {
                 {newFriends.map((friend, i) => {
                   return (
                     <NewFriend
+                      key={i}
                       friend={friend}
-                      count={i}
+                      isLoading={isLoading}
                       addFriend={addFriend}
                     />
                   );
@@ -104,8 +111,9 @@ export default function Friendship() {
                 {pendingFriends.map((friend, i) => {
                   return (
                     <PendingFriend
+                      key={i}
                       friend={friend}
-                      count={i}
+                      isLoading={isLoading}
                       acceptFriend={acceptFriend}
                     />
                   );
@@ -115,7 +123,13 @@ export default function Friendship() {
             <TabPanel>
               <UnorderedList styleType={''}>
                 {oldFriends.map((friend, i) => {
-                  return <OldFriend friend={friend} count={i} />;
+                  return (
+                    <OldFriend
+                      key={i}
+                      friend={friend}
+                      isLoading={isLoading}
+                    />
+                  );
                 })}
               </UnorderedList>
             </TabPanel>
