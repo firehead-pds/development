@@ -172,10 +172,7 @@ export class WingMembershipService {
                 (users."firstName" || ' ' || users."lastName") AS name,
                 wing_membership.role AS role,
                 friendship.status AS status,
-                CASE 
-                    WHEN friendship.creatorId = $1 THEN true
-                    ELSE false
-                END AS sentByCurrentUser
+                friendship."creatorId" = $1 AS sentByCurrentUser
             FROM 
                 wing_membership
             LEFT JOIN users 
