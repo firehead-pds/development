@@ -40,7 +40,9 @@ export class FriendshipController {
 
   @Get('pending-friends')
   public async pendingFriends(@CurrentUser() currentUser: RequestUser) {
-    return this.friendshipService.getAllPendingReceivedRequests(currentUser);
+    return await this.friendshipService.getAllPendingReceivedRequests(
+      currentUser,
+    );
   }
   // TODO: e2e test. Optionally, unit tests.
 
