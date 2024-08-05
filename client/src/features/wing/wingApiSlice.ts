@@ -76,7 +76,10 @@ export const wingApiSlice = apiSlice.injectEndpoints({
     acceptFriendRequest: builder.mutation<void, { requestId: number }>({
       query: (body) => ({
         url: 'friendship/accept-request',
-        method: 'POST',
+        method: 'PATCH',
+        body: body,
+      }),
+    }),
         body: body,
       }),
     }),

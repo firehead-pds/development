@@ -29,11 +29,21 @@ export class FriendshipsService {
   /**
    * Finds a friend request by ID.
    *
-   * @param id The friendship primary ID.
+   * @param creator The information of the friend request creator.
+   * @param receiver The information of the friend request receiver.
    * @returns A friend request with the ID provided by the parameter.
    */
-  private async findFriendRequestById(id: number) {
-    return await this.friendshipRepo.findOneBy({ id });
+  private async findOneReceivedFriendRequest(creator: User, receiver: User) {
+    return await this.friendshipRepo.findOne({
+      relations: {
+        receiver: true,
+      },
+      where: {
+        creator: creator,
+        receiver: receiver,
+      },
+    });
+  }
   }
 
   /**
@@ -86,7 +96,11 @@ export class FriendshipsService {
    * @returns The friend request with ACCEPTED status.
    */
   public async acceptFriendRequest(friendRequestId: number, receiver: User) {
-    const friendRequest = await this.findFriendRequestById(friendRequestId);
+    const creator = await this.usersService.findOneById(friendRequestId);
+    const friendRequest = await this.findOneReceivedFriendRequest(
+      creator,
+      receiver,
+    );
 
     if (!friendRequest) {
       throw new NotFoundException('no requests found with given id');
