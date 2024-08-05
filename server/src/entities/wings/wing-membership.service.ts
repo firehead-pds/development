@@ -172,7 +172,7 @@ export class WingMembershipService {
                 (users."firstName" || ' ' || users."lastName") AS name,
                 wing_membership.role AS role,
                 friendship.status AS status,
-                friendship."creatorId" = $1 AS sentByCurrentUser
+                friendship."creatorId" = $1 AS "sentByCurrentUser"
             FROM 
                 wing_membership
             JOIN users 
