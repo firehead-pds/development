@@ -80,6 +80,10 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
+    deleteFriendRequest: builder.mutation<void, { friendId: number }>({
+      query: (body) => ({
+        url: 'friendship/delete',
+        method: 'DELETE',
         body: body,
       }),
     }),
@@ -101,4 +105,5 @@ export const {
   useLazyGetWingsQuery,
   useCreateFriendRequestMutation,
   useAcceptFriendRequestMutation,
+  useDeleteFriendRequestMutation,
 } = wingApiSlice;

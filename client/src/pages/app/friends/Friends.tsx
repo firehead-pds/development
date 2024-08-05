@@ -12,6 +12,7 @@ import {
   Status,
   useAcceptFriendRequestMutation,
   useCreateFriendRequestMutation,
+  useDeleteFriendRequestMutation,
   useGetUsersQuery,
 } from '../../../features/wing/wingApiSlice.ts';
 import { useParams } from 'react-router-dom';
@@ -33,6 +34,7 @@ export default function Friendship() {
   const { wingId } = useParams();
   const [friendRequest] = useCreateFriendRequestMutation();
   const [acceptRequest] = useAcceptFriendRequestMutation();
+  const [deleteRequest] = useDeleteFriendRequestMutation();
   const { data: wingMemberData, refetch } = useGetUsersQuery(Number(wingId));
   const [isLoading, setIsLoading] = useState(0);
 
@@ -61,6 +63,16 @@ export default function Friendship() {
     }
   };
 
+  const deleteFriend = async (id: number) => {
+    try {
+      setIsLoading(id);
+      await deleteRequest({ friendId: id }).unwrap();
+      refetch();
+      setIsLoading(0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   wingMemberData?.forEach((friend) => {
     if (
@@ -128,6 +140,7 @@ export default function Friendship() {
                       key={i}
                       friend={friend}
                       isLoading={isLoading}
+                      deleteFriend={deleteFriend}
                     />
                   );
                 })}

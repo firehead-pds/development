@@ -19,6 +19,7 @@ interface OldFriendProps extends CommonFriendProps {
 export default function OldFriend({
   friend,
   isLoading,
+  deleteFriend,
 }: OldFriendProps) {
   const { t: tCommon } = useTranslation('common', {
     keyPrefix: 'roles',
@@ -56,8 +57,10 @@ export default function OldFriend({
               <Button
                 mt={2}
                 colorScheme={'red'}
+                onClick={() => deleteFriend(friend.id)}
                 isLoading={isLoading === friend.id}
               >
+                {tFriends('delete')}
               </Button>
             </Flex>
           </Flex>

@@ -44,6 +44,18 @@ export class FriendshipsService {
       },
     });
   }
+
+  private async findOneFriendRequest(friend: User, user: User) {
+    return await this.friendshipRepo.findOneBy([
+      {
+        creator: friend,
+        receiver: user,
+      },
+      {
+        creator: user,
+        receiver: friend,
+      },
+    ]);
   }
 
   /**
@@ -120,6 +132,23 @@ export class FriendshipsService {
 
     friendRequest.status = FriendRequestStatus.ACCEPTED;
     return await this.friendshipRepo.save(friendRequest);
+  }
+
+  public async deleteFriendRequest(friendId: number, currentUser: User) {
+    const friendUser = await this.usersService.findOneById(friendId);
+    const friendRequest = await this.findOneFriendRequest(
+      friendUser,
+      currentUser,
+    );
+
+    if (!friendRequest) {
+      throw new NotFoundException("friendship doens't exist");
+    }
+
+    if (friendRequest.status !== FriendRequestStatus.ACCEPTED) {
+      throw new ConflictException('no friendship between the users');
+    }
+    return await this.friendshipRepo.delete(friendRequest);
   }
 
   /**

@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 import { CreateFriendshipDto } from './dto/create-friendship.dto';
 import { FriendshipsService } from './friendships.service';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import { RequestUser } from '../../auth/types/request-user.type';
 import { AcceptFriendshipDto } from './dto/accept-friendship.dto';
+import { DeleteFriendshipDto } from './dto/delete-friendship.dto';
 
 /**
  * @class FriendshipController
@@ -26,7 +27,19 @@ export class FriendshipController {
   }
   // TODO: e2e test for creating requests. Optionally, unit tests.
 
-  @Post('accept-request')
+  @Delete('delete')
+  public async delete(
+    @Body() body: DeleteFriendshipDto,
+    @CurrentUser() currentUser: RequestUser,
+  ) {
+    return this.friendshipService.deleteFriendRequest(
+      body.friendId,
+      currentUser,
+    );
+  }
+  // TODO: e2e test for creating requests. Optionally, unit tests.
+
+  @Patch('accept-request')
   public async acceptRequest(
     @Body() body: AcceptFriendshipDto,
     @CurrentUser() currentUser: RequestUser,

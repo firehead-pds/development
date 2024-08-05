@@ -9,7 +9,7 @@
       "sendRequest": "Send Request",
       "pending": "Pending...",
       "accept": "Accept Request",
-      "accepted": "Accepted"
+      "delete": "Delete Friendship"
     }
   },
   "invite": {
