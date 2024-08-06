@@ -1,14 +1,22 @@
 {
+  "friends": {
+    "labels": {
+      "add": "Add Friends",
+      "pending": "Friendship Requests",
+      "friends": "See Friends"
+    },
+    "status": {
+      "sendRequest": "Send Request",
+      "pending": "Pending...",
+      "accept": "Accept Request",
+      "delete": "Delete Friendship"
+    }
+  },
   "invite": {
     "create": "Generate Invite",
     "modal-label": "Invite Link",
     "copy": "Copy",
     "copied": "Copied!",
     "share": "Share"
-  },
-  "status": {
-    "sendRequest": "Send Request",
-    "pending": "Pending...",
-    "accepted": "Accepted"
   }
 }

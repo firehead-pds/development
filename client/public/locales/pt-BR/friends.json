@@ -1,14 +1,22 @@
 {
+  "friend": {
+    "labels": {
+      "add": "Adicionar Amigos",
+      "pending": "Pedidos de Amizade",
+      "yourFriends": "Seus Amigos"
+    },
+    "status": {
+      "sendRequest": "Adicionar",
+      "pending": "Pendente...",
+      "accept": "Aceitar",
+      "delete": "Excluir Amizade"
+    }
+  },
   "invite": {
     "create": "Gerar Convite",
     "modal-label": "Link do Convite",
     "copy": "Copiar",
     "copied": "Copiado",
     "share": "Compartilhar"
-  },
-  "status": {
-    "sendRequest": "Adicionar",
-    "pending": "Pendente...",
-    "accepted": "Aceitado"
   }
 }
