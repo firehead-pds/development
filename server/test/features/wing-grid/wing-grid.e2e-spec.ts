@@ -1,7 +1,7 @@
 import { createUserAndLogin } from '../../utils/auth';
 
 describe('WingGridController (e2e)', () => {
-  it('/wing-grids/create (POST)', async () => {
+  it('/wing-grids/create (POST) - Create wing grid and associate it with a wing already created', async () => {
     const app = global.app;
 
     const cookies = await createUserAndLogin(app);
@@ -34,6 +34,9 @@ describe('WingGridController (e2e)', () => {
     });
 
     expect(createWingGridResponse.statusCode).toEqual(201);
+    expect(createWingGridResponse.json().wingId).toEqual(
+      createWingResponse.json().id,
+    );
     expect(createWingGridResponse.json().id).toBeDefined();
   });
 });
