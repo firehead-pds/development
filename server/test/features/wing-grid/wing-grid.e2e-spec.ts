@@ -17,25 +17,30 @@ describe('WingGridController (e2e)', () => {
     });
 
     const wingId = createWingResponse.json().id;
-
     const createWingGridResponse = await app.inject({
       url: '/wing-grids/create',
       method: 'POST',
       payload: {
+        wingId: wingId,
+        wingGridName: 'Test Grid',
         rows: 3,
         cols: 3,
-        wingGridName: 'Test Grid',
-        wingId,
       },
       headers: {
         cookie: cookies,
       },
     });
 
+    const wingGridId = createWingGridResponse.json().id;
+    const wingGridCreated = await app.inject({
+      url: `/wing-grids/${wingGridId}`,
+      method: 'GET',
+      headers: {
+        cookie: cookies,
+      },
+    });
+
     expect(createWingGridResponse.statusCode).toEqual(201);
-    expect(createWingGridResponse.json().wingId).toEqual(
-      createWingResponse.json().id,
-    );
-    expect(createWingGridResponse.json().id).toBeDefined();
+    expect(wingGridCreated.json().wing.id).toEqual(wingId);
   });
 });

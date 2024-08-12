@@ -194,6 +194,7 @@ export class WingGridService {
     const wingGrid = await this.wingGridRepository.findOne({
       where: { id },
       relations: {
+        wing: true,
         gridCells: {
           user: true,
         },
