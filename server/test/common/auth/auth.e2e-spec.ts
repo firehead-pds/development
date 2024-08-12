@@ -1,8 +1,6 @@
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { app } from '../../global-setup';
 
 describe('AuthController (e2e)', () => {
-  const app = global.app as NestFastifyApplication;
-
   it('/auth/local/login (POST)', async () => {
     const firstName = 'John';
     const lastName = 'Doe';
@@ -52,7 +50,7 @@ describe('AuthController (e2e)', () => {
         firstName,
         lastName,
         email,
-        wingsInfo: [],
+        wingMemberships: [],
       }),
     );
   });

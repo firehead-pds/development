@@ -1,9 +1,8 @@
 import { createUserAndLogin } from '../../utils/auth';
+import { app } from '../../global-setup';
 
 describe('WingMembershipController (e2e)', () => {
   it('/wing-membership/generate-invite (POST)', async () => {
-    const app = global.app;
-
     const cookies = await createUserAndLogin(app);
 
     const createWingResponse = await app.inject({

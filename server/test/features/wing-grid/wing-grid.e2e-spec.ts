@@ -1,9 +1,8 @@
 import { createUserAndLogin } from '../../utils/auth';
+import { app } from '../../global-setup';
 
 describe('WingGridController (e2e)', () => {
   it('/wing-grids/create (POST) - Create wing grid and associate it with a wing already created', async () => {
-    const app = global.app;
-
     const cookies = await createUserAndLogin(app);
 
     const createWingResponse = await app.inject({
