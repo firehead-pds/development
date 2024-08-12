@@ -2,14 +2,14 @@
   "friends": {
     "labels": {
       "add": "Add Friends",
-      "pending": "Friendship Requests",
+      "pending": "Friend Requests",
       "friends": "See Friends"
     },
     "status": {
-      "sendRequest": "Send Request",
-      "pending": "Pending...",
-      "accept": "Accept Request",
-      "delete": "Delete Friendship"
+      "sendRequest": "Add Friend",
+      "pending": "Request Sent",
+      "accept": "Accept",
+      "delete": "Unfriend"
     }
   },
   "invite": {

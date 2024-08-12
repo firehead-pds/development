@@ -16,31 +16,38 @@ import {
   useGetUsersQuery,
 } from '../../../features/wing/wingApiSlice.ts';
 import { useParams } from 'react-router-dom';
-import NewFriend from '../../../components/friends/NewFriend.tsx';
-import OldFriend from '../../../components/friends/OldFriend.tsx';
-import PendingFriend from '../../../components/friends/PendingFriend.tsx';
+import WingMembers from '../../../components/friends/WingMembers.tsx';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
-export interface CommonFriendProps {
-  friend: GetUsersReturn;
-  isLoading: number;
+export interface FriendProps {
+  users: GetUsersReturn;
+  isLoading: number | null;
+  friendFunction: (id: number) => void;
+  colorScheme: string;
+  buttonText: string;
 }
 
 export default function Friendship() {
   const { t: tFriends } = useTranslation('friends', {
-    keyPrefix: 'friend.labels',
+    keyPrefix: 'friends.status',
   });
+  const { t: tStatus } = useTranslation('friends', {
+    keyPrefix: 'friends.status',
+  });
+
   const { wingId } = useParams();
   const [friendRequest] = useCreateFriendRequestMutation();
   const [acceptRequest] = useAcceptFriendRequestMutation();
   const [deleteRequest] = useDeleteFriendRequestMutation();
   const { data: wingMemberData, refetch } = useGetUsersQuery(Number(wingId));
-  const [isLoading, setIsLoading] = useState(0);
 
-  const oldFriends: GetUsersReturn[] = [];
-  const pendingFriends: GetUsersReturn[] = [];
-  const newFriends: GetUsersReturn[] = [];
+  const [isLoading, setIsLoading] = useState<number | null>(null);
+
+  const existingFriends: GetUsersReturn[] = [];
+  const pendingFriendRequests: GetUsersReturn[] = [];
+  const eligibleFriendRequests: GetUsersReturn[] = [];
+  const wingMembers: GetUsersReturn[] = [];
 
   const addFriend = async (id: number) => {
     try {
@@ -48,18 +55,21 @@ export default function Friendship() {
       await friendRequest({ receiverId: id }).unwrap();
       refetch();
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    } finally {
+      setIsLoading(null);
     }
   };
 
-  const acceptFriend = async (id: number) => {
+  const acceptFriendRequest = async (id: number) => {
     try {
       setIsLoading(id);
       await acceptRequest({ requestId: id }).unwrap();
       refetch();
-      setIsLoading(0);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    } finally {
+      setIsLoading(null);
     }
   };
 
@@ -68,24 +78,26 @@ export default function Friendship() {
       setIsLoading(id);
       await deleteRequest({ friendId: id }).unwrap();
       refetch();
-      setIsLoading(0);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    } finally {
+      setIsLoading(null);
     }
   };
 
   wingMemberData?.forEach((friend) => {
-    if (
-      (friend.sentByCurrentUser && friend.status === Status.PENDING) ||
-      !friend.status
-    ) {
-      newFriends.push(friend);
+    if (!friend.status) {
+      wingMembers.push(friend);
     }
-    if (!friend.sentByCurrentUser && friend.status === Status.PENDING) {
-      pendingFriends.push(friend);
+    if (friend.status === Status.PENDING) {
+      if (friend.sentByCurrentUser) {
+        pendingFriendRequests.push(friend);
+      } else {
+        eligibleFriendRequests.push(friend);
+      }
     }
     if (friend.status === Status.ACCEPTED) {
-      oldFriends.push(friend);
+      existingFriends.push(friend);
     }
   });
 
@@ -101,18 +113,20 @@ export default function Friendship() {
           <TabList mb="1em">
             <Tab>{tFriends('add')}</Tab>
             <Tab>{tFriends('pending')}</Tab>
-            <Tab>{tFriends('yourFriends')}</Tab>
+            <Tab>{tFriends('friends')}</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
               <UnorderedList styleType={''}>
-                {newFriends.map((friend, i) => {
+                {wingMembers.map((users, i) => {
                   return (
-                    <NewFriend
+                    <WingMembers
                       key={i}
-                      friend={friend}
+                      users={users}
                       isLoading={isLoading}
-                      addFriend={addFriend}
+                      friendFunction={addFriend}
+                      colorScheme={'blue'}
+                      buttonText={tStatus('sendRequest')}
                     />
                   );
                 })}
@@ -120,13 +134,29 @@ export default function Friendship() {
             </TabPanel>
             <TabPanel>
               <UnorderedList styleType={''}>
-                {pendingFriends.map((friend, i) => {
+                {eligibleFriendRequests.map((users, i) => {
                   return (
-                    <PendingFriend
+                    <WingMembers
                       key={i}
-                      friend={friend}
+                      users={users}
                       isLoading={isLoading}
-                      acceptFriend={acceptFriend}
+                      friendFunction={acceptFriendRequest}
+                      colorScheme={'teal'}
+                      buttonText={tStatus('accept')}
+                    />
+                  );
+                })}
+                {pendingFriendRequests.map((users, i) => {
+                  return (
+                    <WingMembers
+                      key={i}
+                      users={users}
+                      isLoading={isLoading}
+                      friendFunction={function (id) {
+                        return id;
+                      }}
+                      colorScheme={'orange'}
+                      buttonText={tStatus('pending')}
                     />
                   );
                 })}
@@ -134,13 +164,15 @@ export default function Friendship() {
             </TabPanel>
             <TabPanel>
               <UnorderedList styleType={''}>
-                {oldFriends.map((friend, i) => {
+                {existingFriends.map((users, i) => {
                   return (
-                    <OldFriend
+                    <WingMembers
                       key={i}
-                      friend={friend}
+                      users={users}
                       isLoading={isLoading}
-                      deleteFriend={deleteFriend}
+                      friendFunction={deleteFriend}
+                      colorScheme={'red'}
+                      buttonText={tStatus('delete')}
                     />
                   );
                 })}

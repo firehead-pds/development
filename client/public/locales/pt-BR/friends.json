@@ -1,15 +1,15 @@
 {
-  "friend": {
+  "friends": {
     "labels": {
       "add": "Adicionar Amigos",
       "pending": "Pedidos de Amizade",
-      "yourFriends": "Seus Amigos"
+      "friends": "Ver Amigos"
     },
     "status": {
       "sendRequest": "Adicionar",
-      "pending": "Pendente...",
+      "pending": "Pedido Enviado",
       "accept": "Aceitar",
-      "delete": "Excluir Amizade"
+      "delete": "Excluir"
     }
   },
   "invite": {

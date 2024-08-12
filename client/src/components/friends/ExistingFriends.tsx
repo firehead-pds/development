@@ -9,26 +9,26 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { Roles } from '../../features/auth/authSlice.ts';
 import { CommonFriendProps } from '../../pages/app/friends/Friends.tsx';
+import { Roles } from '../../features/auth/authSlice.ts';
 
-interface NewFriendProps extends CommonFriendProps {
-  addFriend: (id: number) => void;
+interface OldFriendProps extends CommonFriendProps {
+  deleteFriend: (id: number) => void;
 }
 
-export default function NewFriend({
-  friend,
+export default function ExistingFriends({
+  users,
   isLoading,
-  addFriend,
-}: NewFriendProps) {
+  deleteFriend,
+}: OldFriendProps) {
   const { t: tCommon } = useTranslation('common', {
     keyPrefix: 'roles',
   });
   const { t: tFriends } = useTranslation('friends', {
-    keyPrefix: 'friend.status',
+    keyPrefix: 'friends.status',
   });
   let color = 'gray';
-  switch (friend.role) {
+  switch (users.role) {
     case Roles.WingChief:
       color = 'red';
       break;
@@ -44,30 +44,24 @@ export default function NewFriend({
       <ListItem mb={5}>
         <Card>
           <Flex p={3} alignItems={'center'}>
-            <Avatar ml={3} mr={5} size={'lg'} name={`${friend.name}`} />
+            <Avatar ml={3} mr={5} size={'lg'} name={`${users.name}`} />
             <Flex flexDir={'column'} display={'block'}>
               <Box>
                 <Text mb={1} fontSize={'xl'}>
-                  {friend.name}
+                  {users.name}
                 </Text>
                 <Tag size={'md'} colorScheme={color}>
-                  {tCommon(friend.role)}
+                  {tCommon(users.role)}
                 </Tag>
               </Box>
-              {friend.status ? (
-                <Button mt={2} colorScheme={'orange'}>
-                  {tFriends(friend.status)}
-                </Button>
-              ) : (
-                <Button
-                  mt={2}
-                  colorScheme={'blue'}
-                  onClick={() => addFriend(friend.id)}
-                  isLoading={isLoading === friend.id}
-                >
-                  {tFriends('sendRequest')}
-                </Button>
-              )}
+              <Button
+                mt={2}
+                colorScheme={'red'}
+                onClick={() => deleteFriend(users.id)}
+                isLoading={isLoading === users.id}
+              >
+                {tFriends('delete')}
+              </Button>
             </Flex>
           </Flex>
         </Card>
