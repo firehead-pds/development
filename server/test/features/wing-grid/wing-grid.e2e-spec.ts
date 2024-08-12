@@ -1,7 +1,7 @@
 import { createUserAndLogin } from '../../utils/auth';
 
-describe('WingMembershipController (e2e)', () => {
-  it('/wing-membership/generate-invite (POST)', async () => {
+describe('WingGridController (e2e)', () => {
+  it('/wing-grids/create (POST)', async () => {
     const app = global.app;
 
     const cookies = await createUserAndLogin(app);
@@ -18,10 +18,14 @@ describe('WingMembershipController (e2e)', () => {
     });
 
     const wingId = createWingResponse.json().id;
-    const generateInviteCodeResponde = await app.inject({
-      url: '/wing-membership/generate-invite',
+
+    const createWingGridResponse = await app.inject({
+      url: '/wing-grids/create',
       method: 'POST',
       payload: {
+        rows: 3,
+        cols: 3,
+        wingGridName: 'Test Grid',
         wingId,
       },
       headers: {
@@ -29,7 +33,7 @@ describe('WingMembershipController (e2e)', () => {
       },
     });
 
-    expect(generateInviteCodeResponde.statusCode).toEqual(201);
-    expect(generateInviteCodeResponde.json().token).toBeDefined();
+    expect(createWingGridResponse.statusCode).toEqual(201);
+    expect(createWingGridResponse.json().id).toBeDefined();
   });
 });
