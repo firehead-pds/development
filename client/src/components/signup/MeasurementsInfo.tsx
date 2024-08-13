@@ -16,7 +16,7 @@ import {
   UseFormSetError,
   UseFormSetValue,
 } from 'react-hook-form';
-import SignupFormFields from '../../interfaces/signup/SignupFormFields.ts';
+import SignupFormFields from '../../types/signup/SignupFormFields.ts';
 import { useTranslation } from 'react-i18next';
 
 interface MeasurementsInfoProps {

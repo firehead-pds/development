@@ -8,7 +8,7 @@ import {
   UnorderedList,
 } from '@chakra-ui/react';
 import {
-  GetUsersReturn,
+  GetUsersResponse,
   Status,
   useAcceptFriendRequestMutation,
   useCreateFriendRequestMutation,
@@ -16,44 +16,31 @@ import {
   useGetUsersQuery,
 } from '../../../features/wing/wingApiSlice.ts';
 import { useParams } from 'react-router-dom';
-import WingMembers from '../../../components/friends/WingMembers.tsx';
+import WingMembersList from '../../../components/members/WingMembersList.tsx';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
-export interface FriendProps {
-  users: GetUsersReturn;
-  isLoading: number | null;
-  friendFunction: (id: number) => void;
-  colorScheme: string;
-  buttonText: string;
-}
-
-export default function Friendship() {
-  const { t: tFriends } = useTranslation('friends', {
-    keyPrefix: 'friends.status',
-  });
-  const { t: tStatus } = useTranslation('friends', {
-    keyPrefix: 'friends.status',
-  });
+export default function Members() {
+  const { t } = useTranslation('members');
 
   const { wingId } = useParams();
   const [friendRequest] = useCreateFriendRequestMutation();
   const [acceptRequest] = useAcceptFriendRequestMutation();
   const [deleteRequest] = useDeleteFriendRequestMutation();
-  const { data: wingMemberData, refetch } = useGetUsersQuery(Number(wingId));
+  const { data: wingMemberData, refetch } = useGetUsersQuery(+wingId);
 
   const [isLoading, setIsLoading] = useState<number | null>(null);
 
-  const existingFriends: GetUsersReturn[] = [];
-  const pendingFriendRequests: GetUsersReturn[] = [];
-  const eligibleFriendRequests: GetUsersReturn[] = [];
-  const wingMembers: GetUsersReturn[] = [];
+  const existingFriends: GetUsersResponse[] = [];
+  const pendingFriendRequests: GetUsersResponse[] = [];
+  const eligibleFriendRequests: GetUsersResponse[] = [];
+  const wingMembers: GetUsersResponse[] = [];
 
   const addFriend = async (id: number) => {
     try {
       setIsLoading(id);
       await friendRequest({ receiverId: id }).unwrap();
-      refetch();
+      await refetch().unwrap();
     } catch (error) {
       console.error(error);
     } finally {
@@ -65,7 +52,7 @@ export default function Friendship() {
     try {
       setIsLoading(id);
       await acceptRequest({ requestId: id }).unwrap();
-      refetch();
+      await refetch().unwrap();
     } catch (error) {
       console.error(error);
     } finally {
@@ -77,7 +64,7 @@ export default function Friendship() {
     try {
       setIsLoading(id);
       await deleteRequest({ friendId: id }).unwrap();
-      refetch();
+      await refetch().unwrap();
     } catch (error) {
       console.error(error);
     } finally {
@@ -111,22 +98,22 @@ export default function Friendship() {
       >
         <Tabs isFitted isLazy>
           <TabList mb="1em">
-            <Tab>{tFriends('add')}</Tab>
-            <Tab>{tFriends('pending')}</Tab>
-            <Tab>{tFriends('friends')}</Tab>
+            <Tab>{t('labels.add')}</Tab>
+            <Tab>{t('labels.pending')}</Tab>
+            <Tab>{t('labels.friends')}</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
               <UnorderedList styleType={''}>
                 {wingMembers.map((users, i) => {
                   return (
-                    <WingMembers
+                    <WingMembersList
                       key={i}
-                      users={users}
+                      user={users}
                       isLoading={isLoading}
                       friendFunction={addFriend}
                       colorScheme={'blue'}
-                      buttonText={tStatus('sendRequest')}
+                      buttonText={t('status.sendRequest')}
                     />
                   );
                 })}
@@ -136,27 +123,24 @@ export default function Friendship() {
               <UnorderedList styleType={''}>
                 {eligibleFriendRequests.map((users, i) => {
                   return (
-                    <WingMembers
+                    <WingMembersList
                       key={i}
-                      users={users}
+                      user={users}
                       isLoading={isLoading}
                       friendFunction={acceptFriendRequest}
                       colorScheme={'teal'}
-                      buttonText={tStatus('accept')}
+                      buttonText={t('status.accept')}
                     />
                   );
                 })}
                 {pendingFriendRequests.map((users, i) => {
                   return (
-                    <WingMembers
+                    <WingMembersList
                       key={i}
-                      users={users}
+                      user={users}
                       isLoading={isLoading}
-                      friendFunction={function (id) {
-                        return id;
-                      }}
                       colorScheme={'orange'}
-                      buttonText={tStatus('pending')}
+                      buttonText={t('status.pending')}
                     />
                   );
                 })}
@@ -166,13 +150,13 @@ export default function Friendship() {
               <UnorderedList styleType={''}>
                 {existingFriends.map((users, i) => {
                   return (
-                    <WingMembers
+                    <WingMembersList
                       key={i}
-                      users={users}
+                      user={users}
                       isLoading={isLoading}
                       friendFunction={deleteFriend}
                       colorScheme={'red'}
-                      buttonText={tStatus('delete')}
+                      buttonText={t('status.delete')}
                     />
                   );
                 })}

@@ -10,9 +10,7 @@ import { Link } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Wing() {
-  const { t: tSimpleText } = useTranslation('common', {
-    keyPrefix: 'simpleText',
-  });
+  const { t } = useTranslation('wing');
   const { wingId } = useParams();
   const navigate = useNavigate();
 
@@ -28,15 +26,21 @@ export default function Wing() {
 
   return (
     <>
-      {hasAdminPermission && <GenerateInviteCode />}{' '}
-      {hasAdminPermission && (
-        <Link as={ReactRouterLink} to={'grids'}>
-          Grids
-        </Link>
-      )}
-      <Link as={ReactRouterLink} to={`friends`}>
-        {tSimpleText('friends')}
-      </Link>
+      {hasAdminPermission && <GenerateInviteCode />}
+      <ul>
+        <li>
+          {hasAdminPermission && (
+            <Link as={ReactRouterLink} to={'grids'}>
+              {t('grids')}
+            </Link>
+          )}
+        </li>
+        <li>
+          <Link as={ReactRouterLink} to={`members`}>
+            {t('members')}
+          </Link>
+        </li>
+      </ul>
     </>
   );
 }
