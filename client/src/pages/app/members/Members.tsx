@@ -1,5 +1,6 @@
 import {
   Flex,
+  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -27,7 +28,11 @@ export default function Members() {
   const [friendRequest] = useCreateFriendRequestMutation();
   const [acceptRequest] = useAcceptFriendRequestMutation();
   const [deleteRequest] = useDeleteFriendRequestMutation();
-  const { data: wingMemberData, refetch } = useGetUsersQuery(+wingId);
+  const {
+    data: wingMemberData,
+    refetch,
+    isLoading: isLoadingUsers,
+  } = useGetUsersQuery(+wingId!);
 
   const [isLoading, setIsLoading] = useState<number | null>(null);
 
@@ -104,63 +109,81 @@ export default function Members() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <UnorderedList styleType={''}>
-                {wingMembers.map((users, i) => {
-                  return (
-                    <WingMembersList
-                      key={i}
-                      user={users}
-                      isLoading={isLoading}
-                      friendFunction={addFriend}
-                      colorScheme={'blue'}
-                      buttonText={t('status.sendRequest')}
-                    />
-                  );
-                })}
-              </UnorderedList>
+              {isLoadingUsers ? (
+                <Flex justifyContent="center" alignItems="center" h="100%">
+                  <Spinner size="lg" />
+                </Flex>
+              ) : (
+                <UnorderedList styleType={''}>
+                  {wingMembers.map((users, i) => {
+                    return (
+                      <WingMembersList
+                        key={i}
+                        user={users}
+                        isLoading={isLoading}
+                        friendFunction={addFriend}
+                        colorScheme={'blue'}
+                        buttonText={t('status.sendRequest')}
+                      />
+                    );
+                  })}
+                </UnorderedList>
+              )}
             </TabPanel>
             <TabPanel>
-              <UnorderedList styleType={''}>
-                {eligibleFriendRequests.map((users, i) => {
-                  return (
-                    <WingMembersList
-                      key={i}
-                      user={users}
-                      isLoading={isLoading}
-                      friendFunction={acceptFriendRequest}
-                      colorScheme={'teal'}
-                      buttonText={t('status.accept')}
-                    />
-                  );
-                })}
-                {pendingFriendRequests.map((users, i) => {
-                  return (
-                    <WingMembersList
-                      key={i}
-                      user={users}
-                      isLoading={isLoading}
-                      colorScheme={'orange'}
-                      buttonText={t('status.pending')}
-                    />
-                  );
-                })}
-              </UnorderedList>
+              {isLoadingUsers ? (
+                <Flex justifyContent="center" alignItems="center" h="100%">
+                  <Spinner size="lg" />
+                </Flex>
+              ) : (
+                <UnorderedList styleType={''}>
+                  {eligibleFriendRequests.map((users, i) => {
+                    return (
+                      <WingMembersList
+                        key={i}
+                        user={users}
+                        isLoading={isLoading}
+                        friendFunction={acceptFriendRequest}
+                        colorScheme={'teal'}
+                        buttonText={t('status.accept')}
+                      />
+                    );
+                  })}
+                  {pendingFriendRequests.map((users, i) => {
+                    return (
+                      <WingMembersList
+                        key={i}
+                        user={users}
+                        isLoading={isLoading}
+                        colorScheme={'orange'}
+                        buttonText={t('status.pending')}
+                      />
+                    );
+                  })}
+                </UnorderedList>
+              )}
             </TabPanel>
             <TabPanel>
-              <UnorderedList styleType={''}>
-                {existingFriends.map((users, i) => {
-                  return (
-                    <WingMembersList
-                      key={i}
-                      user={users}
-                      isLoading={isLoading}
-                      friendFunction={deleteFriend}
-                      colorScheme={'red'}
-                      buttonText={t('status.delete')}
-                    />
-                  );
-                })}
-              </UnorderedList>
+              {isLoadingUsers ? (
+                <Flex justifyContent="center" alignItems="center" h="100%">
+                  <Spinner size="lg" />
+                </Flex>
+              ) : (
+                <UnorderedList styleType={''}>
+                  {existingFriends.map((users, i) => {
+                    return (
+                      <WingMembersList
+                        key={i}
+                        user={users}
+                        isLoading={isLoading}
+                        friendFunction={deleteFriend}
+                        colorScheme={'red'}
+                        buttonText={t('status.delete')}
+                      />
+                    );
+                  })}
+                </UnorderedList>
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>
