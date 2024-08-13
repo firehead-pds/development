@@ -49,7 +49,7 @@ export default function WingMembersList({
               <Button
                 mt={2}
                 colorScheme={colorScheme}
-                onClick={friendFunction ? () => friendFunction(user.id) : null}
+                onClick={friendFunction && (() => friendFunction(user.id))}
                 isLoading={isLoading === user.id}
               >
                 {buttonText}
