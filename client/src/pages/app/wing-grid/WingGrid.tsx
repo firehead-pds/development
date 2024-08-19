@@ -14,7 +14,7 @@ import {
 import { Box, Center, Grid } from '@chakra-ui/react';
 import {
   arrayMove,
-  rectSortingStrategy,
+  rectSwappingStrategy,
   SortableContext,
 } from '@dnd-kit/sortable';
 import SortableItem from '../../../components/dnd-kit/SortableItem.tsx';
@@ -85,7 +85,7 @@ export default function WingGrid() {
             {items && (
               <SortableContext
                 items={items.map((i) => i.id)}
-                strategy={rectSortingStrategy}
+                strategy={rectSwappingStrategy}
               >
                 {items.map((cell) => (
                   <SortableItem
