@@ -79,11 +79,7 @@ export default function GenerateInviteCode() {
         </ModalContent>
       </Modal>
 
-      <Flex
-        alignItems={'center'}
-        justifyContent={'center'}
-        className={'w-screen my-6'}
-      >
+      <Flex alignItems={'center'} justifyContent={'center'} w={'full'} my={6}>
         <form
           id={'generateInvite'}
           onSubmit={handleSubmit(onSubmit)}
