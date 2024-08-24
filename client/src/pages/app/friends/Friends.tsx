@@ -30,7 +30,7 @@ export interface FriendProps {
 
 export default function Friendship() {
   const { t: tFriends } = useTranslation('friends', {
-    keyPrefix: 'friends.status',
+    keyPrefix: 'friends.labels',
   });
   const { t: tStatus } = useTranslation('friends', {
     keyPrefix: 'friends.status',
