@@ -29,7 +29,7 @@ export default function SidebarContent({
   onClose,
   ...rest
 }: SidebarProps) {
-  const LinkItems: Array<LinkItemProps> = [
+  const LinkItems: LinkItemProps[] = [
     { name: 'Home', icon: FiHome, endpoint: `/app/wing/${wingId}` },
     {
       name: 'Participantes da Ala',

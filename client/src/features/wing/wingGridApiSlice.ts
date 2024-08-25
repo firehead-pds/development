@@ -21,7 +21,7 @@ export const wingGridApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createWingGrid: builder.mutation<void, { id: number }>({
       query: (body) => ({
-        url: '/wing-grids/create',
+        url: '/wing-grids',
         method: 'POST',
         body: {
           wingId: body.id,
@@ -38,8 +38,16 @@ export const wingGridApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+
+    updateWingGrid: builder.mutation<void, {wingId: number, wingGridId: number, cells: GridCell[]}>({
+      query: (body) => ({
+        url: '/wing-grids',
+        method: 'PATCH',
+        body: body,
+      })
+    })
   }),
 });
 
-export const { useCreateWingGridMutation, useGetWingGridQuery } =
+export const { useCreateWingGridMutation, useGetWingGridQuery, useUpdateWingGridMutation } =
   wingGridApiSlice;
