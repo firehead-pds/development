@@ -8,6 +8,7 @@ import {
   Box,
   Drawer,
   DrawerContent,
+  Flex,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -41,9 +42,9 @@ export default function MembershipProtectedRoute() {
           onOpen={onOpen}
           name={user.firstName + ' ' + user.lastName}
         />
-        <Box p="4">
+        <Flex justifyContent={'center'} alignItems={'center'} p="4">
           <Outlet />
-        </Box>
+        </Flex>
       </Box>
     ) : (
       <Navigate to={'/app/dashboard'} />
