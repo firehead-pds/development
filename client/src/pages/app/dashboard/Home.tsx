@@ -1,5 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
-import Dashboard from '../../../components/dashboard/Dashboard.tsx';
+import Dashboard from './component/Dashboard.tsx';
 import UserHeader from '../../../components/UserUI/UserHeader.tsx';
 import { useAppSelector } from '../../../app/hook.ts';
 import { selectCurrentUser } from '../../../features/auth/authSlice.ts';

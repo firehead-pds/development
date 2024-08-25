@@ -1,6 +1,6 @@
-import { setWings, AuthState } from '../../features/auth/authSlice.ts';
+import { setWings, AuthState } from '../../../../features/auth/authSlice.ts';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { useAppDispatch } from '../../app/hook.ts';
+import { useAppDispatch } from '../../../../app/hook.ts';
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
 import {
   useCreateWingMutation,
   useLazyGetWingsQuery,
-} from '../../features/wing/wingApiSlice.ts';
+} from '../../../../features/wing/wingApiSlice.ts';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 interface CreateWingFormFields {
