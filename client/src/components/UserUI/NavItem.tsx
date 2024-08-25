@@ -9,12 +9,7 @@ interface NavItemProps extends FlexProps {
 
 export default function NavItem({ icon, children, ...rest }: NavItemProps) {
   return (
-    <Box
-      as="a"
-      href="#"
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-    >
+    <Box style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
         p="4"

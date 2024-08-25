@@ -107,11 +107,14 @@ export default function Friendship() {
         flexDir={'column'}
         align={'center'}
         justify={'center'}
-        w={'full'}
+        w={{ base: 'lg', md: '2xl' }}
+        py={6}
         my={6}
+        bg={'white'}
+        borderRadius={'20px'}
       >
         <Tabs isFitted isLazy>
-          <TabList minWidth={'xl'} mb="1em">
+          <TabList minWidth={{ base: 'xs', md: 'xl' }} mb="1em">
             <Tab>{tFriends('add')}</Tab>
             <Tab>{tFriends('pending')}</Tab>
             <Tab>{tFriends('friends')}</Tab>
