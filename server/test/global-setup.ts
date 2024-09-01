@@ -7,7 +7,7 @@ import {
 
 let app: NestFastifyApplication;
 
-export default async () => {
+global.beforeEach(async () => {
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
@@ -20,8 +20,10 @@ export default async () => {
   await app.getHttpAdapter().getInstance().ready();
 
   global.app = app;
-};
+});
 
-export async function teardown() {
+global.afterEach(async () => {
   await global.app.close();
-}
+});
+
+export { app };

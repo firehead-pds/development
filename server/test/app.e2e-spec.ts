@@ -1,6 +1,6 @@
-describe('AppController (e2e)', () => {
-  const app = global.app;
+import { app } from './global-setup';
 
+describe('AppController (e2e)', () => {
   it('/ (GET)', async () => {
     const res = await app.inject({
       method: 'GET',

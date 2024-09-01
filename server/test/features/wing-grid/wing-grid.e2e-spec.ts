@@ -1,9 +1,8 @@
 import { createUserAndLogin } from '../../utils/auth';
+import { app } from '../../global-setup';
 
-describe('WingMembershipController (e2e)', () => {
-  it('/wing-membership/generate-invite (POST)', async () => {
-    const app = global.app;
-
+describe('WingGridController (e2e)', () => {
+  it('/wing-grids/create (POST) - Create wing grid and associate it with a wing already created', async () => {
     const cookies = await createUserAndLogin(app);
 
     const createWingResponse = await app.inject({
@@ -18,18 +17,30 @@ describe('WingMembershipController (e2e)', () => {
     });
 
     const wingId = createWingResponse.json().id;
-    const generateInviteCodeResponde = await app.inject({
-      url: '/wing-membership/generate-invite',
+    const createWingGridResponse = await app.inject({
+      url: '/wing-grids/create',
       method: 'POST',
       payload: {
-        wingId,
+        wingId: wingId,
+        wingGridName: 'Test Grid',
+        rows: 3,
+        cols: 3,
       },
       headers: {
         cookie: cookies,
       },
     });
 
-    expect(generateInviteCodeResponde.statusCode).toEqual(201);
-    expect(generateInviteCodeResponde.json().token).toBeDefined();
+    const wingGridId = createWingGridResponse.json().id;
+    const wingGridCreated = await app.inject({
+      url: `/wing-grids/${wingGridId}`,
+      method: 'GET',
+      headers: {
+        cookie: cookies,
+      },
+    });
+
+    expect(createWingGridResponse.statusCode).toEqual(201);
+    expect(wingGridCreated.json().wing.id).toEqual(wingId);
   });
 });
