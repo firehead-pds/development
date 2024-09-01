@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit/react';
-
-export enum Roles {
-  Component = 'Component',
-  Harmony = 'Harmony',
-  WingChief = 'Wing Chief',
-}
+import { Roles } from '../../types/user/Roles.ts';
 
 export interface Wing {
   id: number;
@@ -41,10 +36,10 @@ export const authSlice = createSlice({
       state.user = null;
     },
     setWings: (state, action) => {
-      if(state.user){
+      if (state.user) {
         state.user.wingMemberships = action.payload;
       }
-    }
+    },
   },
   selectors: {
     selectCurrentUser: (state) => state.user,

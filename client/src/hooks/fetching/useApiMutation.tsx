@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { Endpoints } from '../../interfaces/backend-fetches/requests/Endpoints.ts';
+import { Endpoints } from '../../types/backend-fetches/requests/Endpoints.ts';
 
 async function fetchData(endpoint: string, method: string, body?: any) {
   try {

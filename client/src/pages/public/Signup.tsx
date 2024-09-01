@@ -11,7 +11,7 @@ import AddressInfo from '../../components/signup/AddressInfo.tsx';
 import MeasurementsInfo from '../../components/signup/MeasurementsInfo.tsx';
 import PersonalInfo from '../../components/signup/PersonalInfo.tsx';
 import AccessCredentials from '../../components/signup/AccessCredentials.tsx';
-import SignupFormFields from '../../interfaces/signup/SignupFormFields.ts';
+import SignupFormFields from '../../types/signup/SignupFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

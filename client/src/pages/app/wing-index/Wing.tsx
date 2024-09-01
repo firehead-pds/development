@@ -6,7 +6,7 @@ import {
   useParams,
 } from 'react-router-dom';
 import GenerateInviteCode from './components/GenerateInviteCode.tsx';
-import { Box, Link } from '@chakra-ui/react';
+import { Link } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Wing() {
@@ -27,16 +27,22 @@ export default function Wing() {
   );
 
   return (
-    <Box bg={'white'} p="4" borderRadius="10">
-      {hasAdminPermission && <GenerateInviteCode />}{' '}
-      {hasAdminPermission && (
-        <Link as={ReactRouterLink} to={'grids'}>
-          Grids
-        </Link>
-      )}
-      <Link as={ReactRouterLink} to={`friends`}>
-        {tSimpleText('friends')}
-      </Link>
-    </Box>
+    <>
+      {hasAdminPermission && <GenerateInviteCode />}
+      <ul>
+        <li>
+          {hasAdminPermission && (
+            <Link as={ReactRouterLink} to={'grids'}>
+              {t('grids')}
+            </Link>
+          )}
+        </li>
+        <li>
+          <Link as={ReactRouterLink} to={`members`}>
+            {t('members')}
+          </Link>
+        </li>
+      </ul>
+    </>
   );
 }

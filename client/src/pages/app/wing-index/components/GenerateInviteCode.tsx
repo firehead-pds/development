@@ -22,7 +22,7 @@ interface GenerateInviteFormFields {
 }
 
 export default function GenerateInviteCode() {
-  const { t: tFriends } = useTranslation('friends', {
+  const { t: tFriends } = useTranslation('members', {
     keyPrefix: 'invite',
   });
   const { handleSubmit } = useForm<GenerateInviteFormFields>();

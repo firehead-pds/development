@@ -18,7 +18,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { ChangeEventHandler } from 'react';
-import SignupFormFields from '../../interfaces/signup/SignupFormFields.ts';
+import SignupFormFields from '../../types/signup/SignupFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useLazyViaCepQuery } from '../../features/signup/viaCepApiSlice.ts';
 

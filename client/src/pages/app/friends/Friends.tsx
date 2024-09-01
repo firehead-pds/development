@@ -30,7 +30,7 @@ export interface FriendProps {
 
 export default function Friendship() {
   const { t: tFriends } = useTranslation('friends', {
-    keyPrefix: 'friends.labels',
+    keyPrefix: 'friends.status',
   });
   const { t: tStatus } = useTranslation('friends', {
     keyPrefix: 'friends.status',
@@ -107,14 +107,10 @@ export default function Friendship() {
         flexDir={'column'}
         align={'center'}
         justify={'center'}
-        w={{ base: 'lg', md: '2xl' }}
-        py={6}
-        my={6}
-        bg={'white'}
-        borderRadius={'20px'}
+        className={'w-screen my-6'}
       >
         <Tabs isFitted isLazy>
-          <TabList minWidth={{ base: 'xs', md: 'xl' }} mb="1em">
+          <TabList mb="1em">
             <Tab>{tFriends('add')}</Tab>
             <Tab>{tFriends('pending')}</Tab>
             <Tab>{tFriends('friends')}</Tab>

@@ -7,7 +7,7 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react';
-import LoginFormFields from '../../interfaces/login/LoginFormFields.ts';
+import LoginFormFields from '../../types/login/LoginFormFields.ts';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../features/auth/authApiSlice.ts';

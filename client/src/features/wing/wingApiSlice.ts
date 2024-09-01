@@ -1,5 +1,6 @@
 import { apiSlice } from '../api/apiSlice.ts';
-import { Roles, WingMembership } from '../auth/authSlice.ts';
+import { WingMembership } from '../auth/authSlice.ts';
+import { Roles } from '../../types/user/Roles.ts';
 
 interface WingName {
   wingName: string;
@@ -18,7 +19,7 @@ interface InviteToken {
   token: string;
 }
 
-export interface GetUsersReturn {
+export interface GetUsersResponse {
   id: number;
   name: string;
   role: Roles;
@@ -60,7 +61,7 @@ export const wingApiSlice = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
-    getUsers: builder.query<GetUsersReturn[], number | undefined>({
+    getUsers: builder.query<GetUsersResponse[], number | undefined>({
       query: (id) => ({
         url: `wing-membership/wing-users/${id}`,
         method: 'GET',

@@ -1,6 +1,6 @@
 import { apiSlice } from '../api/apiSlice.ts';
-import Measurements from '../../interfaces/user/Measurements.ts';
-import Address from '../../interfaces/user/Address.ts';
+import Measurements from '../../types/user/Measurements.ts';
+import Address from '../../types/user/Address.ts';
 
 interface SignupBody {
   firstName: string;
