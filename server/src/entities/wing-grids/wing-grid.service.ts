@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {Injectable, InternalServerErrorException, Logger, NotFoundException} from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { WingGrid } from './wing-grid.entity';
@@ -213,5 +213,68 @@ export class WingGridService {
     // });
 
     return wingGrid;
+  }
+
+  public async updateWingGrid(wingGridId: number, cells: GridCell[]) {
+    const wingGrid = await this.wingGridRepository.findOne({
+      where: {id: wingGridId},
+      relations: ["gridCells", "wing"],
+    });
+
+    if (!wingGrid) {
+      throw new NotFoundException("No wing grid found for the given ID");
+    }
+
+    const usersInWing = await this.wingMembershipService.getAllUsersForWing(wingGrid.wing.id);
+    const userIdsInWing = new Set(usersInWing.map(user => user.id));
+    const existingCells = new Set(wingGrid.gridCells.map(cell => `${cell.row}-${cell.col}`));
+    const updatedGridCells: GridCell[] = [];
+
+    for (const cell of cells) {
+      if (cell.row < 1 || cell.row > wingGrid.rows || cell.col < 1 || cell.col > wingGrid.cols) {
+        throw new Error(`Cell at row ${cell.row} and col ${cell.col} is out of bounds`);
+      }
+
+      if (!existingCells.has(`${cell.row}-${cell.col}`)) {
+        throw new Error(`Cell at row ${cell.row} and col ${cell.col} does not exist in the grid`);
+      }
+
+      if (cell.user && !userIdsInWing.has(cell.user.id)) {
+        throw new Error(`User with ID ${cell.user.id} is not part of the wing`);
+      }
+
+      let cellToUpdate = await this.gridCellRepository.findOneBy({id: cell.id});
+
+      cellToUpdate = {
+        ...cellToUpdate,
+        row: cell.row,
+        col: cell.col,
+        user: usersInWing.find(u => u.id === cell.user.id)
+      };
+
+      updatedGridCells.push(cellToUpdate);
+    }
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    Logger.debug(updatedGridCells);
+
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      for (const gridCell of updatedGridCells) {
+        await queryRunner.manager.save(GridCell, gridCell);
+      }
+
+      await queryRunner.commitTransaction();
+    } catch (e) {
+      await queryRunner.rollbackTransaction();
+      Logger.error(e);
+      throw new InternalServerErrorException("Error while updating grid");
+    } finally {
+      await queryRunner.release();
+    }
+
+    return {message: "Wing grid updated successfully"};
   }
 }

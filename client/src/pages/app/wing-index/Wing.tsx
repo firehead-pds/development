@@ -10,7 +10,7 @@ import { Link } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Wing() {
-  const { t: tSimpleText } = useTranslation('common', {
+  const { t } = useTranslation('common', {
     keyPrefix: 'simpleText',
   });
   const { wingId } = useParams();

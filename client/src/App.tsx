@@ -5,10 +5,8 @@ import Login from "./pages/public/Login.tsx";
 import WelcomePage from "./pages/public/WelcomePage.tsx";
 import PageLoader from "./components/UI/PageLoader.tsx";
 import ProtectedRoute from "./guards/ProtectedRoute.tsx";
-import Dashboard from "./pages/app/dashboard/Dashboard.tsx";
 import MembershipProtectedRoute from "./guards/MembershipProtectedRoute.tsx";
 import Wing from "./pages/app/wing-index/Wing.tsx";
-import Friendship from "./pages/app/friends/Friends.tsx";
 import JoinWing from "./pages/app/invite-code/JoinWing.tsx";
 import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import {useAppDispatch} from "./app/hook.ts";
@@ -18,6 +16,8 @@ import {useEffect, useState} from "react";
 import WingsGridsIndex from "./pages/app/wing-grid/WingsGridsIndex.tsx";
 import CreateWingGrid from "./pages/app/wing-grid/CreateWingGrid.tsx";
 import WingGrid from "./pages/app/wing-grid/WingGrid.tsx";
+import Home from "./pages/app/dashboard/Home.tsx";
+import Members from "./pages/app/members/Members.tsx";
 
 export default function App() {
     const dispatch = useAppDispatch();
@@ -72,7 +72,7 @@ export default function App() {
                 },
                 {
                     path: "dashboard",
-                    element: <Dashboard/>,
+                    element: <Home/>,
                 },
                 {
                     path: "wing/:wingId",
@@ -83,8 +83,8 @@ export default function App() {
                             element: <Wing/>,
                         },
                         {
-                            path: "friends",
-                            element: <Friendship/>,
+                            path: "members",
+                            element: <Members/>,
                         },
                         {
                             path: "grids",
